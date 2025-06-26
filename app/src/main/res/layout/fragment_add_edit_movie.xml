@@ -15,7 +15,7 @@
             android:id="@+id/tvAddEditTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Add New Movie"
+            android:text="@string/add_movie_title"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -24,8 +24,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-
 
         <ImageView
             android:id="@+id/ivPoster"
@@ -37,11 +35,12 @@
             app:layout_constraintTop_toBottomOf="@id/tvAddEditTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
         <Button
             android:id="@+id/btnChooseImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose Image"
+            android:text="@string/choose_image"
             android:textColor="#FFFFFF"
             android:background="#3366FF"
             android:layout_marginTop="12dp"
@@ -66,10 +65,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
+
+                <!-- Movie Title -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Movie Title"
+                    android:text="@string/movie_title_label"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
@@ -78,15 +79,17 @@
                     android:id="@+id/etTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter movie title"
+                    android:hint="@string/movie_title_label"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#777777"
                     android:backgroundTint="#444444"
                     android:layout_marginBottom="12dp" />
+
+                <!-- Description -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Description"
+                    android:text="@string/description_label"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
@@ -95,7 +98,7 @@
                     android:id="@+id/etDesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter movie description"
+                    android:hint="@string/description_label"
                     android:lines="3"
                     android:gravity="top"
                     android:inputType="textMultiLine"
@@ -104,28 +107,27 @@
                     android:backgroundTint="#444444"
                     android:layout_marginBottom="12dp" />
 
+                <!-- Genre Spinner -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Genre"
+                    android:text="@string/genre_select"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/etGenre"
+                <Spinner
+                    android:id="@+id/spinnerGenre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter genre"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#777777"
                     android:backgroundTint="#444444"
                     android:layout_marginBottom="12dp" />
 
+                <!-- Director -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Director"
+                    android:text="@string/director_label_input"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
@@ -134,16 +136,17 @@
                     android:id="@+id/etDirector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter director name"
+                    android:hint="@string/director_label_input"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#777777"
                     android:backgroundTint="#444444"
                     android:layout_marginBottom="12dp" />
 
+                <!-- Actors -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Actors"
+                    android:text="@string/actors_label"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
@@ -152,72 +155,123 @@
                     android:id="@+id/etActors"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter actors (separated by commas)"
+                    android:hint="@string/actors_label"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#777777"
                     android:backgroundTint="#444444"
                     android:layout_marginBottom="12dp" />
 
+                <!-- Year Picker -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Year"
+                    android:text="@string/year_label"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/etYear"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter release year"
-                    android:inputType="number"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#777777"
-                    android:backgroundTint="#444444"
-                    android:layout_marginBottom="12dp" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
 
+                    <Button
+                        android:id="@+id/btnSelectYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_year"
+                        android:textColor="#FFFFFF"
+                        android:background="#3366FF"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvSelectedYear"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:text="@string/year_label" />
+                </LinearLayout>
+
+                <!-- Rating Bar -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rating (0-10)"
+                    android:text="@string/rating_label"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/etRating"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter rating (1.0-10.0)"
-                    android:inputType="numberDecimal"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#777777"
-                    android:backgroundTint="#444444"
-                    android:layout_marginBottom="12dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
 
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize="0.5"
+                        android:progressTint="#FFD700"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvRatingValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFD700"
+                        android:textSize="16sp"
+                        android:text="0.0" />
+                </LinearLayout>
+
+                <!-- Release Date Picker -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Release Date (YYYY-MM-DD)"
+                    android:text="@string/release_date_label"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/etReleaseDate"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="YYYY-MM-DD"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#777777"
-                    android:backgroundTint="#444444"
-                    android:layout_marginBottom="12dp" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
 
+                    <Button
+                        android:id="@+id/btnSelectDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_date"
+                        android:textColor="#FFFFFF"
+                        android:background="#3366FF"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvSelectedDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:text="@string/release_date_label" />
+                </LinearLayout>
+
+                <!-- Duration -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Duration (minutes)"
+                    android:text="@string/duration_label_input"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
@@ -226,7 +280,7 @@
                     android:id="@+id/etDuration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter duration in minutes"
+                    android:hint="@string/duration_label_input"
                     android:inputType="number"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#777777"
@@ -237,7 +291,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Showtime"
+                    android:text="@string/showtime_label_input"
                     android:textColor="#AAAAAA"
                     android:textSize="14sp"
                     android:layout_marginBottom="4dp" />
@@ -246,7 +300,7 @@
                     android:id="@+id/etShowtime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter showtime (e.g. 21:00)"
+                    android:hint="@string/showtime_label_input"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#777777"
                     android:backgroundTint="#444444"
@@ -258,7 +312,7 @@
             android:id="@+id/btnSave"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Save Movie"
+            android:text="@string/save_movie"
             android:textSize="16sp"
             android:textColor="#FFFFFF"
             android:background="#3366FF"

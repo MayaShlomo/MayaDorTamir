@@ -27,7 +27,7 @@ class MovieRepository(private val dao: MovieDao) {
     suspend fun delete(movie: Movie) = dao.delete(movie)
     suspend fun clearAllMovies() = dao.clearAllMovies()
 
-    // פונקציה לטעינת נתונים ראשונים
+    // פונקציה לטעינת נתונים ראשונים - מעודכנת עם getString
     suspend fun preloadSampleMoviesIfNeeded(context: Context): Boolean {
         return try {
             Log.d("MovieRepository", "Checking if preload is needed")
@@ -75,11 +75,12 @@ class MovieRepository(private val dao: MovieDao) {
         }
     }
 
+    // פונקציה מעודכנת עם שימוש ב-getString במקום hard-coded strings
     private fun getSampleMovies(context: Context): List<Movie> {
         return listOf(
             Movie(
                 title = "Inception",
-                description = "Dom Cobb is a skilled thief who steals corporate secrets through dream-sharing technology. Given the task of planting an idea in a CEO's mind, Cobb's mission is complicated by his past with his deceased wife.",
+                description = context.getString(R.string.inception_description),
                 genre = context.getString(R.string.genre_sci_fi),
                 actors = "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Tom Hardy",
                 director = "Christopher Nolan",
@@ -93,7 +94,7 @@ class MovieRepository(private val dao: MovieDao) {
             ),
             Movie(
                 title = "The Shawshank Redemption",
-                description = "Two imprisoned men bond over many years, finding solace and eventual redemption through acts of common decency. Based on the Stephen King novella.",
+                description = context.getString(R.string.shawshank_description),
                 genre = context.getString(R.string.genre_drama),
                 actors = "Tim Robbins, Morgan Freeman, Bob Gunton",
                 director = "Frank Darabont",
@@ -107,7 +108,7 @@ class MovieRepository(private val dao: MovieDao) {
             ),
             Movie(
                 title = "The Dark Knight",
-                description = "When the menace known as the Joker wreaks havoc on Gotham City, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+                description = context.getString(R.string.dark_knight_description),
                 genre = context.getString(R.string.genre_action),
                 actors = "Christian Bale, Heath Ledger, Aaron Eckhart, Maggie Gyllenhaal",
                 director = "Christopher Nolan",
@@ -243,104 +244,6 @@ class MovieRepository(private val dao: MovieDao) {
                 showtime = "19:00",
                 releaseDate = "2016-12-09",
                 duration = 128,
-                isFavorite = false
-            ),
-            Movie(
-                title = "The Matrix",
-                description = "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
-                genre = context.getString(R.string.genre_sci_fi),
-                actors = "Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss",
-                director = "Lana Wachowski, Lilly Wachowski",
-                year = 1999,
-                rating = 8.7f,
-                imageUri = "matrix",
-                showtime = "21:15",
-                releaseDate = "1999-03-31",
-                duration = 136,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Titanic",
-                description = "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.",
-                genre = context.getString(R.string.genre_romance),
-                actors = "Leonardo DiCaprio, Kate Winslet, Billy Zane",
-                director = "James Cameron",
-                year = 1997,
-                rating = 7.9f,
-                imageUri = "titanic",
-                showtime = "20:00",
-                releaseDate = "1997-12-19",
-                duration = 194,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Whiplash",
-                description = "A promising young drummer enrolls at a cut-throat music conservatory where his dreams of greatness are mentored by an instructor who will stop at nothing to realize a student's potential.",
-                genre = context.getString(R.string.genre_drama),
-                actors = "Miles Teller, J.K. Simmons, Melissa Benoist",
-                director = "Damien Chazelle",
-                year = 2014,
-                rating = 8.5f,
-                imageUri = "whiplash",
-                showtime = "19:45",
-                releaseDate = "2014-10-10",
-                duration = 106,
-                isFavorite = false
-            ),
-            Movie(
-                title = "The Grand Budapest Hotel",
-                description = "The adventures of Gustave H, a legendary concierge at a famous European hotel between the wars, and Zero Moustafa, the lobby boy who becomes his most trusted friend.",
-                genre = context.getString(R.string.genre_comedy),
-                actors = "Ralph Fiennes, F. Murray Abraham, Mathieu Amalric",
-                director = "Wes Anderson",
-                year = 2014,
-                rating = 8.1f,
-                imageUri = "grand_budapest",
-                showtime = "17:30",
-                releaseDate = "2014-03-28",
-                duration = 99,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Soul",
-                description = "After landing the gig of a lifetime, a New York jazz pianist suddenly finds himself trapped in a strange land between Earth and the afterlife.",
-                genre = context.getString(R.string.genre_animation),
-                actors = "Jamie Foxx, Tina Fey, Graham Norton",
-                director = "Pete Docter, Kemp Powers",
-                year = 2020,
-                rating = 8.0f,
-                imageUri = "soul",
-                showtime = "16:30",
-                releaseDate = "2020-12-25",
-                duration = 100,
-                isFavorite = false
-            ),
-            Movie(
-                title = "The Silence of the Lambs",
-                description = "A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer, a madman who skins his victims.",
-                genre = context.getString(R.string.genre_thriller),
-                actors = "Jodie Foster, Anthony Hopkins, Lawrence A. Bonney",
-                director = "Jonathan Demme",
-                year = 1991,
-                rating = 8.6f,
-                imageUri = "silence_of_the_lambs",
-                showtime = "22:15",
-                releaseDate = "1991-02-14",
-                duration = 118,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Roma",
-                description = "A year in the life of a middle-class family's maid in Mexico City in the early 1970s.",
-                genre = context.getString(R.string.genre_drama),
-                actors = "Yalitza Aparicio, Marina de Tavira, Diego Cortina Autrey",
-                director = "Alfonso Cuarón",
-                year = 2018,
-                rating = 7.7f,
-                imageUri = "roma",
-                showtime = "20:45",
-                releaseDate = "2018-11-21",
-                duration = 135,
                 isFavorite = false
             )
         )

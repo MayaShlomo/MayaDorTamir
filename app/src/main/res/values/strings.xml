@@ -63,4 +63,34 @@
     <string name="filter_by_genre">Filter by Genre</string>
     <string name="all_genres">All Genres</string>
 
+    <!-- תוספות נדרשות לתיקונים -->
+    <string name="filters_cleared">Filters cleared</string>
+
+    <!-- Add/Edit Movie -->
+    <string name="add_movie_title">Add New Movie</string>
+    <string name="edit_movie_title">Edit Movie</string>
+    <string name="movie_title_label">Movie Title</string>
+    <string name="description_label">Description</string>
+    <string name="genre_select">Select Genre</string>
+    <string name="director_label_input">Director</string>
+    <string name="actors_label">Actors</string>
+    <string name="year_label">Year</string>
+    <string name="rating_label">Rating</string>
+    <string name="release_date_label">Release Date</string>
+    <string name="duration_label_input">Duration (minutes)</string>
+    <string name="showtime_label_input">Showtime</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="save_movie">Save Movie</string>
+    <string name="select_year">Select Year</string>
+    <string name="select_date">Select Date</string>
+
+    <!-- Common -->
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+
+    <!-- Movie descriptions -->
+    <string name="inception_description">Dom Cobb is a skilled thief who steals corporate secrets through dream-sharing technology. Given the task of planting an idea in a CEO\'s mind, Cobb\'s mission is complicated by his past with his deceased wife.</string>
+    <string name="shawshank_description">Two imprisoned men bond over many years, finding solace and eventual redemption through acts of common decency. Based on the Stephen King novella.</string>
+    <string name="dark_knight_description">When the menace known as the Joker wreaks havoc on Gotham City, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.</string>
+
 </resources>

@@ -63,4 +63,34 @@
     <string name="filter_by_genre">סנן לפי ז\'אנר</string>
     <string name="all_genres">כל הז\'אנרים</string>
 
+    <!-- תוספות נדרשות לתיקונים -->
+    <string name="filters_cleared">המסננים אופסו</string>
+
+    <!-- Add/Edit Movie -->
+    <string name="add_movie_title">הוסף סרט חדש</string>
+    <string name="edit_movie_title">ערוך סרט</string>
+    <string name="movie_title_label">כותרת הסרט</string>
+    <string name="description_label">תיאור</string>
+    <string name="genre_select">בחר ז\'אנר</string>
+    <string name="director_label_input">במאי</string>
+    <string name="actors_label">שחקנים</string>
+    <string name="year_label">שנה</string>
+    <string name="rating_label">דירוג</string>
+    <string name="release_date_label">תאריך יציאה</string>
+    <string name="duration_label_input">משך (דקות)</string>
+    <string name="showtime_label_input">שעת הקרנה</string>
+    <string name="choose_image">בחר תמונה</string>
+    <string name="save_movie">שמור סרט</string>
+    <string name="select_year">בחר שנה</string>
+    <string name="select_date">בחר תאריך</string>
+
+    <!-- Common -->
+    <string name="cancel">בטל</string>
+    <string name="ok">אישור</string>
+
+    <!-- Movie descriptions in Hebrew -->
+    <string name="inception_description">דום קוב הוא גנב מיומן הגונב סודות תאגידיים באמצעות טכנולוגיית שיתוף חלומות. כשהוא מקבל משימה לשתול רעיון במוחו של מנכ"ל, המשימה מסתבכת בגלל עברו עם אשתו המנוחה.</string>
+    <string name="shawshank_description">שני אסירים נקשרים לאורך שנים רבות, מוצאים נחמה וגאולה סופית דרך מעשי נדיבות משותפים. מבוסס על הנובלה של סטיבן קינג.</string>
+    <string name="dark_knight_description">כשהמאיים הידוע בשם הג\'וקר מחיל כאוס על עיר גות\'הם, באטמן חייב לעמוד במבחן פסיכולוגי ופיזי מהקשים ביותר של יכולתו להילחם בעוול.</string>
+
 </resources>

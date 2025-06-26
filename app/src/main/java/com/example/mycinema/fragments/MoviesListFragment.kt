@@ -21,6 +21,7 @@ class MoviesListFragment : Fragment() {
     private val b get() = _b!!
     private val vm: MovieViewModel by activityViewModels()
     private lateinit var clearChip: Chip
+    private lateinit var adapter: MovieAdapter
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?) =
         FragmentMoviesListBinding.inflate(i, c, false).also { _b = it }.root
@@ -39,7 +40,18 @@ class MoviesListFragment : Fragment() {
 
     private fun setupRecycler() {
         b.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        b.recyclerView.adapter = MovieAdapter(vm)
+
+        // יצירת האדפטר עם listeners במקום העברת ViewModel
+        adapter = MovieAdapter(
+            onFavoriteClick = { movie ->
+                vm.toggleFavorite(movie)
+            },
+            onDeleteClick = { movie ->
+                vm.delete(movie)
+            }
+        )
+
+        b.recyclerView.adapter = adapter
     }
 
     private fun setupSearch() {
@@ -88,9 +100,10 @@ class MoviesListFragment : Fragment() {
 
                 isChecked = true
 
-                (b.recyclerView.adapter as? MovieAdapter)?.submitList(vm.allMovies.value)
+                adapter.submitList(vm.allMovies.value)
 
-                Toast.makeText(requireContext(), "הפילטרים אופסו", Toast.LENGTH_SHORT).show()
+                // תיקון השורה הקודדת - שימוש ב-string resource
+                Toast.makeText(requireContext(), getString(R.string.filters_cleared), Toast.LENGTH_SHORT).show()
             }
         }
         b.genreChipGroup.addView(clearChip)
@@ -133,14 +146,14 @@ class MoviesListFragment : Fragment() {
     private fun observeData() {
         vm.allMovies.observe(viewLifecycleOwner) { list ->
             if (vm.currentFilter.value.isNullOrEmpty()) {
-                (b.recyclerView.adapter as MovieAdapter).submitList(list)
+                adapter.submitList(list)
                 updateEmpty(list.isEmpty())
             }
         }
 
         vm.searchResults.observe(viewLifecycleOwner) { list ->
             if (!vm.currentFilter.value.isNullOrEmpty()) {
-                (b.recyclerView.adapter as MovieAdapter).submitList(list)
+                adapter.submitList(list)
                 updateEmpty(list.isEmpty())
             }
         }

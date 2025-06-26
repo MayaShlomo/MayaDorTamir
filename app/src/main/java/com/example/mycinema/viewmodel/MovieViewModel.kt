@@ -24,10 +24,24 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     private val _currentFilter = MutableLiveData<String>()
     val currentFilter: LiveData<String> = _currentFilter
 
+    // משתנים חדשים לטיפול בנתוני הטופס במקום לשמור ב-Fragment
+    private val _imageUri = MutableLiveData<String?>()
+    private val _releaseDate = MutableLiveData<String?>()
+    private val _rating = MutableLiveData<Float?>()
+    private val _year = MutableLiveData<Int?>()
+
     init {
         Log.d("MovieViewModel", "ViewModel initialized")
         preloadDataIfNeeded()
     }
+
+    // פונקציות לטיפול בנתוני הטופס
+    fun setImageUri(uri: String) { _imageUri.value = uri }
+    fun setReleaseDate(date: String) { _releaseDate.value = date }
+    fun setRating(rating: Float) { _rating.value = rating }
+    fun setYear(year: Int) { _year.value = year }
+
+    fun getImageUri(): String? = _imageUri.value
 
     fun getAllMoviesFlow(): Flow<List<Movie>> = repo.getAllMoviesFlow()
     fun get(id: Int) = repo.get(id)
@@ -62,6 +76,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun insert(m: Movie) = viewModelScope.launch {
+        // Room עובר ל-IO Thread באופן אוטומטי - לא צריך Dispatchers.IO
         val id = repo.insert(m)
         Log.d("MovieViewModel", "Inserted movie with ID: $id")
     }
@@ -96,7 +111,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    // פונקציה פשוטה לטעינת נתונים ראשונים
+    // פונקציה פשוטה לטעינת נתונים ראשוניים
     private fun preloadDataIfNeeded() = viewModelScope.launch {
         try {
             Log.d("MovieViewModel", "Checking if sample data preload is needed")

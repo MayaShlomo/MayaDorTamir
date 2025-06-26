@@ -15,7 +15,7 @@ import com.example.mycinema.fragments.MoviesListFragmentDirections
 import com.example.mycinema.models.Movie
 import com.example.mycinema.util.ImageHelper
 
-// הסרנו את התלות ב-ViewModel מהאדפטר
+// האדפטר מתוקן - ללא ViewModel, רק listeners
 class MovieAdapter(
     private val onFavoriteClick: (Movie) -> Unit,
     private val onDeleteClick: (Movie) -> Unit
@@ -75,7 +75,7 @@ class MovieAdapter(
                 }
             }
 
-            // העברת האירוע החוצה דרך listener במקום טיפול ישיר
+            // העברת האירועים החוצה דרך listeners - ללא קשר ל-ViewModel
             btnFavorites.setOnClickListener {
                 onFavoriteClick(m)
             }
