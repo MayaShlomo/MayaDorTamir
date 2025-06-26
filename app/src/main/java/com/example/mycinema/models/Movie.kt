@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "movies")
 data class Movie(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val apiId: Int? = null, // ID מ-TMDb API
     val title: String,
     val description: String,
     val genre: String?,
@@ -17,5 +18,6 @@ data class Movie(
     val showtime: String,
     val isFavorite: Boolean = false,
     val releaseDate: String?,
-    val duration: Int?
+    val duration: Int?,
+    val isFromApi: Boolean = false // האם הסרט הגיע מ-API
 )

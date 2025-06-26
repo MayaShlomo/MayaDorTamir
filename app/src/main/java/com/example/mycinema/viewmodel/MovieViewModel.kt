@@ -1,55 +1,173 @@
 package com.example.mycinema.viewmodel
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.mycinema.data.MovieDatabase
+import com.example.mycinema.models.ApiMovie
 import com.example.mycinema.models.Movie
 import com.example.mycinema.repository.MovieRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieViewModel(app: Application) : AndroidViewModel(app) {
-    private val repo = MovieRepository(MovieDatabase.getDatabase(app).movieDao())
+@HiltViewModel
+class MovieViewModel @Inject constructor(
+    private val repository: MovieRepository
+) : ViewModel() {
 
-    val allMovies = repo.allMovies
-    val favoriteMovies = repo.favoriteMovies
-    val topRatedMovies = repo.topRatedMovies
-    val allGenres = repo.allGenres
+    // LiveData מקומי קיים
+    val allMovies = repository.allMovies
+    val favoriteMovies = repository.favoriteMovies
+    val topRatedMovies = repository.topRatedMovies
+    val allGenres = repository.allGenres
 
+    // LiveData למסננים וחיפושים מקומיים
     private val _searchResults = MutableLiveData<List<Movie>>()
     val searchResults: LiveData<List<Movie>> = _searchResults
 
     private val _currentFilter = MutableLiveData<String>()
     val currentFilter: LiveData<String> = _currentFilter
 
-    // משתנים חדשים לטיפול בנתוני הטופס במקום לשמור ב-Fragment
+    // *** LiveData חדש לAPI ***
+
+    // נתוני API
+    private val _onlineMovies = MutableLiveData<List<ApiMovie>>()
+    val onlineMovies: LiveData<List<ApiMovie>> = _onlineMovies
+
+    private val _popularMovies = MutableLiveData<List<ApiMovie>>()
+    val popularMovies: LiveData<List<ApiMovie>> = _popularMovies
+
+    // מצבי טעינה ושגיאות
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
+
+    private val _error = MutableLiveData<String?>()
+    val error: LiveData<String?> = _error
+
+    private val _isOnlineSearchActive = MutableLiveData<Boolean>()
+    val isOnlineSearchActive: LiveData<Boolean> = _isOnlineSearchActive
+
+    // משתנים לטיפול בטפסים (קיימים)
     private val _imageUri = MutableLiveData<String?>()
     private val _releaseDate = MutableLiveData<String?>()
     private val _rating = MutableLiveData<Float?>()
     private val _year = MutableLiveData<Int?>()
 
     init {
-        Log.d("MovieViewModel", "ViewModel initialized")
+        Log.d("MovieViewModel", "ViewModel initialized with Hilt")
+        _isOnlineSearchActive.value = false
         preloadDataIfNeeded()
+
+        // טען סרטים פופולריים בהפעלה ראשונה
+        loadPopularMovies()
     }
 
-    // פונקציות לטיפול בנתוני הטופס
-    fun setImageUri(uri: String) { _imageUri.value = uri }
-    fun setReleaseDate(date: String) { _releaseDate.value = date }
-    fun setRating(rating: Float) { _rating.value = rating }
-    fun setYear(year: Int) { _year.value = year }
+    // *** פונקציות API חדשות ***
 
-    fun getImageUri(): String? = _imageUri.value
+    /**
+     * חיפוש סרטים ברשת
+     */
+    fun searchMoviesOnline(query: String) {
+        if (query.isBlank()) {
+            _onlineMovies.value = emptyList()
+            return
+        }
 
-    fun getAllMoviesFlow(): Flow<List<Movie>> = repo.getAllMoviesFlow()
-    fun get(id: Int) = repo.get(id)
+        Log.d("MovieViewModel", "Searching online for: $query")
+        _loading.value = true
+        _error.value = null
+        _isOnlineSearchActive.value = true
+
+        viewModelScope.launch {
+            repository.searchMoviesOnline(query)
+                .onSuccess { movies ->
+                    Log.d("MovieViewModel", "Found ${movies.size} movies online")
+                    _onlineMovies.value = movies
+                    _error.value = null
+                }
+                .onFailure { exception ->
+                    Log.e("MovieViewModel", "Error searching online: ${exception.message}")
+                    _error.value = exception.message
+                    _onlineMovies.value = emptyList()
+                }
+
+            _loading.value = false
+        }
+    }
+
+    /**
+     * טעינת סרטים פופולריים
+     */
+    fun loadPopularMovies() {
+        Log.d("MovieViewModel", "Loading popular movies")
+        _loading.value = true
+        _error.value = null
+
+        viewModelScope.launch {
+            repository.getPopularMovies()
+                .onSuccess { movies ->
+                    Log.d("MovieViewModel", "Loaded ${movies.size} popular movies")
+                    _popularMovies.value = movies
+                    // אם אין חיפוש פעיל, תציג סרטים פופולריים
+                    if (_isOnlineSearchActive.value == false) {
+                        _onlineMovies.value = movies
+                    }
+                    _error.value = null
+                }
+                .onFailure { exception ->
+                    Log.e("MovieViewModel", "Error loading popular movies: ${exception.message}")
+                    _error.value = exception.message
+                }
+
+            _loading.value = false
+        }
+    }
+
+    /**
+     * הוספת סרט מ-API למקומי
+     */
+    fun addApiMovieToLocal(apiMovie: ApiMovie) {
+        Log.d("MovieViewModel", "Adding API movie to local: ${apiMovie.title}")
+
+        viewModelScope.launch {
+            repository.addApiMovieToLocal(apiMovie)
+                .onSuccess { id ->
+                    Log.d("MovieViewModel", "Successfully added movie with ID: $id")
+                    // ניתן להוסיף Toast או הודעה למשתמש
+                }
+                .onFailure { exception ->
+                    Log.e("MovieViewModel", "Error adding movie: ${exception.message}")
+                    _error.value = "Failed to add movie: ${exception.message}"
+                }
+        }
+    }
+
+    /**
+     * ניקוי חיפוש אונליין וחזרה לפופולריים
+     */
+    fun clearOnlineSearch() {
+        _isOnlineSearchActive.value = false
+        _onlineMovies.value = _popularMovies.value ?: emptyList()
+        _error.value = null
+    }
+
+    /**
+     * רענון סרטים פופולריים
+     */
+    fun refreshPopularMovies() {
+        loadPopularMovies()
+    }
+
+    // *** פונקציות מקומיות קיימות ***
+
+    fun getAllMoviesFlow(): Flow<List<Movie>> = repository.getAllMoviesFlow()
+    fun get(id: Int) = repository.get(id)
 
     fun searchMovies(query: String) {
         _currentFilter.value = query
         viewModelScope.launch {
-            repo.searchMoviesByTitle(query).observeForever { results ->
+            repository.searchMoviesByTitle(query).observeForever { results ->
                 _searchResults.value = results
             }
         }
@@ -58,14 +176,14 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     fun filterByGenre(genre: String) {
         _currentFilter.value = genre
         viewModelScope.launch {
-            repo.getMoviesByGenre(genre).observeForever { results ->
+            repository.getMoviesByGenre(genre).observeForever { results ->
                 _searchResults.value = results
             }
         }
     }
 
     fun clearFilters() {
-        Log.d("MovieViewModel", "Clearing filters")
+        Log.d("MovieViewModel", "Clearing local filters")
         _currentFilter.value = ""
         _searchResults.value = allMovies.value
 
@@ -76,23 +194,22 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun insert(m: Movie) = viewModelScope.launch {
-        // Room עובר ל-IO Thread באופן אוטומטי - לא צריך Dispatchers.IO
-        val id = repo.insert(m)
+        val id = repository.insert(m)
         Log.d("MovieViewModel", "Inserted movie with ID: $id")
     }
 
     fun update(m: Movie) = viewModelScope.launch {
         Log.d("MovieViewModel", "Updating movie: ${m.id} - ${m.title} - isFavorite: ${m.isFavorite}")
-        repo.update(m)
+        repository.update(m)
     }
 
     fun delete(m: Movie) = viewModelScope.launch {
-        repo.delete(m)
+        repository.delete(m)
     }
 
     fun refreshFavorites() {
         viewModelScope.launch {
-            val currentFavorites = repo.getFavoriteMoviesSync()
+            val currentFavorites = repository.getFavoriteMoviesSync()
             Log.d("MovieViewModel", "Refreshing favorites, found: ${currentFavorites.size}")
         }
     }
@@ -103,7 +220,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
 
         viewModelScope.launch {
             try {
-                repo.update(updatedMovie)
+                repository.update(updatedMovie)
                 Log.d("MovieViewModel", "Update successful for movie ID: ${updatedMovie.id}")
             } catch (e: Exception) {
                 Log.e("MovieViewModel", "Error updating favorite status: ${e.message}", e)
@@ -111,16 +228,24 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    // פונקציה פשוטה לטעינת נתונים ראשוניים
+    // פונקציות טפסים קיימות
+    fun setImageUri(uri: String) { _imageUri.value = uri }
+    fun setReleaseDate(date: String) { _releaseDate.value = date }
+    fun setRating(rating: Float) { _rating.value = rating }
+    fun setYear(year: Int) { _year.value = year }
+    fun getImageUri(): String? = _imageUri.value
+
+    /**
+     * ניקוי הודעת שגיאה
+     */
+    fun clearError() {
+        _error.value = null
+    }
+
     private fun preloadDataIfNeeded() = viewModelScope.launch {
         try {
             Log.d("MovieViewModel", "Checking if sample data preload is needed")
-            val success = repo.preloadSampleMoviesIfNeeded(getApplication())
-            if (success) {
-                Log.d("MovieViewModel", "Sample data preloaded successfully")
-            } else {
-                Log.d("MovieViewModel", "Sample data preload not needed or failed")
-            }
+            // הועבר לRepository עם DI
         } catch (e: Exception) {
             Log.e("MovieViewModel", "Error during preload check: ${e.message}", e)
         }

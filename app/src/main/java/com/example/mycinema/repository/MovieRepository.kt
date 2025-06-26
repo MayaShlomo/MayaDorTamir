@@ -3,12 +3,27 @@ package com.example.mycinema.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.mycinema.BuildConfig
 import com.example.mycinema.R
 import com.example.mycinema.data.MovieDao
+import com.example.mycinema.models.ApiMovie
+import com.example.mycinema.models.GenreMapper
 import com.example.mycinema.models.Movie
+import com.example.mycinema.models.MovieDetails
+import com.example.mycinema.models.MovieSearchResponse
+import com.example.mycinema.network.MovieApiService
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MovieRepository(private val dao: MovieDao) {
+@Singleton
+class MovieRepository @Inject constructor(
+    private val dao: MovieDao,
+    private val apiService: MovieApiService,
+    @ApplicationContext private val context: Context
+) {
+    // פונקציות מקומיות קיימות
     val allMovies: LiveData<List<Movie>> = dao.getAllMovies()
     val favoriteMovies: LiveData<List<Movie>> = dao.getFavoriteMovies()
     val topRatedMovies: LiveData<List<Movie>> = dao.getTopRatedMovies()
@@ -27,7 +42,170 @@ class MovieRepository(private val dao: MovieDao) {
     suspend fun delete(movie: Movie) = dao.delete(movie)
     suspend fun clearAllMovies() = dao.clearAllMovies()
 
-    // פונקציה לטעינת נתונים ראשונים - מעודכנת עם getString
+    // *** פונקציות API חדשות ***
+
+    /**
+     * חיפוש סרטים ברשת
+     */
+    suspend fun searchMoviesOnline(query: String): Result<List<ApiMovie>> {
+        return try {
+            Log.d("MovieRepository", "Searching online for: $query")
+            val response = apiService.searchMovies(
+                apiKey = BuildConfig.TMDB_API_KEY,
+                query = query
+            )
+
+            if (response.isSuccessful) {
+                val movieResponse = response.body()
+                if (movieResponse != null) {
+                    Log.d("MovieRepository", "Found ${movieResponse.results.size} movies")
+                    Result.success(movieResponse.results)
+                } else {
+                    Log.e("MovieRepository", "Response body is null")
+                    Result.failure(Exception("Empty response from server"))
+                }
+            } else {
+                Log.e("MovieRepository", "API Error: ${response.code()} - ${response.message()}")
+                Result.failure(Exception("API Error: ${response.code()} - ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Network error: ${e.message}", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * קבלת סרטים פופולריים
+     */
+    suspend fun getPopularMovies(): Result<List<ApiMovie>> {
+        return try {
+            Log.d("MovieRepository", "Fetching popular movies")
+            val response = apiService.getPopularMovies(
+                apiKey = BuildConfig.TMDB_API_KEY
+            )
+
+            if (response.isSuccessful) {
+                val movieResponse = response.body()
+                if (movieResponse != null) {
+                    Log.d("MovieRepository", "Found ${movieResponse.results.size} popular movies")
+                    Result.success(movieResponse.results)
+                } else {
+                    Result.failure(Exception("Empty response from server"))
+                }
+            } else {
+                Result.failure(Exception("API Error: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Error fetching popular movies: ${e.message}", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * קבלת פרטי סרט ספציפי
+     */
+    suspend fun getMovieDetailsFromApi(movieId: Int): Result<MovieDetails> {
+        return try {
+            Log.d("MovieRepository", "Fetching details for movie: $movieId")
+            val response = apiService.getMovieDetails(
+                movieId = movieId,
+                apiKey = BuildConfig.TMDB_API_KEY
+            )
+
+            if (response.isSuccessful) {
+                val movieDetails = response.body()
+                if (movieDetails != null) {
+                    Log.d("MovieRepository", "Got details for: ${movieDetails.title}")
+                    Result.success(movieDetails)
+                } else {
+                    Result.failure(Exception("Empty response from server"))
+                }
+            } else {
+                Result.failure(Exception("API Error: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Error fetching movie details: ${e.message}", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * קבלת סרטים מומלצים
+     */
+    suspend fun getTopRatedMoviesFromApi(): Result<List<ApiMovie>> {
+        return try {
+            val response = apiService.getTopRatedMovies(
+                apiKey = BuildConfig.TMDB_API_KEY
+            )
+
+            if (response.isSuccessful) {
+                val movieResponse = response.body()
+                if (movieResponse != null) {
+                    Result.success(movieResponse.results)
+                } else {
+                    Result.failure(Exception("Empty response"))
+                }
+            } else {
+                Result.failure(Exception("API Error: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Error fetching top rated movies: ${e.message}", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * המרה מ-ApiMovie ל-Movie מקומי
+     */
+    fun apiMovieToMovie(apiMovie: ApiMovie): Movie {
+        return Movie(
+            id = 0, // Room יגדיר ID חדש
+            apiId = apiMovie.id,
+            title = apiMovie.title,
+            description = apiMovie.overview,
+            genre = GenreMapper.getGenreNames(apiMovie.genreIds),
+            actors = null, // לא זמין ב-API הבסיסי
+            director = null, // לא זמין ב-API הבסיסי
+            year = apiMovie.releaseDate?.substring(0, 4)?.toIntOrNull(),
+            rating = apiMovie.voteAverage,
+            imageUri = MovieApiService.getPosterUrl(apiMovie.posterPath),
+            showtime = "20:00", // ברירת מחדל
+            isFavorite = false,
+            releaseDate = apiMovie.releaseDate,
+            duration = null, // לא זמין ב-API הבסיסי
+            isFromApi = true
+        )
+    }
+
+    /**
+     * הוספת סרט מ-API למקומי
+     */
+    suspend fun addApiMovieToLocal(apiMovie: ApiMovie): Result<Long> {
+        return try {
+            val localMovie = apiMovieToMovie(apiMovie)
+            val id = dao.insert(localMovie)
+            Log.d("MovieRepository", "Added API movie to local DB with ID: $id")
+            Result.success(id)
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Error adding API movie to local: ${e.message}", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * בדיקה אם סרט כבר קיים במאגר המקומי
+     */
+    suspend fun isMovieInLocal(apiMovieId: Int): Boolean {
+        return try {
+            val existingMovies = dao.getAllMoviesFlow()
+            // זה צריך להיות חיפוש ב-apiId, אבל בינתיים נחפש לפי שם
+            false // נחזיר false בינתיים
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    // פונקציות קיימות לטעינת נתונים ראשוניים
     suspend fun preloadSampleMoviesIfNeeded(context: Context): Boolean {
         return try {
             Log.d("MovieRepository", "Checking if preload is needed")
@@ -41,10 +219,8 @@ class MovieRepository(private val dao: MovieDao) {
             Log.d("MovieRepository", "Starting sample data preload")
             val sampleMovies = getSampleMovies(context)
 
-            // נקה נתונים קיימים
             dao.clearAllMovies()
 
-            // הוסף סרטים דוגמה
             val movieIds = mutableListOf<Long>()
             for (movie in sampleMovies) {
                 val id = dao.insert(movie)
@@ -52,7 +228,6 @@ class MovieRepository(private val dao: MovieDao) {
                 Log.d("MovieRepository", "Inserted movie: ${movie.title} with ID: $id")
             }
 
-            // הגדר כמה סרטים כמועדפים
             if (movieIds.size >= 2) {
                 val movie1 = dao.getByIdSync(movieIds[0].toInt())
                 if (movie1 != null) {
@@ -75,7 +250,6 @@ class MovieRepository(private val dao: MovieDao) {
         }
     }
 
-    // פונקציה מעודכנת עם שימוש ב-getString במקום hard-coded strings
     private fun getSampleMovies(context: Context): List<Movie> {
         return listOf(
             Movie(
@@ -118,132 +292,6 @@ class MovieRepository(private val dao: MovieDao) {
                 showtime = "20:15",
                 releaseDate = "2008-07-18",
                 duration = 152,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Pulp Fiction",
-                description = "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-                genre = context.getString(R.string.genre_crime),
-                actors = "John Travolta, Uma Thurman, Samuel L. Jackson, Bruce Willis",
-                director = "Quentin Tarantino",
-                year = 1994,
-                rating = 8.9f,
-                imageUri = "pulp_fiction",
-                showtime = "22:00",
-                releaseDate = "1994-10-14",
-                duration = 154,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Parasite",
-                description = "Greed and discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
-                genre = context.getString(R.string.genre_drama),
-                actors = "Song Kang-ho, Lee Sun-kyun, Cho Yeo-jeong, Choi Woo-shik",
-                director = "Bong Joon-ho",
-                year = 2019,
-                rating = 8.6f,
-                imageUri = "parasite",
-                showtime = "18:45",
-                releaseDate = "2019-05-30",
-                duration = 132,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Interstellar",
-                description = "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival as Earth becomes uninhabitable.",
-                genre = context.getString(R.string.genre_sci_fi),
-                actors = "Matthew McConaughey, Anne Hathaway, Jessica Chastain",
-                director = "Christopher Nolan",
-                year = 2014,
-                rating = 8.6f,
-                imageUri = "interstellar",
-                showtime = "20:30",
-                releaseDate = "2014-11-07",
-                duration = 169,
-                isFavorite = false
-            ),
-            Movie(
-                title = "The Lion King",
-                description = "Lion prince Simba grows up in the African heartland until tragedy forces him to run away. He ultimately learns to take his rightful place in the animal kingdom.",
-                genre = context.getString(R.string.genre_animation),
-                actors = "Donald Glover, Seth Rogen, Chiwetel Ejiofor, Alfre Woodard",
-                director = "Jon Favreau",
-                year = 2019,
-                rating = 6.9f,
-                imageUri = "lion_king",
-                showtime = "17:15",
-                releaseDate = "2019-07-19",
-                duration = 118,
-                isFavorite = false
-            ),
-            Movie(
-                title = "The Godfather",
-                description = "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-                genre = context.getString(R.string.genre_crime),
-                actors = "Marlon Brando, Al Pacino, James Caan",
-                director = "Francis Ford Coppola",
-                year = 1972,
-                rating = 9.2f,
-                imageUri = "godfather",
-                showtime = "21:30",
-                releaseDate = "1972-03-24",
-                duration = 175,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Jurassic Park",
-                description = "A pragmatic paleontologist touring an almost complete theme park on an island in Central America is tasked with protecting a couple of kids after a power failure causes the park's cloned dinosaurs to run loose.",
-                genre = context.getString(R.string.genre_adventure),
-                actors = "Sam Neill, Laura Dern, Jeff Goldblum",
-                director = "Steven Spielberg",
-                year = 1993,
-                rating = 8.1f,
-                imageUri = "jurassic_park",
-                showtime = "16:45",
-                releaseDate = "1993-06-11",
-                duration = 127,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Spirited Away",
-                description = "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.",
-                genre = context.getString(R.string.genre_animation),
-                actors = "Daveigh Chase, Suzanne Pleshette, Miyu Irino",
-                director = "Hayao Miyazaki",
-                year = 2001,
-                rating = 8.6f,
-                imageUri = "spirited_away",
-                showtime = "18:00",
-                releaseDate = "2001-07-20",
-                duration = 125,
-                isFavorite = false
-            ),
-            Movie(
-                title = "Get Out",
-                description = "A young African-American visits his white girlfriend's parents for the weekend, where his simmering uneasiness about their reception of him eventually reaches a boiling point.",
-                genre = context.getString(R.string.genre_horror),
-                actors = "Daniel Kaluuya, Allison Williams, Bradley Whitford",
-                director = "Jordan Peele",
-                year = 2017,
-                rating = 7.7f,
-                imageUri = "get_out",
-                showtime = "22:30",
-                releaseDate = "2017-02-24",
-                duration = 104,
-                isFavorite = false
-            ),
-            Movie(
-                title = "La La Land",
-                description = "While navigating their careers in Los Angeles, a pianist and an actress fall in love while attempting to reconcile their aspirations for the future.",
-                genre = context.getString(R.string.genre_musical),
-                actors = "Ryan Gosling, Emma Stone, John Legend",
-                director = "Damien Chazelle",
-                year = 2016,
-                rating = 8.0f,
-                imageUri = "la_la_land",
-                showtime = "19:00",
-                releaseDate = "2016-12-09",
-                duration = 128,
                 isFavorite = false
             )
         )
