@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.mycinema.fragments.HomeFragment"
+        android:label="Home">
+        <action
+            android:id="@+id/action_home_to_moviesList"
+            app:destination="@id/moviesListFragment" />
+        <action
+            android:id="@+id/action_home_to_favorites"
+            app:destination="@id/favoritesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/moviesListFragment"
+        android:name="com.example.mycinema.fragments.MoviesListFragment"
+        android:label="Movies List">
+        <action
+            android:id="@+id/action_moviesList_to_movieDetails"
+            app:destination="@id/movieDetailsFragment" />
+        <action
+            android:id="@+id/action_moviesList_to_addEditMovie"
+            app:destination="@id/addEditMovieFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.mycinema.fragments.FavoritesFragment"
+        android:label="Favorites">
+        <action
+            android:id="@+id/action_favorites_to_movieDetails"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.example.mycinema.fragments.MovieDetailsFragment"
+        android:label="Movie Details">
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_movieDetails_to_addEditMovie"
+            app:destination="@id/addEditMovieFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEditMovieFragment"
+        android:name="com.example.mycinema.fragments.AddEditMovieFragment"
+        android:label="Add/Edit Movie">
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+
+</navigation>

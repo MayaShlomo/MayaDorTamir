@@ -1,0 +1,49 @@
+[versions]
+agp              = "8.4.2"      # פאטצ' אחרון של 8.4
+kotlin           = "2.1.10"
+coreKtx          = "1.12.0"
+appcompat        = "1.7.0"
+material         = "1.12.0"
+activity         = "1.9.0"
+constraintlayout = "2.2.1"
+navigation       = "2.7.7"
+room             = "2.7.1"
+coil             = "2.5.0"
+junit            = "4.13.2"
+junitExt         = "1.1.5"
+espressoCore     = "3.5.1"
+
+[libraries]
+# Kotlin
+kotlin-bom       = { group = "org.jetbrains.kotlin", name = "kotlin-bom",    version.ref = "kotlin" }
+kotlin-stdlib    = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+
+# AndroidX + Google
+androidx-core-ktx = { group = "androidx.core",             name = "core-ktx",        version.ref = "coreKtx" }
+androidx-appcompat= { group = "androidx.appcompat",        name = "appcompat",       version.ref = "appcompat" }
+material          = { group = "com.google.android.material", name = "material",     version.ref = "material" }
+androidx-activity = { group = "androidx.activity",         name = "activity-ktx",    version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+# Navigation
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+androidx-navigation-ui-ktx       = { group = "androidx.navigation", name = "navigation-ui-ktx",       version.ref = "navigation" }
+
+# Room
+androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime",  version.ref = "room" }
+androidx-room-ktx             = { group = "androidx.room", name = "room-ktx",      version.ref = "room" }
+androidx-room-compiler        = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# Coil
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+
+# Tests
+junit                = { group = "junit",                 name = "junit",         version.ref = "junit" }
+androidx-junit       = { group = "androidx.test.ext",      name = "junit",         version.ref = "junitExt" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+[plugins]
+android-application = { id = "com.android.application",            version.ref = "agp" }
+kotlin-android      = { id = "org.jetbrains.kotlin.android",       version.ref = "kotlin" }
+kotlin-kapt         = { id = "org.jetbrains.kotlin.kapt",          version.ref = "kotlin" }
+navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
