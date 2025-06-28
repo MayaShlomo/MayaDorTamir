@@ -11,6 +11,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// מחלקה לנתוני הטופס
+data class MovieFormData(
+    val imageUri: String? = null,
+    val selectedGenre: String? = null,
+    val selectedYear: Int? = null,
+    val selectedDate: String? = null,
+    val selectedRating: Float? = null
+)
+
 @HiltViewModel
 class MovieViewModel @Inject constructor(
     private val repository: MovieRepository
@@ -30,8 +39,6 @@ class MovieViewModel @Inject constructor(
     val currentFilter: LiveData<String> = _currentFilter
 
     // *** LiveData חדש לAPI ***
-
-    // נתוני API
     private val _onlineMovies = MutableLiveData<List<ApiMovie>>()
     val onlineMovies: LiveData<List<ApiMovie>> = _onlineMovies
 
@@ -48,26 +55,50 @@ class MovieViewModel @Inject constructor(
     private val _isOnlineSearchActive = MutableLiveData<Boolean>()
     val isOnlineSearchActive: LiveData<Boolean> = _isOnlineSearchActive
 
-    // משתנים לטיפול בטפסים (קיימים)
-    private val _imageUri = MutableLiveData<String?>()
-    private val _releaseDate = MutableLiveData<String?>()
-    private val _rating = MutableLiveData<Float?>()
-    private val _year = MutableLiveData<Int?>()
+    // *** נתוני טופס - חדש ***
+    private val _movieFormData = MutableLiveData<MovieFormData>()
+    val movieFormData: LiveData<MovieFormData> = _movieFormData
 
     init {
         Log.d("MovieViewModel", "ViewModel initialized with Hilt")
         _isOnlineSearchActive.value = false
+        _movieFormData.value = MovieFormData() // אתחול נתוני הטופס
         preloadDataIfNeeded()
-
-        // טען סרטים פופולריים בהפעלה ראשונה
         loadPopularMovies()
     }
 
-    // *** פונקציות API חדשות ***
+    // *** פונקציות נתוני טופס ***
 
-    /**
-     * חיפוש סרטים ברשת
-     */
+    fun setImageUri(uri: String?) {
+        _movieFormData.value = _movieFormData.value?.copy(imageUri = uri)
+    }
+
+    fun setSelectedGenre(genre: String?) {
+        _movieFormData.value = _movieFormData.value?.copy(selectedGenre = genre)
+    }
+
+    fun setSelectedYear(year: Int?) {
+        _movieFormData.value = _movieFormData.value?.copy(selectedYear = year)
+    }
+
+    fun setSelectedDate(date: String?) {
+        _movieFormData.value = _movieFormData.value?.copy(selectedDate = date)
+    }
+
+    fun setSelectedRating(rating: Float?) {
+        _movieFormData.value = _movieFormData.value?.copy(selectedRating = rating)
+    }
+
+    fun getMovieFormData(): MovieFormData {
+        return _movieFormData.value ?: MovieFormData()
+    }
+
+    fun clearMovieFormData() {
+        _movieFormData.value = MovieFormData()
+    }
+
+    // *** פונקציות API קיימות ***
+
     fun searchMoviesOnline(query: String) {
         if (query.isBlank()) {
             _onlineMovies.value = emptyList()
@@ -96,9 +127,6 @@ class MovieViewModel @Inject constructor(
         }
     }
 
-    /**
-     * טעינת סרטים פופולריים
-     */
     fun loadPopularMovies() {
         Log.d("MovieViewModel", "Loading popular movies")
         _loading.value = true
@@ -109,7 +137,6 @@ class MovieViewModel @Inject constructor(
                 .onSuccess { movies ->
                     Log.d("MovieViewModel", "Loaded ${movies.size} popular movies")
                     _popularMovies.value = movies
-                    // אם אין חיפוש פעיל, תציג סרטים פופולריים
                     if (_isOnlineSearchActive.value == false) {
                         _onlineMovies.value = movies
                     }
@@ -124,9 +151,6 @@ class MovieViewModel @Inject constructor(
         }
     }
 
-    /**
-     * הוספת סרט מ-API למקומי
-     */
     fun addApiMovieToLocal(apiMovie: ApiMovie) {
         Log.d("MovieViewModel", "Adding API movie to local: ${apiMovie.title}")
 
@@ -134,7 +158,6 @@ class MovieViewModel @Inject constructor(
             repository.addApiMovieToLocal(apiMovie)
                 .onSuccess { id ->
                     Log.d("MovieViewModel", "Successfully added movie with ID: $id")
-                    // ניתן להוסיף Toast או הודעה למשתמש
                 }
                 .onFailure { exception ->
                     Log.e("MovieViewModel", "Error adding movie: ${exception.message}")
@@ -143,18 +166,12 @@ class MovieViewModel @Inject constructor(
         }
     }
 
-    /**
-     * ניקוי חיפוש אונליין וחזרה לפופולריים
-     */
     fun clearOnlineSearch() {
         _isOnlineSearchActive.value = false
         _onlineMovies.value = _popularMovies.value ?: emptyList()
         _error.value = null
     }
 
-    /**
-     * רענון סרטים פופולריים
-     */
     fun refreshPopularMovies() {
         loadPopularMovies()
     }
@@ -228,23 +245,10 @@ class MovieViewModel @Inject constructor(
         }
     }
 
-    // פונקציות טפסים קיימות
-    fun setImageUri(uri: String) { _imageUri.value = uri }
-    fun setReleaseDate(date: String) { _releaseDate.value = date }
-    fun setRating(rating: Float) { _rating.value = rating }
-    fun setYear(year: Int) { _year.value = year }
-    fun getImageUri(): String? = _imageUri.value
-
-    /**
-     * ניקוי הודעת שגיאה
-     */
     fun clearError() {
         _error.value = null
     }
 
-    /**
-     * ניקוי כל הנתונים במאגר
-     */
     fun clearAllMovies() = viewModelScope.launch {
         repository.clearAllMovies()
         Log.d("MovieViewModel", "All movies cleared from database")
@@ -253,7 +257,6 @@ class MovieViewModel @Inject constructor(
     private fun preloadDataIfNeeded() = viewModelScope.launch {
         try {
             Log.d("MovieViewModel", "Checking if sample data preload is needed")
-            // הועבר לRepository עם DI
         } catch (e: Exception) {
             Log.e("MovieViewModel", "Error during preload check: ${e.message}", e)
         }

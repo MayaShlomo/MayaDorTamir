@@ -159,9 +159,26 @@
     <string name="no_data_available">אין נתונים זמינים</string>
     <string name="refresh_statistics">רענן סטטיסטיקות</string>
 
+    <!-- נתוני סרטים לדוגמה -->
+    <string name="sample_movie_inception_title">התחלה</string>
+    <string name="sample_inception_actors">ליאונרדו דיקפריו, ג\'וזף גורדון-לויט, אלן פייג\', טום הרדי</string>
+    <string name="sample_inception_director">כריסטופר נולן</string>
+
+    <string name="sample_movie_shawshank_title">הגאולה בשושנק</string>
+    <string name="sample_shawshank_actors">טים רובינס, מורגן פרימן, בוב גונטון</string>
+    <string name="sample_shawshank_director">פרנק דרבונט</string>
+
+    <string name="sample_movie_dark_knight_title">האביר האפל</string>
+    <string name="sample_dark_knight_actors">כריסטיאן בייל, היית\' לדג\'ר, אהרון אקהרט, מגי ג\'ילנהול</string>
+    <string name="sample_dark_knight_director">כריסטופר נולן</string>
+
     <!-- תיאורי סרטים לדוגמה -->
     <string name="inception_description">דום קוב הוא גנב מיומן הגונב סודות תאגידיים באמצעות טכנולוגיית חלימה משותפת ומקבל את המשימה ההפוכה של השתלת רעיון במוחו של מנכ\"ל.</string>
     <string name="shawshank_description">שני אסירים יוצרים קשר במשך מספר שנים, מוצאים נחמה וגאולה בסופו של דבר באמצעות מעשים של הגינות משותפת.</string>
     <string name="dark_knight_description">כאשר האיום הידוע בשם הג\'וקר זורע הרס וכאוס על תושבי גות\'אם, באטמן חייב לקבל את אחד המבחנים הפסיכולוגיים והפיזיים הגדולים ביותר ביכולתו להילחם בעוול.</string>
-
+    <string name="view_details">הצג פרטים</string>
+    <string name="add_and_edit">הוסף וערוך</string>
+    <string name="movie_added_tap_to_edit">הסרט נוסף! תוכל לערוך אותו מהאוסף שלך.</string>
+    <string name="add_movie_from_tmdb">הוספת סרט מ-TMDB</string>
+    <string name="movie_from_tmdb">סרט זה יובא מ-TMDB</string>
 </resources>

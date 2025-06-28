@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Film Reel Circle -->
+    <path
+        android:pathData="M54,54m-24,0a24,24 0,1 1,48 0a24,24 0,1 1,-48 0"
+        android:strokeWidth="3"
+        android:strokeColor="#e94560"
+        android:fillColor="#00000000"/>
+
+    <!-- Search Glass -->
+    <path
+        android:pathData="M48,48m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0"
+        android:strokeWidth="2"
+        android:strokeColor="#ffffff"
+        android:fillColor="#0f346066"/>
+
+    <!-- Handle -->
+    <path
+        android:pathData="M55,55L62,62"
+        android:strokeWidth="2.5"
+        android:strokeColor="#ffffff"
+        android:strokeLineCap="round"/>
+
+    <!-- Play button -->
+    <path
+        android:pathData="M50,45L56,51L50,57z"
+        android:fillColor="#ffffff"/>
+</vector>

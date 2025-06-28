@@ -159,9 +159,31 @@
     <string name="no_data_available">No data available</string>
     <string name="refresh_statistics">Refresh Statistics</string>
 
+    <!-- Sample Movie Data -->
+    <string name="sample_movie_inception_title">Inception</string>
+    <string name="sample_inception_actors">Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Tom Hardy</string>
+    <string name="sample_inception_director">Christopher Nolan</string>
+
+    <string name="sample_movie_shawshank_title">The Shawshank Redemption</string>
+    <string name="sample_shawshank_actors">Tim Robbins, Morgan Freeman, Bob Gunton</string>
+    <string name="sample_shawshank_director">Frank Darabont</string>
+
+    <string name="sample_movie_dark_knight_title">The Dark Knight</string>
+    <string name="sample_dark_knight_actors">Christian Bale, Heath Ledger, Aaron Eckhart, Maggie Gyllenhaal</string>
+    <string name="sample_dark_knight_director">Christopher Nolan</string>
+
     <!-- Sample Descriptions -->
     <string name="inception_description">Dom Cobb is a skilled thief who steals corporate secrets through dream-sharing technology…</string>
     <string name="shawshank_description">Two imprisoned men bond over a number of years…</string>
     <string name="dark_knight_description">When the menace known as the Joker wreaks havoc on Gotham…</string>
+    <!-- Movie Options -->
+    <string name="view_details">View Details</string>
+    <string name="add_and_edit">Add and Edit</string>
+    <string name="movie_added_tap_to_edit">Movie added! You can edit it from your collection.</string>
+    <string name="add_movie_from_tmdb">Add Movie from TMDB</string>
+    <string name="movie_from_tmdb">This movie was imported from TMDB</string>
+
+    <!-- Navigation additions -->
+    <string name="action_searchOnline_to_addEditMovie">action_searchOnline_to_addEditMovie</string>
 
 </resources>

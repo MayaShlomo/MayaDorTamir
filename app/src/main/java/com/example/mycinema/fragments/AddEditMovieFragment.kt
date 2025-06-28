@@ -1,7 +1,6 @@
 package com.example.mycinema.fragments
 
 import android.app.DatePickerDialog
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
@@ -9,34 +8,34 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.mycinema.R
 import com.example.mycinema.databinding.FragmentAddEditMovieBinding
 import com.example.mycinema.models.Movie
 import com.example.mycinema.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+
 @AndroidEntryPoint
 class AddEditMovieFragment : Fragment() {
 
-
     private var _b: FragmentAddEditMovieBinding? = null
     private val b get() = _b!!
-    private val vm: MovieViewModel by viewModels()
+    private val vm: MovieViewModel by activityViewModels()
     private val args: AddEditMovieFragmentArgs by navArgs()
 
-    // הוסרנו את imageUri מה-Fragment - זה יישמר ב-ViewModel
-    private var selectedGenre: String? = null
-    private var selectedYear: Int? = null
-    private var selectedDate: String? = null
-    private var selectedRating: Float? = null
+    // נתונים שהגיעו מ-API (אם יש)
+    private var apiImageUrl: String? = null
+    private var apiId: Int? = null
 
     private val pickImg = registerForActivityResult(ActivityResultContracts.GetContent()) {
         it?.let { uri ->
             b.ivPoster.setImageURI(uri)
             vm.setImageUri(uri.toString())
+            apiImageUrl = null // משתמש העלה תמונה משלו
         }
     }
 
@@ -47,16 +46,67 @@ class AddEditMovieFragment : Fragment() {
 
     override fun onViewCreated(v: View, s: Bundle?) {
         setupUI()
+        observeViewModel()
+
+        // בדיקה אם הגענו מחיפוש API
+        arguments?.let { bundle ->
+            if (bundle.containsKey("apiTitle")) {
+                loadApiData(bundle)
+                b.tvAddEditTitle.text = getString(R.string.add_movie_from_tmdb)
+            }
+        }
 
         if (args.movieId != 0) {
             vm.get(args.movieId).observe(viewLifecycleOwner) { bind(it) }
             b.tvAddEditTitle.text = getString(R.string.edit_movie_title)
-        } else {
+        } else if (!arguments?.containsKey("apiTitle")!!) {
             b.tvAddEditTitle.text = getString(R.string.add_movie_title)
+            vm.clearMovieFormData()
         }
 
         b.btnChooseImage.setOnClickListener { pickImg.launch("image/*") }
         b.btnSave.setOnClickListener { save() }
+    }
+
+    private fun loadApiData(bundle: Bundle) {
+        // טעינת נתונים שהגיעו מה-API
+        bundle.getString("apiTitle")?.let { b.etTitle.setText(it) }
+        bundle.getString("apiDescription")?.let { b.etDesc.setText(it) }
+
+        bundle.getString("apiImageUrl")?.let { url ->
+            apiImageUrl = url
+            // טעינת תמונה עם Glide
+            Glide.with(this)
+                .load(url)
+                .placeholder(R.drawable.default_movie)
+                .error(R.drawable.default_movie)
+                .into(b.ivPoster)
+        }
+
+        bundle.getString("apiReleaseDate")?.let { date ->
+            b.tvSelectedDate.text = date
+            vm.setSelectedDate(date)
+        }
+
+        bundle.getFloat("apiRating", 0f).let { rating ->
+            if (rating > 0) {
+                vm.setSelectedRating(rating)
+                b.ratingBar.rating = rating / 2f
+                b.tvRatingValue.text = String.format("%.1f", rating)
+            }
+        }
+
+        bundle.getInt("apiId", 0).let { id ->
+            if (id > 0) apiId = id
+        }
+
+        bundle.getString("apiGenres")?.let { genres ->
+            vm.setSelectedGenre(genres.split(",").firstOrNull()?.trim())
+        }
+
+        // הוספת הערה שזה סרט מ-TMDB
+        b.tvSourceNote.visibility = View.VISIBLE
+        b.tvSourceNote.text = getString(R.string.movie_from_tmdb)
     }
 
     private fun setupUI() {
@@ -64,6 +114,42 @@ class AddEditMovieFragment : Fragment() {
         setupDatePicker()
         setupRatingBar()
         setupYearPicker()
+    }
+
+    private fun observeViewModel() {
+        vm.movieFormData.observe(viewLifecycleOwner) { formData ->
+            formData.imageUri?.let { uri ->
+                if (apiImageUrl == null) { // רק אם לא טענו כבר מ-API
+                    try {
+                        b.ivPoster.setImageURI(uri.toUri())
+                    } catch (e: Exception) {
+                        // Handle error
+                    }
+                }
+            }
+
+            formData.selectedGenre?.let { genre ->
+                val genres = resources.getStringArray(R.array.movie_genres)
+                val position = genres.indexOf(genre)
+                if (position >= 0) {
+                    b.spinnerGenre.setSelection(position)
+                }
+            }
+
+            formData.selectedYear?.let { year ->
+                b.tvSelectedYear.text = year.toString()
+            }
+
+            formData.selectedDate?.let { date ->
+                b.tvSelectedDate.text = date
+            }
+
+            formData.selectedRating?.let { rating ->
+                val ratingBarValue = rating / 2f
+                b.ratingBar.rating = ratingBarValue
+                b.tvRatingValue.text = String.format("%.1f", rating)
+            }
+        }
     }
 
     private fun setupGenreSpinner() {
@@ -74,7 +160,7 @@ class AddEditMovieFragment : Fragment() {
 
         b.spinnerGenre.setOnItemSelectedListener(object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                selectedGenre = genres[position]
+                vm.setSelectedGenre(genres[position])
             }
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
         })
@@ -83,12 +169,25 @@ class AddEditMovieFragment : Fragment() {
     private fun setupDatePicker() {
         b.btnSelectDate.setOnClickListener {
             val calendar = Calendar.getInstance()
+
+            // אם יש תאריך מה-API, נתחיל ממנו
+            b.tvSelectedDate.text?.toString()?.let { dateStr ->
+                try {
+                    val parts = dateStr.split("-")
+                    if (parts.size == 3) {
+                        calendar.set(parts[0].toInt(), parts[1].toInt() - 1, parts[2].toInt())
+                    }
+                } catch (e: Exception) {
+                    // ignore
+                }
+            }
+
             DatePickerDialog(
                 requireContext(),
                 { _, year, month, day ->
                     val date = String.format("%04d-%02d-%02d", year, month + 1, day)
                     b.tvSelectedDate.text = date
-                    selectedDate = date
+                    vm.setSelectedDate(date)
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -99,9 +198,9 @@ class AddEditMovieFragment : Fragment() {
 
     private fun setupRatingBar() {
         b.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-            val ratingValue = rating * 2 // Convert from 0-5 to 0-10 scale
+            val ratingValue = rating * 2
             b.tvRatingValue.text = String.format("%.1f", ratingValue)
-            selectedRating = ratingValue
+            vm.setSelectedRating(ratingValue)
         }
     }
 
@@ -110,12 +209,17 @@ class AddEditMovieFragment : Fragment() {
             val currentYear = Calendar.getInstance().get(Calendar.YEAR)
             val years = (1900..currentYear + 5).map { it.toString() }.toTypedArray()
 
+            // אם יש כבר שנה מתאריך השחרור, נבחר אותה
+            val selectedYear = b.tvSelectedDate.text?.toString()?.substring(0, 4)
+            val defaultSelection = years.indexOf(selectedYear).takeIf { it >= 0 } ?: years.size - 1
+
             AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.select_year))
-                .setItems(years) { _, which ->
+                .setSingleChoiceItems(years, defaultSelection) { dialog, which ->
                     val year = years[which]
                     b.tvSelectedYear.text = year
-                    selectedYear = year.toInt()
+                    vm.setSelectedYear(year.toInt())
+                    dialog.dismiss()
                 }
                 .show()
         }
@@ -129,45 +233,31 @@ class AddEditMovieFragment : Fragment() {
         etShowtime.setText(m.showtime)
         etDuration.setText(m.duration?.toString() ?: "")
 
-        // הגדרת ז'אנר ב-Spinner
-        m.genre?.let { genre ->
-            val genres = resources.getStringArray(R.array.movie_genres)
-            val position = genres.indexOf(genre)
-            if (position >= 0) {
-                spinnerGenre.setSelection(position)
-                selectedGenre = genre
+        m.genre?.let { vm.setSelectedGenre(it) }
+        m.year?.let { vm.setSelectedYear(it) }
+        m.releaseDate?.let { vm.setSelectedDate(it) }
+        m.rating?.let { vm.setSelectedRating(it) }
+
+        // טעינת תמונה - בדיקה אם זה URL או URI מקומי
+        m.imageUri?.let { imageUri ->
+            if (imageUri.startsWith("http")) {
+                apiImageUrl = imageUri
+                Glide.with(this@AddEditMovieFragment)
+                    .load(imageUri)
+                    .placeholder(R.drawable.default_movie)
+                    .into(ivPoster)
+            } else {
+                vm.setImageUri(imageUri)
             }
         }
 
-        // הגדרת שנה
-        m.year?.let { year ->
-            tvSelectedYear.text = year.toString()
-            selectedYear = year
+        // הצגת מקור אם זה מ-API
+        if (m.isFromApi) {
+            tvSourceNote.visibility = View.VISIBLE
+            tvSourceNote.text = getString(R.string.movie_from_tmdb)
         }
 
-        // הגדרת תאריך
-        m.releaseDate?.let { date ->
-            tvSelectedDate.text = date
-            selectedDate = date
-        }
-
-        // הגדרת דירוג
-        m.rating?.let { rating ->
-            val ratingBarValue = rating / 2f // Convert from 0-10 to 0-5 scale
-            ratingBar.rating = ratingBarValue
-            tvRatingValue.text = String.format("%.1f", rating)
-            selectedRating = rating
-        }
-
-        // הגדרת תמונה
-        m.imageUri?.let { uri ->
-            try {
-                ivPoster.setImageURI(uri.toUri())
-                vm.setImageUri(uri)
-            } catch (e: Exception) {
-                // Handle error loading image
-            }
-        }
+        apiId = m.apiId
     }
 
     private fun save() {
@@ -183,21 +273,32 @@ class AddEditMovieFragment : Fragment() {
             return
         }
 
+        val formData = vm.getMovieFormData()
+
+        // החלטה איזו תמונה לשמור
+        val finalImageUri = when {
+            formData.imageUri != null -> formData.imageUri // המשתמש העלה תמונה
+            apiImageUrl != null -> apiImageUrl // יש תמונה מ-API
+            else -> null
+        }
+
         vm.insert(
             Movie(
                 id = args.movieId,
+                apiId = apiId,
                 title = title,
                 description = description,
-                genre = selectedGenre,
+                genre = formData.selectedGenre,
                 actors = b.etActors.text.toString().takeIf { it.isNotBlank() },
                 director = b.etDirector.text.toString().takeIf { it.isNotBlank() },
-                year = selectedYear,
-                rating = selectedRating,
-                imageUri = vm.getImageUri(),
+                year = formData.selectedYear,
+                rating = formData.selectedRating,
+                imageUri = finalImageUri,
                 showtime = b.etShowtime.text.toString().takeIf { it.isNotBlank() } ?: "20:00",
                 isFavorite = false,
-                releaseDate = selectedDate,
-                duration = b.etDuration.text.toString().toIntOrNull()
+                releaseDate = formData.selectedDate,
+                duration = b.etDuration.text.toString().toIntOrNull(),
+                isFromApi = apiId != null
             )
         )
         findNavController().navigateUp()

@@ -8,6 +8,8 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.mycinema.R
 import com.example.mycinema.databinding.ItemMovieBinding
 import com.example.mycinema.fragments.FavoritesFragmentDirections
@@ -39,7 +41,8 @@ class MovieAdapter(
                 else android.R.drawable.btn_star_big_off
             )
 
-            ImageHelper.loadMovieImageByTitle(root.context, m.title, imageView)
+            // טעינת תמונה - בדיקה אם זה URL או משאב מקומי
+            loadMovieImage(m, imageView)
 
             // טיפול בניווט
             btnDetails.setOnClickListener {
@@ -87,6 +90,23 @@ class MovieAdapter(
             root.setOnLongClickListener {
                 confirmDelete(m)
                 true
+            }
+        }
+
+        private fun loadMovieImage(movie: Movie, imageView: ImageView) {
+            // בדיקה אם יש imageUri ואם זה URL
+            if (movie.imageUri != null && (movie.imageUri.startsWith("http://") || movie.imageUri.startsWith("https://"))) {
+                // טעינה עם Glide מ-URL
+                Glide.with(imageView.context)
+                    .load(movie.imageUri)
+                    .placeholder(R.drawable.default_movie)
+                    .error(R.drawable.default_movie)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .centerCrop()
+                    .into(imageView)
+            } else {
+                // נסיון לטעון מקומית (fallback ל-ImageHelper הקיים)
+                ImageHelper.loadMovieImageByTitle(imageView.context, movie.title, imageView)
             }
         }
 

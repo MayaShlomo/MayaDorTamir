@@ -14,10 +14,19 @@ data class Movie(
     val director: String?,
     val year: Int?,
     val rating: Float?,
-    val imageUri: String?,
+    val imageUri: String?, // יכול להיות URL או URI מקומי
     val showtime: String,
     val isFavorite: Boolean = false,
     val releaseDate: String?,
     val duration: Int?,
     val isFromApi: Boolean = false // האם הסרט הגיע מ-API
 )
+
+// הרחבה לבדיקת סוג התמונה
+fun Movie.hasRemoteImage(): Boolean {
+    return imageUri?.startsWith("http") == true
+}
+
+fun Movie.hasLocalImage(): Boolean {
+    return imageUri != null && !hasRemoteImage()
+}

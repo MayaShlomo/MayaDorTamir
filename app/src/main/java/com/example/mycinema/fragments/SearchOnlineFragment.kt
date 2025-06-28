@@ -1,3 +1,4 @@
+// SearchOnlineFragment.kt - שיפור הזרימה
 package com.example.mycinema.fragments
 
 import android.os.Bundle
@@ -8,11 +9,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mycinema.R
 import com.example.mycinema.adapter.OnlineMovieAdapter
 import com.example.mycinema.databinding.FragmentSearchOnlineBinding
+import com.example.mycinema.models.ApiMovie
 import com.example.mycinema.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,18 +54,12 @@ class SearchOnlineFragment : Fragment() {
     private fun setupRecyclerView() {
         adapter = OnlineMovieAdapter(
             onMovieClick = { apiMovie ->
-                // כאן נוכל להוסיף ניווט לפרטי סרט
-                Log.d("SearchOnlineFragment", "Movie clicked: ${apiMovie.title}")
-                Toast.makeText(requireContext(), "Movie: ${apiMovie.title}", Toast.LENGTH_SHORT).show()
+                // הצגת דיאלוג עם אפשרויות
+                showMovieOptionsDialog(apiMovie)
             },
             onAddToLocalClick = { apiMovie ->
-                Log.d("SearchOnlineFragment", "Adding to local: ${apiMovie.title}")
-                viewModel.addApiMovieToLocal(apiMovie)
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.movie_added_to_collection, apiMovie.title),
-                    Toast.LENGTH_SHORT
-                ).show()
+                // במקום להוסיף ישירות, נעבור למסך עריכה
+                navigateToAddEditWithApiMovie(apiMovie)
             }
         )
 
@@ -70,6 +67,75 @@ class SearchOnlineFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@SearchOnlineFragment.adapter
         }
+    }
+
+    private fun showMovieOptionsDialog(apiMovie: ApiMovie) {
+        val options = arrayOf(
+            getString(R.string.view_details),
+            getString(R.string.add_to_collection),
+            getString(R.string.add_and_edit)
+        )
+
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle(apiMovie.title)
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> showMovieDetails(apiMovie)
+                    1 -> quickAddToCollection(apiMovie)
+                    2 -> navigateToAddEditWithApiMovie(apiMovie)
+                }
+            }
+            .show()
+    }
+
+    private fun showMovieDetails(apiMovie: ApiMovie) {
+        // הצגת פרטים בדיאלוג
+        val message = buildString {
+            append(apiMovie.overview ?: getString(R.string.no_description_available))
+            append("\n\n")
+            append(getString(R.string.year_format, apiMovie.releaseDate?.substring(0, 4) ?: getString(R.string.unknown)))
+            append("\n")
+            append(getString(R.string.rating_format, String.format("%.1f", apiMovie.voteAverage)))
+        }
+
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle(apiMovie.title)
+            .setMessage(message)
+            .setPositiveButton(getString(R.string.add_to_collection)) { _, _ ->
+                navigateToAddEditWithApiMovie(apiMovie)
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun quickAddToCollection(apiMovie: ApiMovie) {
+        // הוספה מהירה עם האפשרות לערוך אחר כך
+        viewModel.addApiMovieToLocal(apiMovie)
+
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.movie_added_tap_to_edit),
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun navigateToAddEditWithApiMovie(apiMovie: ApiMovie) {
+        // העברת המידע מה-API למסך העריכה
+        val bundle = Bundle().apply {
+            putInt("movieId", 0) // סרט חדש
+            putString("apiTitle", apiMovie.title)
+            putString("apiDescription", apiMovie.overview)
+            putString("apiImageUrl", com.example.mycinema.network.MovieApiService.getPosterUrl(apiMovie.posterPath))
+            putString("apiReleaseDate", apiMovie.releaseDate)
+            putFloat("apiRating", apiMovie.voteAverage)
+            putInt("apiId", apiMovie.id)
+            putString("apiGenres", com.example.mycinema.models.GenreMapper.getGenreNames(apiMovie.genreIds))
+        }
+
+        findNavController().navigate(
+            R.id.action_searchOnline_to_addEditMovie,
+            bundle
+        )
     }
 
     private fun setupSearchView() {

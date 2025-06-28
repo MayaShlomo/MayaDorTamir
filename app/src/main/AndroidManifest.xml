@@ -1,34 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:targetApi="31">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- הרשאות חדשות לפרויקט הסופי -->
+    <!-- הרשאות -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- הרשאות אופציונליות לשיפור חווית המשתמש -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Features -->
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.landscape"
+        android:required="false" />
 
     <application
         android:name=".MyCinemaApplication"
         android:allowBackup="true"
-        android:label="@string/app_name"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-        android:usesCleartextTraffic="true">
+        android:theme="@style/Theme.MyCinema"
+        android:usesCleartextTraffic="false"
+        android:hardwareAccelerated="true"
+        android:largeHeap="true"
+        tools:targetApi="31">
 
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- App Links לפתיחת סרטים מקישורים -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="mycinema.app"
+                    android:pathPrefix="/movie" />
+            </intent-filter>
         </activity>
 
+
+        <!-- הגדרות רשת -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
     </application>
+
+    <!-- שאילתות לאפליקציות חיצוניות (Android 11+) -->
+    <queries>
+        <!-- לפתיחת דפדפן -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+
+        <!-- לשיתוף תוכן -->
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="text/plain" />
+        </intent>
+
+        <!-- ליוטיוב (לטריילרים) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="vnd.youtube" />
+        </intent>
+    </queries>
+
 </manifest>

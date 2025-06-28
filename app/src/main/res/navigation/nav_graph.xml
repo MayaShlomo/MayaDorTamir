@@ -53,6 +53,10 @@
         android:id="@+id/searchOnlineFragment"
         android:name="com.example.mycinema.fragments.SearchOnlineFragment"
         android:label="@string/search_online_title">
+        <!-- הפעולה החסרה! -->
+        <action
+            android:id="@+id/action_searchOnline_to_addEditMovie"
+            app:destination="@id/addEditMovieFragment" />
     </fragment>
 
     <fragment

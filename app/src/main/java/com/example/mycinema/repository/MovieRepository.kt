@@ -3,7 +3,6 @@ package com.example.mycinema.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.mycinema.BuildConfig
 import com.example.mycinema.R
 import com.example.mycinema.data.MovieDao
 import com.example.mycinema.models.ApiMovie
@@ -22,6 +21,12 @@ class MovieRepository @Inject constructor(
     private val apiService: MovieApiService,
     @ApplicationContext private val context: Context
 ) {
+
+    companion object {
+        // הגדרת API Key ישירות כקבוע - פתרון זמני לבעיית BuildConfig
+        private const val TMDB_API_KEY = "fce70c7f74fa363de535f143b1409243"
+    }
+
     // פונקציות מקומיות קיימות
     val allMovies: LiveData<List<Movie>> = dao.getAllMovies()
     val favoriteMovies: LiveData<List<Movie>> = dao.getFavoriteMovies()
@@ -41,30 +46,16 @@ class MovieRepository @Inject constructor(
     suspend fun delete(movie: Movie) = dao.delete(movie)
     suspend fun clearAllMovies() = dao.clearAllMovies()
 
-    // *** פונקציות API חדשות ***
+    // *** פונקציות API ***
 
     /**
      * חיפוש סרטים ברשת
      */
     suspend fun searchMoviesOnline(query: String): Result<List<ApiMovie>> {
         return try {
-            val apiKey = BuildConfig.TMDB_API_KEY
-
-            // דיבוג API Key
-            Log.d("MovieRepository", "Search - API Key length: ${apiKey.length}")
-            Log.d("MovieRepository", "Search - API Key is empty: ${apiKey.isEmpty()}")
-
-            // אם ה-API Key ריק, השתמש בקבוע זמנית
-            val workingApiKey = if (apiKey.isEmpty()) {
-                Log.w("MovieRepository", "BuildConfig API Key is empty! Using hardcoded key for search")
-                "fce70c7f74fa363de535f143b1409243"
-            } else {
-                apiKey
-            }
-
             Log.d("MovieRepository", "Searching online for: $query")
             val response = apiService.searchMovies(
-                apiKey = workingApiKey,
+                apiKey = TMDB_API_KEY,
                 query = query
             )
 
@@ -92,26 +83,8 @@ class MovieRepository @Inject constructor(
      */
     suspend fun getPopularMovies(): Result<List<ApiMovie>> {
         return try {
-            val apiKey = BuildConfig.TMDB_API_KEY
-
-            // הוסף דיבוג למידע על ה-API Key
-            Log.d("MovieRepository", "API Key length: ${apiKey.length}")
-            Log.d("MovieRepository", "API Key first 10 chars: ${apiKey.take(10)}")
-            Log.d("MovieRepository", "API Key is empty: ${apiKey.isEmpty()}")
-
-            // אם ה-API Key ריק, השתמש בקבוע זמנית
-            val workingApiKey = if (apiKey.isEmpty()) {
-                Log.w("MovieRepository", "BuildConfig API Key is empty! Using hardcoded key")
-                "fce70c7f74fa363de535f143b1409243"
-            } else {
-                apiKey
-            }
-
-            Log.d("MovieRepository", "Fetching popular movies with key length: ${workingApiKey.length}")
-
-            val response = apiService.getPopularMovies(
-                apiKey = workingApiKey
-            )
+            Log.d("MovieRepository", "Fetching popular movies")
+            val response = apiService.getPopularMovies(apiKey = TMDB_API_KEY)
 
             if (response.isSuccessful) {
                 val movieResponse = response.body()
@@ -136,17 +109,10 @@ class MovieRepository @Inject constructor(
      */
     suspend fun getMovieDetailsFromApi(movieId: Int): Result<MovieDetails> {
         return try {
-            val apiKey = BuildConfig.TMDB_API_KEY
-            val workingApiKey = if (apiKey.isEmpty()) {
-                "fce70c7f74fa363de535f143b1409243"
-            } else {
-                apiKey
-            }
-
             Log.d("MovieRepository", "Fetching details for movie: $movieId")
             val response = apiService.getMovieDetails(
                 movieId = movieId,
-                apiKey = workingApiKey
+                apiKey = TMDB_API_KEY
             )
 
             if (response.isSuccessful) {
@@ -171,16 +137,7 @@ class MovieRepository @Inject constructor(
      */
     suspend fun getTopRatedMoviesFromApi(): Result<List<ApiMovie>> {
         return try {
-            val apiKey = BuildConfig.TMDB_API_KEY
-            val workingApiKey = if (apiKey.isEmpty()) {
-                "fce70c7f74fa363de535f143b1409243"
-            } else {
-                apiKey
-            }
-
-            val response = apiService.getTopRatedMovies(
-                apiKey = workingApiKey
-            )
+            val response = apiService.getTopRatedMovies(apiKey = TMDB_API_KEY)
 
             if (response.isSuccessful) {
                 val movieResponse = response.body()
@@ -296,11 +253,11 @@ class MovieRepository @Inject constructor(
     private fun getSampleMovies(context: Context): List<Movie> {
         return listOf(
             Movie(
-                title = "Inception",
+                title = context.getString(R.string.sample_movie_inception_title),
                 description = context.getString(R.string.inception_description),
                 genre = context.getString(R.string.genre_sci_fi),
-                actors = "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Tom Hardy",
-                director = "Christopher Nolan",
+                actors = context.getString(R.string.sample_inception_actors),
+                director = context.getString(R.string.sample_inception_director),
                 year = 2010,
                 rating = 8.8f,
                 imageUri = "inception",
@@ -310,11 +267,11 @@ class MovieRepository @Inject constructor(
                 isFavorite = false
             ),
             Movie(
-                title = "The Shawshank Redemption",
+                title = context.getString(R.string.sample_movie_shawshank_title),
                 description = context.getString(R.string.shawshank_description),
                 genre = context.getString(R.string.genre_drama),
-                actors = "Tim Robbins, Morgan Freeman, Bob Gunton",
-                director = "Frank Darabont",
+                actors = context.getString(R.string.sample_shawshank_actors),
+                director = context.getString(R.string.sample_shawshank_director),
                 year = 1994,
                 rating = 9.3f,
                 imageUri = "shawshank",
@@ -324,11 +281,11 @@ class MovieRepository @Inject constructor(
                 isFavorite = false
             ),
             Movie(
-                title = "The Dark Knight",
+                title = context.getString(R.string.sample_movie_dark_knight_title),
                 description = context.getString(R.string.dark_knight_description),
                 genre = context.getString(R.string.genre_action),
-                actors = "Christian Bale, Heath Ledger, Aaron Eckhart, Maggie Gyllenhaal",
-                director = "Christopher Nolan",
+                actors = context.getString(R.string.sample_dark_knight_actors),
+                director = context.getString(R.string.sample_dark_knight_director),
                 year = 2008,
                 rating = 9.0f,
                 imageUri = "dark_knight",

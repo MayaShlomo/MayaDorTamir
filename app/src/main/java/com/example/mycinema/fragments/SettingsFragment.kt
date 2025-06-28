@@ -7,7 +7,7 @@ import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.mycinema.R
@@ -29,7 +29,7 @@ class SettingsFragment : Fragment() {
         private const val KEY_THEME_MODE = "theme_mode"
         private const val KEY_DEFAULT_SORT = "default_sort"
         private const val KEY_AUTO_REFRESH = "auto_refresh"
-        private const val KEY_LANGUAGE = "language"
+        private const val KEY_LANGUAGE_CODE = "language_code"
     }
 
     override fun onCreateView(
@@ -102,8 +102,13 @@ class SettingsFragment : Fragment() {
         binding.switchAutoRefresh.isChecked = autoRefresh
 
         // Load language setting
-        val language = sharedPreferences.getInt(KEY_LANGUAGE, 0)
-        binding.spinnerLanguage.setSelection(language)
+        val languageCode = sharedPreferences.getString(KEY_LANGUAGE_CODE, "system") ?: "system"
+        val languagePosition = when (languageCode) {
+            "en" -> 1
+            "he" -> 2
+            else -> 0 // system
+        }
+        binding.spinnerLanguage.setSelection(languagePosition)
     }
 
     private fun setupClickListeners() {
@@ -124,10 +129,16 @@ class SettingsFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // Language spinner
+        // Language spinner - הוסרתי את הקריאה לפונקציה שלא קיימת
         binding.spinnerLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                saveLanguageSetting(position)
+                val languageCode = when (position) {
+                    1 -> "en"
+                    2 -> "he"
+                    else -> "system"
+                }
+                saveLanguageSetting(languageCode)
+
                 if (position != 0) { // Not system default
                     showLanguageChangeDialog()
                 }
@@ -147,13 +158,11 @@ class SettingsFragment : Fragment() {
 
         // Export data button
         binding.btnExportData.setOnClickListener {
-            // TODO: Implement data export
             showNotImplementedDialog(getString(R.string.export_feature))
         }
 
         // Import data button
         binding.btnImportData.setOnClickListener {
-            // TODO: Implement data import
             showNotImplementedDialog(getString(R.string.import_feature))
         }
 
@@ -185,16 +194,16 @@ class SettingsFragment : Fragment() {
         sharedPreferences.edit().putBoolean(KEY_AUTO_REFRESH, enabled).apply()
     }
 
-    private fun saveLanguageSetting(position: Int) {
-        sharedPreferences.edit().putInt(KEY_LANGUAGE, position).apply()
+    private fun saveLanguageSetting(languageCode: String) {
+        sharedPreferences.edit().putString(KEY_LANGUAGE_CODE, languageCode).apply()
+        // הוסרתי את הקריאה ל-MyCinemaApplication.updateAppLanguage
     }
 
     private fun applyTheme(themeMode: Int) {
-        // This would normally require activity restart to take effect
         when (themeMode) {
-            0 -> { /* System default */ }
-            1 -> { /* Light theme */ }
-            2 -> { /* Dark theme */ }
+            0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
 
