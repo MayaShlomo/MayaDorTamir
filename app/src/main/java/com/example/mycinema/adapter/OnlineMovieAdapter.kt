@@ -42,8 +42,12 @@ class OnlineMovieAdapter(
                 root.context.getString(R.string.genres_format, root.context.getString(R.string.unknown))
             }
 
-            // שנה
-            val year = apiMovie.releaseDate?.substring(0, 4) ?: root.context.getString(R.string.unknown)
+            // שנה - תיקון הבעיה כאן
+            val year = when {
+                apiMovie.releaseDate.isNullOrBlank() -> root.context.getString(R.string.unknown)
+                apiMovie.releaseDate.length >= 4 -> apiMovie.releaseDate.substring(0, 4)
+                else -> root.context.getString(R.string.unknown)
+            }
             tvYear.text = root.context.getString(R.string.year_format, year)
 
             // דירוג
