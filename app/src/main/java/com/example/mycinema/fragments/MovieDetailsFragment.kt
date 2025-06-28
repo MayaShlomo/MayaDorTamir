@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels  // ← תיקון import
 import androidx.navigation.fragment.navArgs
 import com.example.mycinema.databinding.FragmentMovieDetailsBinding
 import com.example.mycinema.viewmodel.MovieViewModel
 import com.example.mycinema.util.ImageHelper
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint  // ← הוסף את זה
 class MovieDetailsFragment : Fragment() {
     private var _b: FragmentMovieDetailsBinding? = null
     private val b get() = _b!!
     private val args: MovieDetailsFragmentArgs by navArgs()
-    private val vm: MovieViewModel by viewModels()
+    private val vm: MovieViewModel by activityViewModels()  // ← תיקון! activityViewModels במקום viewModels
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?): View {
         _b = FragmentMovieDetailsBinding.inflate(i, c, false)
@@ -24,7 +26,13 @@ class MovieDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(v: View, s: Bundle?) {
+        super.onViewCreated(v, s)
+
+        Log.d("MovieDetailsFragment", "Opening details for movie ID: ${args.movieId}")
+
         vm.get(args.movieId).observe(viewLifecycleOwner) { m ->
+            Log.d("MovieDetailsFragment", "Movie loaded: ${m.title}")
+
             b.tvTitle.text = m.title
             b.tvDescription.text = m.description
             b.tvGenre.text = m.genre ?: "Unknown"

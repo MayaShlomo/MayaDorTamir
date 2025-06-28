@@ -15,7 +15,9 @@ import com.example.mycinema.adapter.MovieAdapter
 import com.example.mycinema.databinding.FragmentMoviesListBinding
 import com.example.mycinema.viewmodel.MovieViewModel
 import com.google.android.material.chip.Chip
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MoviesListFragment : Fragment() {
     private var _b: FragmentMoviesListBinding? = null
     private val b get() = _b!!

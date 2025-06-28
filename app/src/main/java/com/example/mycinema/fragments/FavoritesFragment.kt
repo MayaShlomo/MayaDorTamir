@@ -5,16 +5,18 @@ import android.util.Log
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mycinema.adapter.MovieAdapter
 import com.example.mycinema.databinding.FragmentFavoritesBinding
 import com.example.mycinema.viewmodel.MovieViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
     private var _b: FragmentFavoritesBinding? = null
     private val b get() = _b!!
-    private val vm: MovieViewModel by viewModels()
+    private val vm: MovieViewModel by activityViewModels()  // ← זה התיקון!
     private lateinit var adapter: MovieAdapter
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?): View {

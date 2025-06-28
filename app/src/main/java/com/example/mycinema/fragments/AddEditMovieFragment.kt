@@ -16,9 +16,12 @@ import com.example.mycinema.R
 import com.example.mycinema.databinding.FragmentAddEditMovieBinding
 import com.example.mycinema.models.Movie
 import com.example.mycinema.viewmodel.MovieViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-
+@AndroidEntryPoint
 class AddEditMovieFragment : Fragment() {
+
+
     private var _b: FragmentAddEditMovieBinding? = null
     private val b get() = _b!!
     private val vm: MovieViewModel by viewModels()
