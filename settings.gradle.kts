@@ -1,3 +1,6 @@
+// מאפשר את libs.<…>‎ ו-plugins alias
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         google()

@@ -242,6 +242,14 @@ class MovieViewModel @Inject constructor(
         _error.value = null
     }
 
+    /**
+     * ניקוי כל הנתונים במאגר
+     */
+    fun clearAllMovies() = viewModelScope.launch {
+        repository.clearAllMovies()
+        Log.d("MovieViewModel", "All movies cleared from database")
+    }
+
     private fun preloadDataIfNeeded() = viewModelScope.launch {
         try {
             Log.d("MovieViewModel", "Checking if sample data preload is needed")

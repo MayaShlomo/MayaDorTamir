@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="he">
+
+    <!-- שם האפליקציה -->
+    <string name="app_name">הקולנוע שלי</string>
+    <string name="app_version">גרסה 1.0</string>
+
+    <!-- מסך הבית -->
+    <string name="welcome_title">ברוכים הבאים להקולנוע שלי</string>
+    <string name="welcome_subtitle">מנהל האוסף הקולנועי האישי שלך</string>
+    <string name="my_collection">האוסף שלי</string>
+    <string name="search_online">חיפוש ברשת</string>
+    <string name="quick_start_guide">מדריך התחלה מהיר</string>
+    <string name="quick_start_instructions">• עיין באוסף שלך\n• הוסף סרטים ידנית או חפש ברשת\n• סמן מועדפים עם כפתור הכוכב\n• צפה בסטטיסטיקות מפורטות ונהל הגדרות</string>
+
+    <!-- ניווט -->
+    <string name="favorites">מועדפים</string>
+    <string name="movie_details">פרטי סרט</string>
+    <string name="add_edit_movie">הוספה/עריכת סרט</string>
+    <string name="all_movies">כל הסרטים</string>
+    <string name="settings">הגדרות</string>
+    <string name="statistics">סטטיסטיקות</string>
+    <string name="settings_title">הגדרות</string>
+    <string name="statistics_title">סטטיסטיקות</string>
+
+    <!-- שדות סרט -->
+    <string name="movie_title_label">שם הסרט</string>
+    <string name="description_label">תיאור</string>
+    <string name="genre_label">ז\'אנר:</string>
+    <string name="director_label">במאי:</string>
+    <string name="director_label_input">במאי</string>
+    <string name="actors_label">שחקנים</string>
+    <string name="year_label">שנה</string>
+    <string name="rating_label">דירוג</string>
+    <string name="duration_label">משך:</string>
+    <string name="duration_label_input">משך (דקות)</string>
+    <string name="release_label">יציאה:</string>
+    <string name="release_date_label">תאריך יציאה</string>
+    <string name="showtime_label">שעת הקרנה:</string>
+    <string name="showtime_label_input">שעת הקרנה</string>
+
+    <!-- ז'אנרים -->
+    <string name="genre_action">אקשן</string>
+    <string name="genre_comedy">קומדיה</string>
+    <string name="genre_drama">דרמה</string>
+    <string name="genre_horror">אימה</string>
+    <string name="genre_sci_fi">מד״ב</string>
+    <string name="genre_romance">רומנטיקה</string>
+    <string name="genre_thriller">מתח</string>
+    <string name="genre_animation">אנימציה</string>
+    <string name="genre_crime">פשע</string>
+    <string name="genre_adventure">הרפתקאות</string>
+    <string name="genre_musical">מחזמר</string>
+
+    <!-- פעולות -->
+    <string name="add_movie">הוסף סרט</string>
+    <string name="add_movie_title">הוסף סרט חדש</string>
+    <string name="edit_movie_title">ערוך סרט</string>
+    <string name="save_movie">שמור סרט</string>
+    <string name="delete">מחק</string>
+    <string name="clear">נקה</string>
+    <string name="refresh">רענן</string>
+    <string name="choose_image">בחר תמונה</string>
+    <string name="select_year">בחר שנה</string>
+    <string name="select_date">בחר תאריך</string>
+
+    <!-- חיפוש ומסננים -->
+    <string name="search_movies">חפש סרטים…</string>
+    <string name="search_movies_online">חפש סרטים ברשת…</string>
+    <string name="search_online_title">חיפוש סרטים ברשת</string>
+    <string name="clear_filters">נקה מסננים</string>
+    <string name="filters_cleared">המסננים נוקו</string>
+    <string name="genre_select">בחר ז\'אנר</string>
+    <string name="genre_format">ז\'אנר: %s</string>
+    <string name="year_format">שנה: %s</string>
+    <string name="rating_format">דירוג: %s</string>
+    <string name="genres_format">ז\'אנרים: %s</string>
+
+    <!-- חיפוש ברשת -->
+    <string name="popular_movies">סרטים פופולריים</string>
+    <string name="search_results">תוצאות חיפוש</string>
+    <string name="add_to_collection">הוסף לאוסף</string>
+    <string name="movie_added_to_collection">%s נוסף לאוסף שלך</string>
+    <string name="no_search_results">לא נמצאו סרטים</string>
+    <string name="try_different_search">נסה מילת חיפוש אחרת</string>
+    <string name="no_popular_movies">אין סרטים פופולריים זמינים</string>
+    <string name="check_internet_connection">בדוק את החיבור לאינטרנט</string>
+
+    <!-- הודעות -->
+    <string name="no_results">לא נמצאו סרטים</string>
+    <string name="no_favorites_message">אין סרטים מועדפים עדיין.\nהוסף כמה סרטים למועדפים שלך!</string>
+    <string name="delete_movie_title">למחוק את \"%s\"?</string>
+    <string name="delete_movie_message">לא ניתן לבטל פעולה זו.</string>
+    <string name="no_description_available">אין תיאור זמין</string>
+
+    <!-- פרטי סרט -->
+    <string name="cast_title">שחקנים</string>
+    <string name="synopsis_title">תקציר</string>
+
+    <!-- כללי -->
+    <string name="unknown">לא ידוע</string>
+    <string name="not_available">לא זמין</string>
+
+    <!-- מסך הגדרות -->
+    <string name="app_statistics">סטטיסטיקות אפליקציה</string>
+    <string name="total_movies_count">סך הכל סרטים: %d</string>
+    <string name="favorite_movies_count">סרטים מועדפים: %d</string>
+    <string name="display_settings">הגדרות תצוגה</string>
+    <string name="theme_mode">מצב ערכת נושא</string>
+    <string name="theme_system">ברירת מחדל של המערכת</string>
+    <string name="theme_light">בהיר</string>
+    <string name="theme_dark">כהה</string>
+    <string name="language_setting">שפה</string>
+    <string name="language_system">ברירת מחדל של המערכת</string>
+    <string name="language_english">English</string>
+    <string name="language_hebrew">עברית</string>
+    <string name="app_behavior">התנהגות אפליקציה</string>
+    <string name="default_sort_order">סדר מיון ברירת מחדל</string>
+    <string name="sort_by_title">מיון לפי שם</string>
+    <string name="sort_by_rating">מיון לפי דירוג</string>
+    <string name="sort_by_year">מיון לפי שנה</string>
+    <string name="sort_by_date_added">מיון לפי תאריך הוספה</string>
+    <string name="auto_refresh_online">רענון אוטומטי של נתונים ברשת</string>
+    <string name="data_management">ניהול נתונים</string>
+    <string name="export_data">ייצוא נתונים</string>
+    <string name="import_data">ייבוא נתונים</string>
+    <string name="clear_all_data">מחיקת כל הנתונים</string>
+    <string name="about_section">אודות</string>
+    <string name="about_app">אודות הקולנוע שלי</string>
+    <string name="language_change_title">השפה שונתה</string>
+    <string name="language_change_message">האפליקציה צריכה להפעיל מחדש כדי להחיל את שינוי השפה</string>
+    <string name="restart_now">הפעל מחדש עכשיו</string>
+    <string name="restart_later">הפעל מחדש מאוחר יותר</string>
+    <string name="clear_database_title">מחיקת מאגר נתונים</string>
+    <string name="clear_database_message">פעולה זו תמחק את כל הסרטים שלך. לא ניתן לבטל פעולה זו.</string>
+    <string name="database_cleared_title">מאגר הנתונים נמחק</string>
+    <string name="database_cleared_message">כל הסרטים נמחקו מהאוסף שלך.</string>
+    <string name="about_message">הקולנוע שלי גרסה 1.0\n\nמנהל אוסף סרטים אישי שנבנה ב-Android.\n\nתכונות:\n• אוסף סרטים מקומי\n• חיפוש סרטים ברשת\n• ניהול מועדפים\n• סינון מתקדם</string>
+    <string name="feature_not_implemented">תכונה לא זמינה</string>
+    <string name="feature_coming_soon">תכונת %s תגיע בקרוב בעדכונים עתידיים!</string>
+    <string name="export_feature">ייצוא נתונים</string>
+    <string name="import_feature">ייבוא נתונים</string>
+
+    <!-- מסך סטטיסטיקות -->
+    <string name="collection_overview">סקירת האוסף</string>
+    <string name="favorite_statistics">סטטיסטיקות מועדפים</string>
+    <string name="genre_breakdown">פירוט לפי ז\'אנר</string>
+    <string name="top_rated_movies">סרטים בדירוג הגבוה ביותר</string>
+    <string name="rating_distribution">חלוקת דירוגים</string>
+    <string name="yearly_breakdown">סרטים לפי שנה</string>
+    <string name="collection_insights">תובנות האוסף</string>
+    <string name="average_rating">דירוג ממוצע: %.1f</string>
+    <string name="total_duration">משך כולל: %d דקות</string>
+    <string name="total_hours">סך הכל שעות: %.1f שעות</string>
+    <string name="movies_this_decade">סרטים משנות ה-2020: %d</string>
+    <string name="oldest_movie">הסרט הוותיק ביותר: %s (%d)</string>
+    <string name="newest_movie">הסרט החדש ביותר: %s (%d)</string>
+    <string name="most_common_genre">הז\'אנר הנפוץ ביותר: %s</string>
+    <string name="no_data_available">אין נתונים זמינים</string>
+    <string name="refresh_statistics">רענן סטטיסטיקות</string>
+
+    <!-- תיאורי סרטים לדוגמה -->
+    <string name="inception_description">דום קוב הוא גנב מיומן הגונב סודות תאגידיים באמצעות טכנולוגיית חלימה משותפת ומקבל את המשימה ההפוכה של השתלת רעיון במוחו של מנכ\"ל.</string>
+    <string name="shawshank_description">שני אסירים יוצרים קשר במשך מספר שנים, מוצאים נחמה וגאולה בסופו של דבר באמצעות מעשים של הגינות משותפת.</string>
+    <string name="dark_knight_description">כאשר האיום הידוע בשם הג\'וקר זורע הרס וכאוס על תושבי גות\'אם, באטמן חייב לקבל את אחד המבחנים הפסיכולוגיים והפיזיים הגדולים ביותר ביכולתו להילחם בעוול.</string>
+
+</resources>

@@ -4,28 +4,61 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.mycinema.R
 import com.example.mycinema.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-    private var _b: FragmentHomeBinding? = null
-    private val b get() = _b!!
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?): View {
-        _b = FragmentHomeBinding.inflate(i, c, false)
-        return b.root
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onViewCreated(v: View, s: Bundle?) {
-        b.btnMoviesList.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeToMoviesList())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupClickListeners()
+    }
+
+    private fun setupClickListeners() {
+        // אוסף הסרטים המקומי
+        binding.btnMoviesList.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_moviesList)
         }
-        b.btnFavorites.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeToFavorites())
+
+        // סרטים מועדפים
+        binding.btnFavorites.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_favorites)
+        }
+
+        // חיפוש אונליין
+        binding.btnSearchOnline.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_searchOnline)
+        }
+
+        // הגדרות אפליקציה
+        binding.btnSettings.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_settings)
+        }
+
+        // סטטיסטיקות
+        binding.btnStatistics.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_statistics)
+        }
+
+        // הוספת סרט חדש ישירות
+        binding.btnAddMovie.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_addEditMovie)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _b = null
+        _binding = null
     }
 }

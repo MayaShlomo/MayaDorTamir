@@ -8,7 +8,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.mycinema.models.Movie
 
-@Database(entities = [Movie::class], version = 2, exportSchema = false)
+@Database(entities = [Movie::class], version = 3, exportSchema = false)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
 
@@ -18,27 +18,29 @@ abstract class MovieDatabase : RoomDatabase() {
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // 1. הוספת עמודת director לשם הבמאי
-                val addDirector = "ALTER TABLE movies ADD COLUMN director TEXT"
-                database.execSQL(addDirector)
+                database.execSQL("ALTER TABLE movies ADD COLUMN director TEXT")
 
                 // 2. הוספת עמודת year לשנת יציאה
-                val addYear = "ALTER TABLE movies ADD COLUMN year INTEGER"
-                database.execSQL(addYear)
+                database.execSQL("ALTER TABLE movies ADD COLUMN year INTEGER")
 
                 // 3. הוספת עמודת rating לציון הסרט (בפורמט REAL)
-                val addRating = "ALTER TABLE movies ADD COLUMN rating REAL"
-                database.execSQL(addRating)
+                database.execSQL("ALTER TABLE movies ADD COLUMN rating REAL")
 
                 // 4. הוספת עמודת releaseDate לתאריך שחרור (טקסט)
-                val addReleaseDate = "ALTER TABLE movies ADD COLUMN releaseDate TEXT"
-                database.execSQL(addReleaseDate)
+                database.execSQL("ALTER TABLE movies ADD COLUMN releaseDate TEXT")
 
                 // 5. הוספת עמודת duration לאורך הסרט בדקות
-                val addDuration = "ALTER TABLE movies ADD COLUMN duration INTEGER"
-                database.execSQL(addDuration)
+                database.execSQL("ALTER TABLE movies ADD COLUMN duration INTEGER")
             }
         }
 
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // הוספת עמודות חדשות לתמיכה ב-API
+                database.execSQL("ALTER TABLE movies ADD COLUMN apiId INTEGER")
+                database.execSQL("ALTER TABLE movies ADD COLUMN isFromApi INTEGER NOT NULL DEFAULT 0")
+            }
+        }
 
         fun getDatabase(context: Context): MovieDatabase =
             INSTANCE ?: synchronized(this) {
@@ -48,7 +50,7 @@ abstract class MovieDatabase : RoomDatabase() {
                     "movie_database"
                 )
                     .fallbackToDestructiveMigration()
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                     .also { INSTANCE = it }
             }

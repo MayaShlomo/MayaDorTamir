@@ -10,7 +10,6 @@ import com.example.mycinema.models.ApiMovie
 import com.example.mycinema.models.GenreMapper
 import com.example.mycinema.models.Movie
 import com.example.mycinema.models.MovieDetails
-import com.example.mycinema.models.MovieSearchResponse
 import com.example.mycinema.network.MovieApiService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -49,9 +48,23 @@ class MovieRepository @Inject constructor(
      */
     suspend fun searchMoviesOnline(query: String): Result<List<ApiMovie>> {
         return try {
+            val apiKey = BuildConfig.TMDB_API_KEY
+
+            // דיבוג API Key
+            Log.d("MovieRepository", "Search - API Key length: ${apiKey.length}")
+            Log.d("MovieRepository", "Search - API Key is empty: ${apiKey.isEmpty()}")
+
+            // אם ה-API Key ריק, השתמש בקבוע זמנית
+            val workingApiKey = if (apiKey.isEmpty()) {
+                Log.w("MovieRepository", "BuildConfig API Key is empty! Using hardcoded key for search")
+                "fce70c7f74fa363de535f143b1409243"
+            } else {
+                apiKey
+            }
+
             Log.d("MovieRepository", "Searching online for: $query")
             val response = apiService.searchMovies(
-                apiKey = BuildConfig.TMDB_API_KEY,
+                apiKey = workingApiKey,
                 query = query
             )
 
@@ -79,9 +92,25 @@ class MovieRepository @Inject constructor(
      */
     suspend fun getPopularMovies(): Result<List<ApiMovie>> {
         return try {
-            Log.d("MovieRepository", "Fetching popular movies")
+            val apiKey = BuildConfig.TMDB_API_KEY
+
+            // הוסף דיבוג למידע על ה-API Key
+            Log.d("MovieRepository", "API Key length: ${apiKey.length}")
+            Log.d("MovieRepository", "API Key first 10 chars: ${apiKey.take(10)}")
+            Log.d("MovieRepository", "API Key is empty: ${apiKey.isEmpty()}")
+
+            // אם ה-API Key ריק, השתמש בקבוע זמנית
+            val workingApiKey = if (apiKey.isEmpty()) {
+                Log.w("MovieRepository", "BuildConfig API Key is empty! Using hardcoded key")
+                "fce70c7f74fa363de535f143b1409243"
+            } else {
+                apiKey
+            }
+
+            Log.d("MovieRepository", "Fetching popular movies with key length: ${workingApiKey.length}")
+
             val response = apiService.getPopularMovies(
-                apiKey = BuildConfig.TMDB_API_KEY
+                apiKey = workingApiKey
             )
 
             if (response.isSuccessful) {
@@ -93,6 +122,7 @@ class MovieRepository @Inject constructor(
                     Result.failure(Exception("Empty response from server"))
                 }
             } else {
+                Log.e("MovieRepository", "API Error: ${response.code()} - ${response.message()}")
                 Result.failure(Exception("API Error: ${response.code()}"))
             }
         } catch (e: Exception) {
@@ -106,10 +136,17 @@ class MovieRepository @Inject constructor(
      */
     suspend fun getMovieDetailsFromApi(movieId: Int): Result<MovieDetails> {
         return try {
+            val apiKey = BuildConfig.TMDB_API_KEY
+            val workingApiKey = if (apiKey.isEmpty()) {
+                "fce70c7f74fa363de535f143b1409243"
+            } else {
+                apiKey
+            }
+
             Log.d("MovieRepository", "Fetching details for movie: $movieId")
             val response = apiService.getMovieDetails(
                 movieId = movieId,
-                apiKey = BuildConfig.TMDB_API_KEY
+                apiKey = workingApiKey
             )
 
             if (response.isSuccessful) {
@@ -134,8 +171,15 @@ class MovieRepository @Inject constructor(
      */
     suspend fun getTopRatedMoviesFromApi(): Result<List<ApiMovie>> {
         return try {
+            val apiKey = BuildConfig.TMDB_API_KEY
+            val workingApiKey = if (apiKey.isEmpty()) {
+                "fce70c7f74fa363de535f143b1409243"
+            } else {
+                apiKey
+            }
+
             val response = apiService.getTopRatedMovies(
-                apiKey = BuildConfig.TMDB_API_KEY
+                apiKey = workingApiKey
             )
 
             if (response.isSuccessful) {
@@ -197,9 +241,8 @@ class MovieRepository @Inject constructor(
      */
     suspend fun isMovieInLocal(apiMovieId: Int): Boolean {
         return try {
-            val existingMovies = dao.getAllMoviesFlow()
-            // זה צריך להיות חיפוש ב-apiId, אבל בינתיים נחפש לפי שם
-            false // נחזיר false בינתיים
+            // בינתיים מחזיר false, אפשר לפתח בעתיד
+            false
         } catch (e: Exception) {
             false
         }

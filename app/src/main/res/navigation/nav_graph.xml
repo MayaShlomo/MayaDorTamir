@@ -7,19 +7,31 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.mycinema.fragments.HomeFragment"
-        android:label="Home">
+        android:label="@string/app_name">
         <action
             android:id="@+id/action_home_to_moviesList"
             app:destination="@id/moviesListFragment" />
         <action
             android:id="@+id/action_home_to_favorites"
             app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_home_to_searchOnline"
+            app:destination="@id/searchOnlineFragment" />
+        <action
+            android:id="@+id/action_home_to_settings"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_home_to_statistics"
+            app:destination="@id/statisticsFragment" />
+        <action
+            android:id="@+id/action_home_to_addEditMovie"
+            app:destination="@id/addEditMovieFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/moviesListFragment"
         android:name="com.example.mycinema.fragments.MoviesListFragment"
-        android:label="Movies List">
+        android:label="@string/my_collection">
         <action
             android:id="@+id/action_moviesList_to_movieDetails"
             app:destination="@id/movieDetailsFragment" />
@@ -31,16 +43,34 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.mycinema.fragments.FavoritesFragment"
-        android:label="Favorites">
+        android:label="@string/favorites">
         <action
             android:id="@+id/action_favorites_to_movieDetails"
             app:destination="@id/movieDetailsFragment" />
     </fragment>
 
     <fragment
+        android:id="@+id/searchOnlineFragment"
+        android:name="com.example.mycinema.fragments.SearchOnlineFragment"
+        android:label="@string/search_online_title">
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.mycinema.fragments.SettingsFragment"
+        android:label="@string/settings_title">
+    </fragment>
+
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.example.mycinema.fragments.StatisticsFragment"
+        android:label="@string/statistics_title">
+    </fragment>
+
+    <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.mycinema.fragments.MovieDetailsFragment"
-        android:label="Movie Details">
+        android:label="@string/movie_details">
         <argument
             android:name="movieId"
             app:argType="integer" />
@@ -52,7 +82,7 @@
     <fragment
         android:id="@+id/addEditMovieFragment"
         android:name="com.example.mycinema.fragments.AddEditMovieFragment"
-        android:label="Add/Edit Movie">
+        android:label="@string/add_edit_movie">
         <argument
             android:name="movieId"
             app:argType="integer"
