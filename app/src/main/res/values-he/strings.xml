@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="he">
 
-    <!-- שם האפליקציה -->
+    <!-- ============== BASIC APP ============== -->
     <string name="app_name">הקולנוע שלי</string>
     <string name="app_version">גרסה 1.0</string>
+    <string name="welcome_title">ברוכים הבאים ל-MyCinema</string>
+    <string name="welcome_subtitle">מנהל אוסף הסרטים האישי שלך</string>
 
-    <!-- מסך הבית -->
-    <string name="welcome_title">ברוכים הבאים להקולנוע שלי</string>
-    <string name="welcome_subtitle">מנהל האוסף הקולנועי האישי שלך</string>
+    <!-- ============== NAVIGATION ============== -->
     <string name="my_collection">האוסף שלי</string>
-    <string name="search_online">חיפוש ברשת</string>
-    <string name="quick_start_guide">מדריך התחלה מהיר</string>
-    <string name="quick_start_instructions">• עיין באוסף שלך\n• הוסף סרטים ידנית או חפש ברשת\n• סמן מועדפים עם כפתור הכוכב\n• צפה בסטטיסטיקות מפורטות ונהל הגדרות</string>
-
-    <!-- ניווט -->
+    <string name="all_movies">כל הסרטים</string>
     <string name="favorites">מועדפים</string>
     <string name="movie_details">פרטי סרט</string>
-    <string name="add_edit_movie">הוספה/עריכת סרט</string>
-    <string name="all_movies">כל הסרטים</string>
+    <string name="add_edit_movie">הוספה / עריכת סרט</string>
     <string name="settings">הגדרות</string>
     <string name="statistics">סטטיסטיקות</string>
     <string name="settings_title">הגדרות</string>
     <string name="statistics_title">סטטיסטיקות</string>
+    <string name="search_online">חיפוש אונליין</string>
+    <string name="search_online_title">חיפוש סרטים ברשת</string>
 
-    <!-- שדות סרט -->
+    <!-- ============== MOVIE FIELDS ============== -->
     <string name="movie_title_label">שם הסרט</string>
     <string name="description_label">תיאור</string>
     <string name="genre_label">ז\'אנר:</string>
@@ -32,153 +29,350 @@
     <string name="actors_label">שחקנים</string>
     <string name="year_label">שנה</string>
     <string name="rating_label">דירוג</string>
-    <string name="duration_label">משך:</string>
-    <string name="duration_label_input">משך (דקות)</string>
-    <string name="release_label">יציאה:</string>
+    <string name="duration_label">אורך:</string>
+    <string name="duration_label_input">אורך (דקות)</string>
+    <string name="release_label">הפצה:</string>
     <string name="release_date_label">תאריך יציאה</string>
     <string name="showtime_label">שעת הקרנה:</string>
     <string name="showtime_label_input">שעת הקרנה</string>
 
-    <!-- ז'אנרים -->
+    <!-- ============== GENRES ============== -->
     <string name="genre_action">אקשן</string>
     <string name="genre_comedy">קומדיה</string>
     <string name="genre_drama">דרמה</string>
     <string name="genre_horror">אימה</string>
-    <string name="genre_sci_fi">מד״ב</string>
+    <string name="genre_sci_fi">מדע בדיוני</string>
     <string name="genre_romance">רומנטיקה</string>
-    <string name="genre_thriller">מתח</string>
+    <string name="genre_thriller">מותחן</string>
     <string name="genre_animation">אנימציה</string>
     <string name="genre_crime">פשע</string>
     <string name="genre_adventure">הרפתקאות</string>
-    <string name="genre_musical">מחזמר</string>
+    <string name="genre_musical">מיוזיקל</string>
 
-    <!-- פעולות -->
+    <!-- ============== ACTIONS ============== -->
     <string name="add_movie">הוסף סרט</string>
-    <string name="add_movie_title">הוסף סרט חדש</string>
-    <string name="edit_movie_title">ערוך סרט</string>
+    <string name="add_movie_title">הוספת סרט חדש</string>
+    <string name="edit_movie_title">עריכת סרט</string>
     <string name="save_movie">שמור סרט</string>
-    <string name="delete">מחק</string>
+    <string name="delete">מחיקה</string>
     <string name="clear">נקה</string>
     <string name="refresh">רענן</string>
     <string name="choose_image">בחר תמונה</string>
     <string name="select_year">בחר שנה</string>
     <string name="select_date">בחר תאריך</string>
 
-    <!-- חיפוש ומסננים -->
-    <string name="search_movies">חפש סרטים…</string>
-    <string name="search_movies_online">חפש סרטים ברשת…</string>
-    <string name="search_online_title">חיפוש סרטים ברשת</string>
+    <!-- ============== SEARCH & FILTERS ============== -->
+    <string name="search_movies">חיפוש סרטים…</string>
+    <string name="search_movies_online">חיפוש סרטים אונליין…</string>
     <string name="clear_filters">נקה מסננים</string>
-    <string name="filters_cleared">המסננים נוקו</string>
+    <string name="filters_cleared">המסננים אופסו</string>
     <string name="genre_select">בחר ז\'אנר</string>
-    <string name="genre_format">ז\'אנר: %s</string>
-    <string name="year_format">שנה: %s</string>
-    <string name="rating_format">דירוג: %s</string>
-    <string name="genres_format">ז\'אנרים: %s</string>
+    <string name="genre_format">ז\'אנר: %1$s</string>
+    <string name="year_format">שנה: %1$s</string>
+    <string name="rating_format">דירוג: %1$s</string>
+    <string name="genres_format">ז\'אנרים: %1$s</string>
 
-    <!-- חיפוש ברשת -->
+    <!-- ============== ONLINE SEARCH ============== -->
     <string name="popular_movies">סרטים פופולריים</string>
     <string name="search_results">תוצאות חיפוש</string>
     <string name="add_to_collection">הוסף לאוסף</string>
-    <string name="movie_added_to_collection">%s נוסף לאוסף שלך</string>
+    <string name="movie_added_to_collection">%1$s נוסף לאוסף שלך</string>
     <string name="no_search_results">לא נמצאו סרטים</string>
     <string name="try_different_search">נסה מילת חיפוש אחרת</string>
     <string name="no_popular_movies">אין סרטים פופולריים זמינים</string>
-    <string name="check_internet_connection">בדוק את החיבור לאינטרנט</string>
+    <string name="check_internet_connection">בדוק חיבור אינטרנט</string>
+    <string name="view_details">הצג פרטים</string>
+    <string name="add_and_edit">הוסף וערוך</string>
+    <string name="movie_added_tap_to_edit">הסרט נוסף! הקש לעריכה</string>
+    <string name="add_movie_from_tmdb">הוסף סרט מ-TMDb</string>
+    <string name="movie_from_tmdb">סרט מ-TMDb</string>
 
-    <!-- הודעות -->
+    <!-- ============== MESSAGES ============== -->
     <string name="no_results">לא נמצאו סרטים</string>
-    <string name="no_favorites_message">אין סרטים מועדפים עדיין.\nהוסף כמה סרטים למועדפים שלך!</string>
-    <string name="delete_movie_title">למחוק את \"%s\"?</string>
-    <string name="delete_movie_message">לא ניתן לבטל פעולה זו.</string>
+    <string name="no_favorites_message">אין סרטים מועדפים.\nהוסף סרטים למועדפים!</string>
+    <string name="no_movies_message">אין סרטים באוסף</string>
+    <string name="add_first_movie">הוסף את הסרט הראשון</string>
+    <string name="delete_movie_title">למחוק את \"%1$s\"?</string>
+    <string name="delete_movie_message">האם אתה בטוח שברצונך למחוק סרט זה?</string>
     <string name="no_description_available">אין תיאור זמין</string>
+    <string name="no_data_available">אין נתונים זמינים</string>
 
-    <!-- פרטי סרט -->
+    <!-- ============== MOVIE DETAILS ============== -->
     <string name="cast_title">שחקנים</string>
     <string name="synopsis_title">תקציר</string>
 
-    <!-- כללי -->
+    <!-- ============== GENERAL ============== -->
     <string name="unknown">לא ידוע</string>
     <string name="not_available">לא זמין</string>
 
-    <!-- מסך הגדרות -->
+    <!-- ============== SETTINGS SCREEN ============== -->
     <string name="app_statistics">סטטיסטיקות אפליקציה</string>
-    <string name="total_movies_count">סך הכל סרטים: %d</string>
-    <string name="favorite_movies_count">סרטים מועדפים: %d</string>
+    <string name="total_movies_count">סך כל הסרטים: %1$d</string>
+    <string name="favorite_movies_count">סרטים מועדפים: %1$d</string>
     <string name="display_settings">הגדרות תצוגה</string>
-    <string name="theme_mode">מצב ערכת נושא</string>
-    <string name="theme_system">ברירת מחדל של המערכת</string>
+    <string name="theme_mode">מצב תצוגה</string>
+    <string name="theme_system">ברירת מחדל מערכת</string>
     <string name="theme_light">בהיר</string>
     <string name="theme_dark">כהה</string>
     <string name="language_setting">שפה</string>
-    <string name="language_system">ברירת מחדל של המערכת</string>
+    <string name="language_system">ברירת מחדל מערכת</string>
     <string name="language_english">English</string>
     <string name="language_hebrew">עברית</string>
-    <string name="app_behavior">התנהגות אפליקציה</string>
-    <string name="default_sort_order">סדר מיון ברירת מחדל</string>
-    <string name="sort_by_title">מיון לפי שם</string>
-    <string name="sort_by_rating">מיון לפי דירוג</string>
-    <string name="sort_by_year">מיון לפי שנה</string>
-    <string name="sort_by_date_added">מיון לפי תאריך הוספה</string>
-    <string name="auto_refresh_online">רענון אוטומטי של נתונים ברשת</string>
+    <string name="app_behavior">התנהגות האפליקציה</string>
+    <string name="default_sort_order">סדר מיון ברירת-מחדל</string>
+    <string name="sort_by_title">לפי שם</string>
+    <string name="sort_by_rating">לפי דירוג</string>
+    <string name="sort_by_year">לפי שנה</string>
+    <string name="sort_by_date_added">לפי תאריך הוספה</string>
+    <string name="auto_refresh_online">רענון אוטומטי של נתונים אונליין</string>
     <string name="data_management">ניהול נתונים</string>
     <string name="export_data">ייצוא נתונים</string>
     <string name="import_data">ייבוא נתונים</string>
-    <string name="clear_all_data">מחיקת כל הנתונים</string>
+    <string name="clear_all_data">מחק את כל הנתונים</string>
     <string name="about_section">אודות</string>
-    <string name="about_app">אודות הקולנוע שלי</string>
-    <string name="language_change_title">השפה שונתה</string>
-    <string name="language_change_message">האפליקציה צריכה להפעיל מחדש כדי להחיל את שינוי השפה</string>
+    <string name="about_app">אודות MyCinema</string>
+    <string name="about_message">MyCinema v1.0\nמנהל אוסף הסרטים האישי שלך</string>
+    <string name="language_change_title">השפה עודכנה</string>
+    <string name="language_change_message">היישום יופעל מחדש כדי להחיל את השפה החדשה</string>
     <string name="restart_now">הפעל מחדש עכשיו</string>
-    <string name="restart_later">הפעל מחדש מאוחר יותר</string>
-    <string name="clear_database_title">מחיקת מאגר נתונים</string>
-    <string name="clear_database_message">פעולה זו תמחק את כל הסרטים שלך. לא ניתן לבטל פעולה זו.</string>
-    <string name="database_cleared_title">מאגר הנתונים נמחק</string>
-    <string name="database_cleared_message">כל הסרטים נמחקו מהאוסף שלך.</string>
-    <string name="about_message">הקולנוע שלי גרסה 1.0\n\nמנהל אוסף סרטים אישי שנבנה ב-Android.\n\nתכונות:\n• אוסף סרטים מקומי\n• חיפוש סרטים ברשת\n• ניהול מועדפים\n• סינון מתקדם</string>
-    <string name="feature_not_implemented">תכונה לא זמינה</string>
-    <string name="feature_coming_soon">תכונת %s תגיע בקרוב בעדכונים עתידיים!</string>
+    <string name="restart_later">אולי אחר-כך</string>
+    <string name="clear_database_title">ניקוי מסד נתונים</string>
+    <string name="clear_database_message">כל הסרטים יימחקו. להמשיך?</string>
+    <string name="database_cleared_title">המסד נוקה</string>
+    <string name="database_cleared_message">כל הסרטים נמחקו</string>
+    <string name="feature_not_implemented">הפיצ\'ר טרם מיושם</string>
+    <string name="feature_coming_soon">הפיצ\'ר %1$s יתווסף בקרוב!</string>
     <string name="export_feature">ייצוא נתונים</string>
-    <string name="import_feature">ייבוא נתונים</string>
+    <string name="import_feature">ייבוא</string>
 
-    <!-- מסך סטטיסטיקות -->
+    <!-- ============== STATISTICS SCREEN ============== -->
     <string name="collection_overview">סקירת האוסף</string>
     <string name="favorite_statistics">סטטיסטיקות מועדפים</string>
-    <string name="genre_breakdown">פירוט לפי ז\'אנר</string>
-    <string name="top_rated_movies">סרטים בדירוג הגבוה ביותר</string>
-    <string name="rating_distribution">חלוקת דירוגים</string>
-    <string name="yearly_breakdown">סרטים לפי שנה</string>
-    <string name="collection_insights">תובנות האוסף</string>
+    <string name="genre_breakdown">התפלגות ז\'אנרים</string>
+    <string name="top_rated_movies">הסרטים המדורגים ביותר</string>
+    <string name="rating_distribution">התפלגות דירוגים</string>
+    <string name="yearly_breakdown">סרטים לפי שנים</string>
+    <string name="collection_insights">תובנות על האוסף</string>
     <string name="average_rating">דירוג ממוצע: %.1f</string>
-    <string name="total_duration">משך כולל: %d דקות</string>
-    <string name="total_hours">סך הכל שעות: %.1f שעות</string>
-    <string name="movies_this_decade">סרטים משנות ה-2020: %d</string>
-    <string name="oldest_movie">הסרט הוותיק ביותר: %s (%d)</string>
-    <string name="newest_movie">הסרט החדש ביותר: %s (%d)</string>
-    <string name="most_common_genre">הז\'אנר הנפוץ ביותר: %s</string>
-    <string name="no_data_available">אין נתונים זמינים</string>
+    <string name="total_duration">אורך כולל: %1$d דקות</string>
+    <string name="total_hours">סה״כ שעות: %.1f</string>
+    <string name="movies_this_decade">סרטים משנות ה-2020: %1$d</string>
+    <string name="most_common_genre">הז\'אנר הנפוץ: %1$s</string>
     <string name="refresh_statistics">רענן סטטיסטיקות</string>
 
-    <!-- נתוני סרטים לדוגמה -->
-    <string name="sample_movie_inception_title">התחלה</string>
-    <string name="sample_inception_actors">ליאונרדו דיקפריו, ג\'וזף גורדון-לויט, אלן פייג\', טום הרדי</string>
-    <string name="sample_inception_director">כריסטופר נולן</string>
+    <!-- ============== HOME SCREEN ============== -->
+    <string name="quick_start_guide">מדריך התחלה מהירה</string>
+    <string name="quick_start_instructions">• דפדף באוסף שלך\n• הוסף סרטים ידנית או חפש אונליין\n• סמן מועדפים\n• הצג סטטיסטיקות וניהול הגדרות</string>
+    <string name="updated_quick_start_instructions">• דפדף באוסף\n• הוסף סרטים או חפש אונליין\n• סמן מועדפים\n• בדוק קולנועים בסביבה\n• סטטיסטיקות והגדרות</string>
 
-    <string name="sample_movie_shawshank_title">הגאולה בשושנק</string>
-    <string name="sample_shawshank_actors">טים רובינס, מורגן פרימן, בוב גונטון</string>
+    <!-- ============== FORMATTING FIXES ============== -->
+    <string name="newest_movie" formatted="false">החדש ביותר: %1$s (%2$d)</string>
+    <string name="oldest_movie" formatted="false">הישן ביותר: %1$s (%2$d)</string>
+
+    <!-- ============== SAMPLE MOVIES ============== -->
+    <string name="sample_movie_inception_title">Inception</string>
+    <string name="sample_inception_actors">ליאונרדו דיקפריו, מריון קוטיאר, אלן פייג\'</string>
+    <string name="sample_inception_director">כריסטופר נולאן</string>
+    <string name="inception_description">גנב שחודר לחלומות כדי לגנוב סודות תאגידיים מקבל משימה הפוכה – לשתול רעיון במוחו של מנכ״ל.</string>
+
+    <string name="sample_movie_shawshank_title">The Shawshank Redemption</string>
+    <string name="sample_shawshank_actors">טים רובינס, מורגן פרימן</string>
     <string name="sample_shawshank_director">פרנק דרבונט</string>
+    <string name="shawshank_description">שני אסירים מפתחים חברות ארוכת שנים ומוצאים תקווה וגאולה דרך מעשי נדיבות הדדיים.</string>
 
-    <string name="sample_movie_dark_knight_title">האביר האפל</string>
-    <string name="sample_dark_knight_actors">כריסטיאן בייל, היית\' לדג\'ר, אהרון אקהרט, מגי ג\'ילנהול</string>
-    <string name="sample_dark_knight_director">כריסטופר נולן</string>
+    <string name="sample_movie_dark_knight_title">The Dark Knight</string>
+    <string name="sample_dark_knight_director">כריסטופר נולאן</string>
 
-    <!-- תיאורי סרטים לדוגמה -->
-    <string name="inception_description">דום קוב הוא גנב מיומן הגונב סודות תאגידיים באמצעות טכנולוגיית חלימה משותפת ומקבל את המשימה ההפוכה של השתלת רעיון במוחו של מנכ\"ל.</string>
-    <string name="shawshank_description">שני אסירים יוצרים קשר במשך מספר שנים, מוצאים נחמה וגאולה בסופו של דבר באמצעות מעשים של הגינות משותפת.</string>
-    <string name="dark_knight_description">כאשר האיום הידוע בשם הג\'וקר זורע הרס וכאוס על תושבי גות\'אם, באטמן חייב לקבל את אחד המבחנים הפסיכולוגיים והפיזיים הגדולים ביותר ביכולתו להילחם בעוול.</string>
-    <string name="view_details">הצג פרטים</string>
-    <string name="add_and_edit">הוסף וערוך</string>
-    <string name="movie_added_tap_to_edit">הסרט נוסף! תוכל לערוך אותו מהאוסף שלך.</string>
-    <string name="add_movie_from_tmdb">הוספת סרט מ-TMDB</string>
-    <string name="movie_from_tmdb">סרט זה יובא מ-TMDB</string>
+    <!-- ============== CINEMA FEATURES ============== -->
+    <string name="distance_format">%.1f ק״מ</string>
+    <string name="open">פתוח</string>
+    <string name="closed">סגור</string>
+    <string name="cinemas_found">נמצאו %1$d בתי קולנוע</string>
+    <string name="no_cinemas_nearby">לא נמצאו קולנועים בקרבת מקום</string>
+    <string name="try_different_location_or_increase_radius">נסה מיקום אחר או הגדל רדיוס</string>
+    <string name="showtimes_count">%1$d זמני הקרנה</string>
+    <string name="movie">סרט</string>
+    <string name="time">שעה</string>
+    <string name="price">מחיר</string>
+    <string name="booking_info">פרטי הזמנה</string>
+    <string name="call_to_book">התקשר להזמנה</string>
+    <string name="price_format">₪%1$s</string>
+    <string name="available">זמין</string>
+    <string name="sold_out">אזל</string>
+    <string name="navigate">ניווט</string>
+    <string name="call">התקשר</string>
+    <string name="website">אתר</string>
+    <string name="showtimes">זמני הקרנה</string>
+    <string name="no_showtimes_available">אין זמני הקרנה זמינים</string>
+    <string name="check_back_later_for_updates">בדוק שוב מאוחר יותר</string>
+    <string name="location_permission_required_for_distance">נדרשת הרשאת מיקום לחישוב מרחק</string>
+    <string name="map_view">תצוגת מפה</string>
+
+    <!-- ============== CINEMA LOCATIONS ============== -->
+    <string name="list_view">תצוגת רשימה</string>
+    <string name="refresh_location">רענן מיקום</string>
+    <string name="my_location">המיקום שלי</string>
+    <string name="cinema_locations_menu">מפת בתי קולנוע</string>
+    <string name="details">פרטים</string>
+    <string name="cinema_locations">בתי קולנוע</string>
+    <string name="nearby_cinemas">קולנועים בסביבה</string>
+    <string name="cinema_details">פרטי קולנוע</string>
+    <string name="view_showtimes">הצג זמני הקרנה</string>
+    <string name="rating">דירוג</string>
+    <string name="phone">טלפון</string>
+
+    <!-- ============== LOCATION PERMISSIONS ============== -->
+    <string name="location_permission_title">נדרשת הרשאת מיקום</string>
+    <string name="location_permission_rationale">כדי למצוא קולנועים קרובים ולהציג את מיקומך במפה, נחוצה הרשאת מיקום</string>
+    <string name="grant_permission">אפשר הרשאה</string>
+    <string name="location_permission_denied_title">ההרשאה נדחתה</string>
+    <string name="location_permission_denied_message">ללא הרשאת מיקום לא ניתן להציג קולנועים קרובים. ניתן להפעיל בהגדרות.</string>
+
+    <!-- ============== MAP & CINEMA STRINGS ============== -->
+    <string name="show_on_map">הצג במפה</string>
+    <string name="cinema_location">מיקום קולנוע</string>
+    <string name="directions">הוראות הגעה</string>
+    <string name="call_cinema">התקשר לקולנוע</string>
+    <string name="visit_website">ביקור באתר</string>
+    <string name="km">ק״מ</string>
+    <string name="meters">מ\'</string>
+    <string name="away">מרחק</string>
+
+    <!-- ============== MAP SPECIFIC ============== -->
+    <string name="map_loading">טוען מפה…</string>
+    <string name="map_error">שגיאה בטעינת מפה</string>
+    <string name="satellite_view">תצוגת לוויין</string>
+    <string name="terrain_view">תצוגת שטח</string>
+    <string name="normal_view">תצוגה רגילה</string>
+    <string name="zoom_in">התקרב</string>
+    <string name="zoom_out">התרחק</string>
+    <string name="center_on_location">מרכז על מיקום</string>
+
+    <!-- ============== GENERAL UI ============== -->
+    <string name="loading">טוען…</string>
+    <string name="error">שגיאה</string>
+    <string name="retry">נסה שוב</string>
+    <string name="cancel">בטל</string>
+    <string name="ok">אישור</string>
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+    <string name="back">חזרה</string>
+    <string name="next">הבא</string>
+    <string name="previous">הקודם</string>
+    <string name="done">סיום</string>
+    <string name="save">שמור</string>
+    <string name="edit">ערוך</string>
+    <string name="share">שתף</string>
+    <string name="close">סגור</string>
+    <string name="show">הצג</string>
+    <string name="hide">הסתר</string>
+    <string name="expand">הרחב</string>
+    <string name="collapse">כווץ</string>
+    <string name="select">בחר</string>
+    <string name="selected">נבחר</string>
+    <string name="deselect">בטל בחירה</string>
+    <string name="enable">אפשר</string>
+    <string name="disable">נטרל</string>
+    <string name="enabled">מאופשר</string>
+    <string name="disabled">מנוטרל</string>
+
+    <!-- ============== ADDITIONAL USEFUL ============== -->
+    <string name="distance">מרחק</string>
+    <string name="address">כתובת</string>
+    <string name="hours">שעות</string>
+    <string name="contact">יצירת קשר</string>
+    <string name="information">מידע</string>
+    <string name="description">תיאור</string>
+    <string name="overview">סקירה</string>
+    <string name="summary">תקציר</string>
+    <string name="details_full">פרטים</string>
+    <string name="more_info">מידע נוסף</string>
+    <string name="less_info">פחות מידע</string>
+
+    <!-- ============== STATUS MESSAGES ============== -->
+    <string name="loading_cinemas">טוען קולנועים…</string>
+    <string name="no_cinemas_found">לא נמצאו קולנועים באזור</string>
+    <string name="searching_cinemas">מחפש קולנועים…</string>
+    <string name="location_updated">המיקום עודכן</string>
+    <string name="location_not_available">המיקום לא זמין</string>
+    <string name="permission_granted">ההרשאה אושרה</string>
+    <string name="permission_denied">ההרשאה נדחתה</string>
+
+    <!-- ============== EMPTY STATES ============== -->
+    <string name="empty_list">אין מה להציג</string>
+    <string name="empty_search">לא נמצאו תוצאות</string>
+    <string name="empty_favorites">אין מועדפים עדיין</string>
+
+    <!-- ============== NETWORK STATES ============== -->
+    <string name="network_error">שגיאת רשת</string>
+    <string name="no_internet">אין חיבור אינטרנט</string>
+    <string name="connection_timeout">תם זמן החיבור</string>
+
+    <!-- ============== CINEMA STATUS ============== -->
+    <string name="cinema_open">פתוח</string>
+    <string name="cinema_closed">סגור</string>
+    <string name="opening_soon">ייפתח בקרוב</string>
+    <string name="closing_soon">ייסגר בקרוב</string>
+    <string name="check_hours">בדוק שעות</string>
+
+    <!-- ============== RATING STRINGS ============== -->
+    <string name="excellent_rating">מצוין</string>
+    <string name="good_rating">טוב</string>
+    <string name="average_rating_value">ממוצע</string>
+    <string name="poor_rating">נמוך</string>
+    <string name="no_rating">אין דירוג</string>
+    <string name="rate_this_cinema">דרג קולנוע זה</string>
+
+    <!-- ============== ACTION BUTTONS ============== -->
+    <string name="get_directions">קבל הוראות</string>
+    <string name="call_now">התקשר עכשיו</string>
+    <string name="visit_site">בקר באתר</string>
+    <string name="book_ticket">הזמן כרטיס</string>
+    <string name="share_location">שתף מיקום</string>
+    <string name="add_to_favorites">הוסף למועדפים</string>
+    <string name="remove_from_favorites">הסר ממועדפים</string>
+
+    <!-- ============== FORMATTED STRINGS ============== -->
+    <string name="rating_out_of_10">%.1f/10</string>
+    <string name="rating_out_of_5">%.1f/5</string>
+    <string name="duration_minutes">%1$d דק\'</string>
+    <string name="duration_hours_minutes">%1$d ש\' %2$d דק\'</string>
+    <string name="movie_count">%1$d סרטים</string>
+    <string name="cinema_count">%1$d קולנועים</string>
+    <string name="review_count">%1$d ביקורות</string>
+    <string name="meters_away">%d מטרים</string>
+    <string name="km_away_format">%.1f ק״מ</string>
+    <string name="very_close">קרוב מאוד</string>
+    <string name="nearby">בקרבת מקום</string>
+    <string name="far">רחוק</string>
+
+    <!-- ============== MISC ============== -->
+    <string name="tap_for_details">הקש לפרטים</string>
+    <string name="swipe_for_more">החלק לעוד</string>
+    <string name="pull_to_refresh">משוך לרענון</string>
+    <string name="double_tap_to_zoom">הקש פעמיים להתקרבות</string>
+    <string name="pinch_to_zoom">צביטה להתקרבות</string>
+
+    <!-- ============== GENRE ARRAY ============== -->
+    <string-array name="movie_genres" tools:ignore="InconsistentArrays">
+        <item>@string/genre_action</item>
+        <item>@string/genre_adventure</item>
+        <item>@string/genre_animation</item>
+        <item>@string/genre_comedy</item>
+        <item>@string/genre_crime</item>
+        <item>דוקומנטרי</item>
+        <item>@string/genre_drama</item>
+        <item>משפחה</item>
+        <item>פנטזיה</item>
+        <item>היסטוריה</item>
+        <item>@string/genre_horror</item>
+        <item>מוזיקה</item>
+        <item>מסתורין</item>
+        <item>@string/genre_romance</item>
+        <item>@string/genre_sci_fi</item>
+        <item>@string/genre_thriller</item>
+        <item>מלחמה</item>
+        <item>מערבון</item>
+    </string-array>
+
 </resources>

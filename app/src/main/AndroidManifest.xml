@@ -2,21 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- הרשאות -->
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <!-- הרשאות אופציונליות לשיפור חווית המשתמש -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
-    <!-- Features -->
-    <uses-feature
-        android:name="android.hardware.screen.portrait"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.screen.landscape"
-        android:required="false" />
-
+    <!-- Google Maps API Key -->
     <application
         android:name=".MyCinemaApplication"
         android:allowBackup="true"
@@ -27,62 +19,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCinema"
-        android:usesCleartextTraffic="false"
-        android:hardwareAccelerated="true"
-        android:largeHeap="true"
         tools:targetApi="31">
 
-        <!-- Main Activity -->
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}" />
+
+        <!-- Google Play Services Version -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:configChanges="orientation|screenSize|keyboardHidden|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/Theme.MyCinema">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <!-- App Links לפתיחת סרטים מקישורים -->
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="https"
-                    android:host="mycinema.app"
-                    android:pathPrefix="/movie" />
-            </intent-filter>
         </activity>
 
-
-        <!-- הגדרות רשת -->
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
     </application>
-
-    <!-- שאילתות לאפליקציות חיצוניות (Android 11+) -->
-    <queries>
-        <!-- לפתיחת דפדפן -->
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="https" />
-        </intent>
-
-        <!-- לשיתוף תוכן -->
-        <intent>
-            <action android:name="android.intent.action.SEND" />
-            <data android:mimeType="text/plain" />
-        </intent>
-
-        <!-- ליוטיוב (לטריילרים) -->
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="vnd.youtube" />
-        </intent>
-    </queries>
 
 </manifest>

@@ -1,3 +1,4 @@
+// HomeFragment.kt - עדכון
 package com.example.mycinema.fragments
 
 import android.os.Bundle
@@ -39,6 +40,11 @@ class HomeFragment : Fragment() {
         // חיפוש אונליין
         binding.btnSearchOnline.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_searchOnline)
+        }
+
+        // מיקומי הקרנות - NEW FEATURE!
+        binding.btnCinemaLocations.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_cinemaLocations)
         }
 
         // הגדרות אפליקציה

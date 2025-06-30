@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- App -->
-    <string name="app_name">MyCinema</string>
+    <!-- ============== BASIC APP ============== -->
+    <string name="app_name">My Cinema</string>
     <string name="app_version">Version 1.0</string>
-
-    <!-- Home Screen -->
     <string name="welcome_title">Welcome to MyCinema</string>
     <string name="welcome_subtitle">Your personal movie collection manager</string>
-    <string name="my_collection">My Collection</string>
-    <string name="search_online">Search Online</string>
-    <string name="quick_start_guide">Quick Start Guide</string>
-    <string name="quick_start_instructions">• Browse your collection\n• Add movies manually or search online\n• Mark favorites with the star button\n• View detailed statistics and manage settings</string>
 
-    <!-- Navigation -->
+    <!-- ============== NAVIGATION ============== -->
+    <string name="my_collection">My Collection</string>
+    <string name="all_movies">All Movies</string>
     <string name="favorites">Favorites</string>
     <string name="movie_details">Movie Details</string>
     <string name="add_edit_movie">Add/Edit Movie</string>
-    <string name="all_movies">All Movies</string>
     <string name="settings">Settings</string>
     <string name="statistics">Statistics</string>
     <string name="settings_title">Settings</string>
     <string name="statistics_title">Statistics</string>
+    <string name="search_online">Search Online</string>
+    <string name="search_online_title">Search Movies Online</string>
 
-    <!-- Movie Fields -->
+    <!-- ============== MOVIE FIELDS ============== -->
     <string name="movie_title_label">Movie Title</string>
     <string name="description_label">Description</string>
     <string name="genre_label">Genre:</string>
@@ -39,12 +36,12 @@
     <string name="showtime_label">Showtime:</string>
     <string name="showtime_label_input">Showtime</string>
 
-    <!-- Genres -->
+    <!-- ============== GENRES ============== -->
     <string name="genre_action">Action</string>
     <string name="genre_comedy">Comedy</string>
     <string name="genre_drama">Drama</string>
     <string name="genre_horror">Horror</string>
-    <string name="genre_sci_fi">Sci-Fi</string>
+    <string name="genre_sci_fi">Science Fiction</string>
     <string name="genre_romance">Romance</string>
     <string name="genre_thriller">Thriller</string>
     <string name="genre_animation">Animation</string>
@@ -52,7 +49,7 @@
     <string name="genre_adventure">Adventure</string>
     <string name="genre_musical">Musical</string>
 
-    <!-- Actions -->
+    <!-- ============== ACTIONS ============== -->
     <string name="add_movie">Add Movie</string>
     <string name="add_movie_title">Add New Movie</string>
     <string name="edit_movie_title">Edit Movie</string>
@@ -64,10 +61,9 @@
     <string name="select_year">Select Year</string>
     <string name="select_date">Select Date</string>
 
-    <!-- Search & Filter -->
+    <!-- ============== SEARCH & FILTERS ============== -->
     <string name="search_movies">Search movies…</string>
     <string name="search_movies_online">Search movies online…</string>
-    <string name="search_online_title">Search Online Movies</string>
     <string name="clear_filters">Clear Filters</string>
     <string name="filters_cleared">Filters cleared</string>
     <string name="genre_select">Select Genre</string>
@@ -76,7 +72,7 @@
     <string name="rating_format">Rating: %1$s</string>
     <string name="genres_format">Genres: %1$s</string>
 
-    <!-- Online Search -->
+    <!-- ============== ONLINE SEARCH ============== -->
     <string name="popular_movies">Popular Movies</string>
     <string name="search_results">Search Results</string>
     <string name="add_to_collection">Add to Collection</string>
@@ -85,26 +81,34 @@
     <string name="try_different_search">Try a different search term</string>
     <string name="no_popular_movies">No popular movies available</string>
     <string name="check_internet_connection">Check your internet connection</string>
+    <string name="view_details">View Details</string>
+    <string name="add_and_edit">Add and Edit</string>
+    <string name="movie_added_tap_to_edit">Movie added! Tap to edit details</string>
+    <string name="add_movie_from_tmdb">Add Movie from TMDb</string>
+    <string name="movie_from_tmdb">Movie from TMDb</string>
 
-    <!-- Messages -->
+    <!-- ============== MESSAGES ============== -->
     <string name="no_results">No movies found</string>
     <string name="no_favorites_message">No favorite movies yet.\nAdd some movies to your favorites!</string>
+    <string name="no_movies_message">No movies in your collection</string>
+    <string name="add_first_movie">Add your first movie</string>
     <string name="delete_movie_title">Delete "%1$s"?</string>
-    <string name="delete_movie_message">This action cannot be undone.</string>
+    <string name="delete_movie_message">Are you sure you want to delete this movie?</string>
     <string name="no_description_available">No description available</string>
+    <string name="no_data_available">No data available</string>
 
-    <!-- Movie Details -->
+    <!-- ============== MOVIE DETAILS ============== -->
     <string name="cast_title">Cast</string>
     <string name="synopsis_title">Synopsis</string>
 
-    <!-- Common -->
+    <!-- ============== GENERAL ============== -->
     <string name="unknown">Unknown</string>
     <string name="not_available">N/A</string>
 
-    <!-- Settings Screen -->
+    <!-- ============== SETTINGS SCREEN ============== -->
     <string name="app_statistics">App Statistics</string>
-    <string name="total_movies_count">Total Movies: %d</string>
-    <string name="favorite_movies_count">Favorite Movies: %d</string>
+    <string name="total_movies_count">Total Movies: %1$d</string>
+    <string name="favorite_movies_count">Favorite Movies: %1$d</string>
     <string name="display_settings">Display Settings</string>
     <string name="theme_mode">Theme Mode</string>
     <string name="theme_system">System Default</string>
@@ -120,70 +124,257 @@
     <string name="sort_by_rating">Sort by Rating</string>
     <string name="sort_by_year">Sort by Year</string>
     <string name="sort_by_date_added">Sort by Date Added</string>
-    <string name="auto_refresh_online">Auto Refresh Online Data</string>
+    <string name="auto_refresh_online">Auto refresh online data</string>
     <string name="data_management">Data Management</string>
     <string name="export_data">Export Data</string>
     <string name="import_data">Import Data</string>
     <string name="clear_all_data">Clear All Data</string>
     <string name="about_section">About</string>
     <string name="about_app">About MyCinema</string>
+    <string name="about_message">MyCinema v1.0\nYour personal movie collection manager</string>
     <string name="language_change_title">Language Changed</string>
-    <string name="language_change_message">App needs to restart to apply language change</string>
+    <string name="language_change_message">The app needs to restart to apply the language change</string>
     <string name="restart_now">Restart Now</string>
     <string name="restart_later">Restart Later</string>
     <string name="clear_database_title">Clear Database</string>
-    <string name="clear_database_message">This will delete all your movies. This action cannot be undone.</string>
+    <string name="clear_database_message">This will delete all movies. Are you sure?</string>
     <string name="database_cleared_title">Database Cleared</string>
-    <string name="database_cleared_message">All movies have been deleted from your collection.</string>
-    <string name="about_message">MyCinema v1.0\n\nA personal movie collection manager built with Android.\n\nFeatures:\n• Local movie collection\n• Online movie search\n• Favorites management\n• Advanced filtering</string>
-    <string name="feature_not_implemented">Feature Not Available</string>
-    <string name="feature_coming_soon">%s feature is coming soon in future updates!</string>
+    <string name="database_cleared_message">All movies have been deleted</string>
+    <string name="feature_not_implemented">Feature Not Implemented</string>
+    <string name="feature_coming_soon">%1$s feature is coming soon!</string>
     <string name="export_feature">Export Data</string>
-    <string name="import_feature">Import Data</string>
+    <string name="import_feature">Import Feature</string>
 
-    <!-- Statistics Screen -->
+    <!-- ============== STATISTICS SCREEN ============== -->
     <string name="collection_overview">Collection Overview</string>
-    <string name="favorite_statistics">Favorites Statistics</string>
+    <string name="favorite_statistics">Favorite Statistics</string>
     <string name="genre_breakdown">Genre Breakdown</string>
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="rating_distribution">Rating Distribution</string>
     <string name="yearly_breakdown">Movies by Year</string>
     <string name="collection_insights">Collection Insights</string>
     <string name="average_rating">Average Rating: %.1f</string>
-    <string name="total_duration">Total Duration: %d minutes</string>
+    <string name="total_duration">Total Duration: %1$d minutes</string>
     <string name="total_hours">Total Hours: %.1f hours</string>
-    <string name="movies_this_decade">Movies from 2020s: %d</string>
-    <string name="oldest_movie">Oldest Movie: %s (%d)</string>
-    <string name="newest_movie">Newest Movie: %s (%d)</string>
-    <string name="most_common_genre">Most Common Genre: %s</string>
-    <string name="no_data_available">No data available</string>
+    <string name="movies_this_decade">Movies from 2020s: %1$d</string>
+    <string name="most_common_genre">Most Common Genre: %1$s</string>
     <string name="refresh_statistics">Refresh Statistics</string>
 
-    <!-- Sample Movie Data -->
+    <!-- ============== HOME SCREEN ============== -->
+    <string name="quick_start_guide">Quick Start Guide</string>
+    <string name="quick_start_instructions">• Browse your collection\n• Add movies manually or search online\n• Mark favorites with the star button\n• View detailed statistics and manage settings</string>
+    <string name="updated_quick_start_instructions">• Browse your collection\n• Add movies manually or search online\n• ★ mark favorites\n• Check nearby cinemas from the menu\n• View stats &amp; settings</string>
+
+    <!-- ============== FORMATTING FIXES ============== -->
+    <string name="newest_movie" formatted="false">Newest: %1$s (%2$d)</string>
+    <string name="oldest_movie" formatted="false">Oldest: %1$s (%2$d)</string>
+
+    <!-- ============== SAMPLE MOVIES ============== -->
     <string name="sample_movie_inception_title">Inception</string>
-    <string name="sample_inception_actors">Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Tom Hardy</string>
+    <string name="sample_inception_actors">Leonardo DiCaprio, Marion Cotillard, Ellen Page</string>
     <string name="sample_inception_director">Christopher Nolan</string>
+    <string name="inception_description">A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.</string>
 
     <string name="sample_movie_shawshank_title">The Shawshank Redemption</string>
-    <string name="sample_shawshank_actors">Tim Robbins, Morgan Freeman, Bob Gunton</string>
+    <string name="sample_shawshank_actors">Tim Robbins, Morgan Freeman</string>
     <string name="sample_shawshank_director">Frank Darabont</string>
+    <string name="shawshank_description">Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.</string>
 
     <string name="sample_movie_dark_knight_title">The Dark Knight</string>
-    <string name="sample_dark_knight_actors">Christian Bale, Heath Ledger, Aaron Eckhart, Maggie Gyllenhaal</string>
+<!--    <string name="sample_dark_knight_actors">Christian Bale, Heath Ledger, Aaron Eckhart</string>-->
     <string name="sample_dark_knight_director">Christopher Nolan</string>
+<!--    <string name="dark_knight_description">When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.</string>-->
 
-    <!-- Sample Descriptions -->
-    <string name="inception_description">Dom Cobb is a skilled thief who steals corporate secrets through dream-sharing technology…</string>
-    <string name="shawshank_description">Two imprisoned men bond over a number of years…</string>
-    <string name="dark_knight_description">When the menace known as the Joker wreaks havoc on Gotham…</string>
-    <!-- Movie Options -->
-    <string name="view_details">View Details</string>
-    <string name="add_and_edit">Add and Edit</string>
-    <string name="movie_added_tap_to_edit">Movie added! You can edit it from your collection.</string>
-    <string name="add_movie_from_tmdb">Add Movie from TMDB</string>
-    <string name="movie_from_tmdb">This movie was imported from TMDB</string>
+    <!-- ============== CINEMA FEATURES ============== -->
+    <string name="distance_format">%.1f km</string>
+    <string name="open">Open</string>
+    <string name="closed">Closed</string>
+    <string name="cinemas_found">%1$d cinemas found</string>
+    <string name="no_cinemas_nearby">No cinemas nearby</string>
+    <string name="try_different_location_or_increase_radius">Try a different location or increase radius</string>
+    <string name="showtimes_count">%1$d showtimes available</string>
+    <string name="movie">Movie</string>
+    <string name="time">Time</string>
+    <string name="price">Price</string>
+    <string name="booking_info">Booking Information</string>
+    <string name="call_to_book">Call to Book</string>
+    <string name="price_format">₪%1$s</string>
+    <string name="available">Available</string>
+    <string name="sold_out">Sold Out</string>
+    <string name="navigate">Navigate</string>
+    <string name="call">Call</string>
+    <string name="website">Website</string>
+    <string name="showtimes">Showtimes</string>
+    <string name="no_showtimes_available">No showtimes available</string>
+    <string name="check_back_later_for_updates">Check back later for updates</string>
+    <string name="location_permission_required_for_distance">Location permission required for distance calculation</string>
+    <string name="map_view">Map View</string>
 
-    <!-- Navigation additions -->
-    <string name="action_searchOnline_to_addEditMovie">action_searchOnline_to_addEditMovie</string>
+    <!-- ============== CINEMA LOCATIONS ============== -->
+    <string name="list_view">List View</string>
+    <string name="refresh_location">Refresh Location</string>
+    <string name="my_location">My Location</string>
+    <string name="cinema_locations_menu">Cinema Locations</string>
+    <string name="details">Details</string>
+    <string name="cinema_locations">Cinema Locations</string>
+    <string name="nearby_cinemas">Nearby Cinemas</string>
+    <string name="cinema_details">Cinema Details</string>
+    <string name="view_showtimes">View Showtimes</string>
+    <string name="rating">Rating</string>
+    <string name="phone">Phone</string>
+
+    <!-- ============== LOCATION PERMISSIONS ============== -->
+    <string name="location_permission_title">Location Permission Required</string>
+    <string name="location_permission_rationale">Location permission is needed to find nearby cinemas and show your current location on the map</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="location_permission_denied_title">Location Permission Denied</string>
+    <string name="location_permission_denied_message">Without location permission, we cannot show nearby cinemas or your current location. You can enable it later in app settings.</string>
+
+    <!-- ============== MAP & CINEMA STRINGS ============== -->
+    <string name="show_on_map">Show on Map</string>
+    <string name="cinema_location">Cinema Location</string>
+    <string name="directions">Directions</string>
+    <string name="call_cinema">Call Cinema</string>
+    <string name="visit_website">Visit Website</string>
+    <string name="km">km</string>
+    <string name="meters">m</string>
+    <string name="away">away</string>
+
+    <!-- ============== MAP SPECIFIC ============== -->
+    <string name="map_loading">Loading map...</string>
+    <string name="map_error">Error loading map</string>
+    <string name="satellite_view">Satellite View</string>
+    <string name="terrain_view">Terrain View</string>
+    <string name="normal_view">Normal View</string>
+    <string name="zoom_in">Zoom In</string>
+    <string name="zoom_out">Zoom Out</string>
+    <string name="center_on_location">Center on Location</string>
+
+    <!-- ============== GENERAL UI ============== -->
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="done">Done</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="share">Share</string>
+    <string name="close">Close</string>
+    <string name="show">Show</string>
+    <string name="hide">Hide</string>
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
+    <string name="select">Select</string>
+    <string name="selected">Selected</string>
+    <string name="deselect">Deselect</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+
+    <!-- ============== ADDITIONAL USEFUL ============== -->
+    <string name="distance">Distance</string>
+    <string name="address">Address</string>
+    <string name="hours">Hours</string>
+    <string name="contact">Contact</string>
+    <string name="information">Information</string>
+    <string name="description">Description</string>
+    <string name="overview">Overview</string>
+    <string name="summary">Summary</string>
+    <string name="details_full">Details</string>
+    <string name="more_info">More Information</string>
+    <string name="less_info">Less Information</string>
+
+    <!-- ============== STATUS MESSAGES ============== -->
+    <string name="loading_cinemas">Loading cinemas...</string>
+    <string name="no_cinemas_found">No cinemas found in this area</string>
+    <string name="searching_cinemas">Searching for cinemas...</string>
+    <string name="location_updated">Location updated</string>
+    <string name="location_not_available">Location not available</string>
+    <string name="permission_granted">Permission granted</string>
+    <string name="permission_denied">Permission denied</string>
+
+    <!-- ============== EMPTY STATES ============== -->
+    <string name="empty_list">Nothing to show</string>
+    <string name="empty_search">No results found</string>
+    <string name="empty_favorites">No favorites yet</string>
+
+    <!-- ============== NETWORK STATES ============== -->
+    <string name="network_error">Network error</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="connection_timeout">Connection timeout</string>
+
+    <!-- ============== CINEMA STATUS ============== -->
+    <string name="cinema_open">Open</string>
+    <string name="cinema_closed">Closed</string>
+    <string name="opening_soon">Opening soon</string>
+    <string name="closing_soon">Closing soon</string>
+    <string name="check_hours">Check hours</string>
+
+    <!-- ============== RATING STRINGS ============== -->
+    <string name="excellent_rating">Excellent</string>
+    <string name="good_rating">Good</string>
+    <string name="average_rating_value">Average</string>
+    <string name="poor_rating">Poor</string>
+    <string name="no_rating">No rating</string>
+    <string name="rate_this_cinema">Rate this cinema</string>
+
+    <!-- ============== ACTION BUTTONS ============== -->
+    <string name="get_directions">Get Directions</string>
+    <string name="call_now">Call Now</string>
+    <string name="visit_site">Visit Website</string>
+    <string name="book_ticket">Book Ticket</string>
+    <string name="share_location">Share Location</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+
+    <!-- ============== FORMATTED STRINGS ============== -->
+    <string name="rating_out_of_10">%.1f/10</string>
+    <string name="rating_out_of_5">%.1f/5</string>
+    <string name="duration_minutes">%1$d min</string>
+    <string name="duration_hours_minutes">%1$dh %2$dm</string>
+    <string name="movie_count">%1$d movies</string>
+    <string name="cinema_count">%1$d cinemas</string>
+    <string name="review_count">%1$d reviews</string>
+    <string name="meters_away">%d meters away</string>
+    <string name="km_away_format">%.1f km away</string>
+    <string name="very_close">Very close</string>
+    <string name="nearby">Nearby</string>
+    <string name="far">Far</string>
+
+    <!-- ============== MISC ============== -->
+    <string name="tap_for_details">Tap for details</string>
+    <string name="swipe_for_more">Swipe for more</string>
+    <string name="pull_to_refresh">Pull to refresh</string>
+    <string name="double_tap_to_zoom">Double tap to zoom</string>
+    <string name="pinch_to_zoom">Pinch to zoom</string>
+
+    <!-- ============== GENRE ARRAY ============== -->
+    <string-array name="movie_genres" tools:ignore="InconsistentArrays">
+        <item>@string/genre_action</item>
+        <item>@string/genre_adventure</item>
+        <item>@string/genre_animation</item>
+        <item>@string/genre_comedy</item>
+        <item>@string/genre_crime</item>
+        <item>Documentary</item>
+        <item>@string/genre_drama</item>
+        <item>Family</item>
+        <item>Fantasy</item>
+        <item>History</item>
+        <item>@string/genre_horror</item>
+        <item>Music</item>
+        <item>Mystery</item>
+        <item>@string/genre_romance</item>
+        <item>@string/genre_sci_fi</item>
+        <item>@string/genre_thriller</item>
+        <item>War</item>
+        <item>Western</item>
+    </string-array>
 
 </resources>

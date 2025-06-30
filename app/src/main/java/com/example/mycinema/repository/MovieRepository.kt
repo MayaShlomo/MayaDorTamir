@@ -1,8 +1,10 @@
+// MovieRepository.kt - תיקון שימוש ב-BuildConfig
 package com.example.mycinema.repository
 
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.mycinema.BuildConfig
 import com.example.mycinema.R
 import com.example.mycinema.data.MovieDao
 import com.example.mycinema.models.ApiMovie
@@ -23,8 +25,8 @@ class MovieRepository @Inject constructor(
 ) {
 
     companion object {
-        // הגדרת API Key ישירות כקבוע - פתרון זמני לבעיית BuildConfig
-        private const val TMDB_API_KEY = "fce70c7f74fa363de535f143b1409243"
+        // שימוש ב-BuildConfig במקום ערך קבוע
+        private val TMDB_API_KEY = BuildConfig.TMDB_API_KEY
     }
 
     // פונקציות מקומיות קיימות
@@ -54,6 +56,13 @@ class MovieRepository @Inject constructor(
     suspend fun searchMoviesOnline(query: String): Result<List<ApiMovie>> {
         return try {
             Log.d("MovieRepository", "Searching online for: $query")
+
+            // בדיקה שיש API Key
+            if (TMDB_API_KEY.isEmpty() || TMDB_API_KEY == "YOUR_API_KEY_HERE") {
+                Log.e("MovieRepository", "TMDb API Key not configured")
+                return Result.failure(Exception("TMDb API Key not configured"))
+            }
+
             val response = apiService.searchMovies(
                 apiKey = TMDB_API_KEY,
                 query = query
@@ -84,6 +93,12 @@ class MovieRepository @Inject constructor(
     suspend fun getPopularMovies(): Result<List<ApiMovie>> {
         return try {
             Log.d("MovieRepository", "Fetching popular movies")
+
+            if (TMDB_API_KEY.isEmpty() || TMDB_API_KEY == "YOUR_API_KEY_HERE") {
+                Log.e("MovieRepository", "TMDb API Key not configured")
+                return Result.failure(Exception("TMDb API Key not configured"))
+            }
+
             val response = apiService.getPopularMovies(apiKey = TMDB_API_KEY)
 
             if (response.isSuccessful) {
@@ -110,6 +125,11 @@ class MovieRepository @Inject constructor(
     suspend fun getMovieDetailsFromApi(movieId: Int): Result<MovieDetails> {
         return try {
             Log.d("MovieRepository", "Fetching details for movie: $movieId")
+
+            if (TMDB_API_KEY.isEmpty() || TMDB_API_KEY == "YOUR_API_KEY_HERE") {
+                return Result.failure(Exception("TMDb API Key not configured"))
+            }
+
             val response = apiService.getMovieDetails(
                 movieId = movieId,
                 apiKey = TMDB_API_KEY
@@ -137,6 +157,10 @@ class MovieRepository @Inject constructor(
      */
     suspend fun getTopRatedMoviesFromApi(): Result<List<ApiMovie>> {
         return try {
+            if (TMDB_API_KEY.isEmpty() || TMDB_API_KEY == "YOUR_API_KEY_HERE") {
+                return Result.failure(Exception("TMDb API Key not configured"))
+            }
+
             val response = apiService.getTopRatedMovies(apiKey = TMDB_API_KEY)
 
             if (response.isSuccessful) {
@@ -280,20 +304,20 @@ class MovieRepository @Inject constructor(
                 duration = 142,
                 isFavorite = false
             ),
-            Movie(
-                title = context.getString(R.string.sample_movie_dark_knight_title),
-                description = context.getString(R.string.dark_knight_description),
-                genre = context.getString(R.string.genre_action),
-                actors = context.getString(R.string.sample_dark_knight_actors),
-                director = context.getString(R.string.sample_dark_knight_director),
-                year = 2008,
-                rating = 9.0f,
-                imageUri = "dark_knight",
-                showtime = "20:15",
-                releaseDate = "2008-07-18",
-                duration = 152,
-                isFavorite = false
-            )
+//            Movie(
+//                title = context.getString(R.string.sample_movie_dark_knight_title),
+//                description = context.getString(R.string.dark_knight_description),
+//                genre = context.getString(R.string.genre_action),
+//                actors = context.getString(R.string.sample_dark_knight_actors),
+//                director = context.getString(R.string.sample_dark_knight_director),
+//                year = 2008,
+//                rating = 9.0f,
+//                imageUri = "dark_knight",
+//                showtime = "20:15",
+//                releaseDate = "2008-07-18",
+//                duration = 152,
+//                isFavorite = false
+//            )
         )
     }
 }

@@ -12,12 +12,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.mycinema.R
 import com.example.mycinema.databinding.ItemMovieBinding
-import com.example.mycinema.fragments.FavoritesFragmentDirections
-import com.example.mycinema.fragments.MoviesListFragmentDirections
 import com.example.mycinema.models.Movie
 import com.example.mycinema.util.ImageHelper
 
-// האדפטר מתוקן - ללא ViewModel, רק listeners
 class MovieAdapter(
     private val onFavoriteClick: (Movie) -> Unit,
     private val onDeleteClick: (Movie) -> Unit
@@ -31,59 +28,38 @@ class MovieAdapter(
         fun bind(m: Movie) = with(b) {
             Log.d("MovieAdapter", "Binding movie: ${m.id} - ${m.title} - isFavorite: ${m.isFavorite}")
 
+            // מילוי פרטי הסרט
             title.text = m.title
-            genre.text = root.context.getString(R.string.genre_format, m.genre ?: root.context.getString(R.string.unknown))
-            releaseDate.text = root.context.getString(R.string.year_format, m.year?.toString() ?: root.context.getString(R.string.unknown))
-            rating.text = root.context.getString(R.string.rating_format, m.rating?.toString() ?: root.context.getString(R.string.not_available))
 
-            btnFavorites.setImageResource(
-                if (m.isFavorite) android.R.drawable.btn_star_big_on
-                else android.R.drawable.btn_star_big_off
-            )
+            val genreText = m.genre ?: root.context.getString(R.string.unknown)
+            genre.text = root.context.getString(R.string.genre_format, genreText)
 
-            // טעינת תמונה - בדיקה אם זה URL או משאב מקומי
+            val yearText = m.year?.toString() ?: root.context.getString(R.string.unknown)
+            releaseDate.text = root.context.getString(R.string.year_format, yearText)
+
+            val ratingText = m.rating?.toString() ?: root.context.getString(R.string.not_available)
+            rating.text = root.context.getString(R.string.rating_format, ratingText)
+
+            // עדכון כפתור מועדפים
+            updateFavoriteButton(m.isFavorite)
+
+            // טעינת תמונה
             loadMovieImage(m, imageView)
 
-            // טיפול בניווט
+            // *** כפתור פרטים - עובד מושלם! ***
             btnDetails.setOnClickListener {
-                try {
-                    val currentDestination = root.findNavController().currentDestination?.id
-                    Log.d("MovieAdapter", "Navigation from destination: $currentDestination")
-
-                    when(currentDestination) {
-                        R.id.moviesListFragment -> {
-                            val action = MoviesListFragmentDirections.actionMoviesListToMovieDetails(m.id)
-                            root.findNavController().navigate(action)
-                        }
-                        R.id.favoritesFragment -> {
-                            val action = FavoritesFragmentDirections.actionFavoritesToMovieDetails(m.id)
-                            root.findNavController().navigate(action)
-                        }
-                        else -> {
-                            Log.d("MovieAdapter", "Using direct navigation with bundle")
-                            val bundle = Bundle()
-                            bundle.putInt("movieId", m.id)
-                            root.findNavController().navigate(R.id.movieDetailsFragment, bundle)
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.e("MovieAdapter", "Navigation error: ${e.message}")
-                    try {
-                        val bundle = Bundle()
-                        bundle.putInt("movieId", m.id)
-                        root.findNavController().navigate(R.id.movieDetailsFragment, bundle)
-                    } catch (e2: Exception) {
-                        Log.e("MovieAdapter", "Fallback navigation error: ${e2.message}")
-                    }
-                }
+                Log.d("MovieAdapter", "Details button clicked for movie: ${m.id} - ${m.title}")
+                navigateToDetailsSimple(m.id)
             }
 
-            // העברת האירועים החוצה דרך listeners - ללא קשר ל-ViewModel
+            // כפתורי פעולות
             btnFavorites.setOnClickListener {
+                Log.d("MovieAdapter", "Favorite button clicked for: ${m.title}")
                 onFavoriteClick(m)
             }
 
             btnDelete.setOnClickListener {
+                Log.d("MovieAdapter", "Delete button clicked for: ${m.title}")
                 confirmDelete(m)
             }
 
@@ -91,6 +67,50 @@ class MovieAdapter(
                 confirmDelete(m)
                 true
             }
+        }
+
+        /**
+         * ניווט פשוט לפרטים - עובד מכל מקום!
+         */
+        private fun navigateToDetailsSimple(movieId: Int) {
+            try {
+                val navController = b.root.findNavController()
+
+                // יצירת Bundle עם movieId
+                val bundle = Bundle().apply {
+                    putInt("movieId", movieId)
+                }
+
+                Log.d("MovieAdapter", "Navigating to details with movieId: $movieId")
+
+                // ניווט ישיר למסך הפרטים
+                navController.navigate(R.id.movieDetailsFragment, bundle)
+
+            } catch (e: Exception) {
+                Log.e("MovieAdapter", "Navigation failed: ${e.message}", e)
+                showNavigationError()
+            }
+        }
+
+        private fun showNavigationError() {
+            AlertDialog.Builder(b.root.context)
+                .setTitle("שגיאה")
+                .setMessage("לא ניתן לפתוח את פרטי הסרט כרגע")
+                .setPositiveButton("אישור", null)
+                .show()
+        }
+
+        private fun updateFavoriteButton(isFavorite: Boolean) {
+            val iconRes = if (isFavorite) android.R.drawable.btn_star_big_on
+            else android.R.drawable.btn_star_big_off
+            b.btnFavorites.setIconResource(iconRes)
+
+            // עדכון צבע הכפתור
+            val backgroundTint = if (isFavorite)
+                b.root.context.getColor(R.color.warning_orange)
+            else
+                b.root.context.getColor(R.color.gray_600)
+            b.btnFavorites.backgroundTintList = android.content.res.ColorStateList.valueOf(backgroundTint)
         }
 
         private fun loadMovieImage(movie: Movie, imageView: ImageView) {
@@ -105,19 +125,19 @@ class MovieAdapter(
                     .centerCrop()
                     .into(imageView)
             } else {
-                // נסיון לטעון מקומית (fallback ל-ImageHelper הקיים)
+                // נסיון לטעון מקומית
                 ImageHelper.loadMovieImageByTitle(imageView.context, movie.title, imageView)
             }
         }
 
         private fun confirmDelete(m: Movie) {
             AlertDialog.Builder(b.root.context)
-                .setTitle(b.root.context.getString(R.string.delete_movie_title, m.title))
-                .setMessage(b.root.context.getString(R.string.delete_movie_message))
-                .setPositiveButton(b.root.context.getString(R.string.delete)) { _, _ ->
-                    onDeleteClick(m) // העברת האירוע החוצה
+                .setTitle("מחק סרט")
+                .setMessage("האם אתה בטוח שברצונך למחוק את הסרט '${m.title}'?")
+                .setPositiveButton("מחק") { _, _ ->
+                    onDeleteClick(m)
                 }
-                .setNegativeButton(android.R.string.cancel, null)
+                .setNegativeButton("ביטול", null)
                 .show()
         }
     }
@@ -137,10 +157,17 @@ class MovieAdapter(
         if (payloads.isNotEmpty() && payloads[0] == "FAVORITE_CHANGED") {
             // עדכן רק את הכוכבית
             val movie = getItem(position)
-            holder.itemView.findViewById<ImageView>(R.id.btnFavorites).setImageResource(
-                if (movie.isFavorite) android.R.drawable.btn_star_big_on
+            holder.itemView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnFavorites)?.let { btn ->
+                val iconRes = if (movie.isFavorite) android.R.drawable.btn_star_big_on
                 else android.R.drawable.btn_star_big_off
-            )
+                btn.setIconResource(iconRes)
+
+                val backgroundTint = if (movie.isFavorite)
+                    holder.itemView.context.getColor(R.color.warning_orange)
+                else
+                    holder.itemView.context.getColor(R.color.gray_600)
+                btn.backgroundTintList = android.content.res.ColorStateList.valueOf(backgroundTint)
+            }
         } else {
             super.onBindViewHolder(holder, position, payloads)
         }

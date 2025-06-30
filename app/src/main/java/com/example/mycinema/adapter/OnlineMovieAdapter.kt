@@ -3,6 +3,7 @@ package com.example.mycinema.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -42,7 +43,7 @@ class OnlineMovieAdapter(
                 root.context.getString(R.string.genres_format, root.context.getString(R.string.unknown))
             }
 
-            // שנה - תיקון הבעיה כאן
+            // שנה - תיקון הבעיה
             val year = when {
                 apiMovie.releaseDate.isNullOrBlank() -> root.context.getString(R.string.unknown)
                 apiMovie.releaseDate.length >= 4 -> apiMovie.releaseDate.substring(0, 4)
@@ -60,9 +61,66 @@ class OnlineMovieAdapter(
             // טעינת תמונה עם Glide
             loadMoviePoster(apiMovie.posterPath)
 
-            // לחיצות
-            root.setOnClickListener { onMovieClick(apiMovie) }
-            btnAddToCollection.setOnClickListener { onAddToLocalClick(apiMovie) }
+            // *** תיקון הלחיצות - פותר את בעיית הדף הלבן! ***
+            root.setOnClickListener {
+                showMovieDetailsDialog(apiMovie)
+            }
+
+            btnAddToCollection.setOnClickListener {
+                Log.d("OnlineMovieAdapter", "Add to collection clicked for: ${apiMovie.title}")
+                onAddToLocalClick(apiMovie)
+            }
+        }
+
+        /**
+         * פתרון לבעיית הדף הלבן - הצגת דיאלוג במקום ניווט
+         */
+        private fun showMovieDetailsDialog(apiMovie: ApiMovie) {
+            val message = buildString {
+                append("📽️ ${apiMovie.title}\n\n")
+
+                // תיאור
+                if (apiMovie.overview.isNotBlank()) {
+                    append("📝 תיאור:\n${apiMovie.overview}\n\n")
+                }
+
+                // שנה
+                val year = if (apiMovie.releaseDate.isNullOrBlank()) "לא ידוע"
+                else apiMovie.releaseDate.substring(0, 4)
+                append("📅 שנה: $year\n")
+
+                // דירוג
+                append("⭐ דירוג: ${String.format("%.1f", apiMovie.voteAverage)}/10\n")
+
+                // ז'אנרים
+                val genres = GenreMapper.getGenreNames(apiMovie.genreIds)
+                if (genres.isNotBlank()) {
+                    append("🎬 ז'אנרים: $genres\n")
+                }
+
+                append("\n💡 כדי לצפות בפרטים מלאים, הוסף את הסרט לאוסף שלך")
+            }
+
+            AlertDialog.Builder(binding.root.context)
+                .setTitle("פרטי הסרט")
+                .setMessage(message)
+                .setPositiveButton("הוסף לאוסף") { _, _ ->
+                    onAddToLocalClick(apiMovie)
+                }
+                .setNeutralButton("סגור", null)
+                .create()
+                .apply {
+                    // עיצוב משופר לדיאלוג
+                    setOnShowListener {
+                        getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(
+                            context.getColor(R.color.success_green)
+                        )
+                        getButton(AlertDialog.BUTTON_NEUTRAL)?.setTextColor(
+                            context.getColor(R.color.gray_600)
+                        )
+                    }
+                }
+                .show()
         }
 
         private fun loadMoviePoster(posterPath: String?) {
@@ -70,9 +128,9 @@ class OnlineMovieAdapter(
 
             Glide.with(binding.root.context)
                 .load(imageUrl)
-                .placeholder(R.drawable.default_movie) // תמונת ברירת מחדל בזמן טעינה
-                .error(R.drawable.default_movie) // תמונת ברירת מחדל בשגיאה
-                .transition(DrawableTransitionOptions.withCrossFade()) // אנימציה חלקה
+                .placeholder(R.drawable.default_movie)
+                .error(R.drawable.default_movie)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .centerCrop()
                 .into(binding.ivPoster)
 

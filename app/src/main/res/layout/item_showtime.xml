@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/dark_surface"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Time Icon -->
+        <ImageView
+            android:id="@+id/ivTimeIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_schedule"
+            app:tint="@color/dark_primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Movie Title -->
+        <TextView
+            android:id="@+id/tvMovieTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:text="Movie Title"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@id/ivTimeIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvAvailability"
+            tools:text="Inception" />
+
+        <!-- Availability Status -->
+        <TextView
+            android:id="@+id/tvAvailability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/available"
+            android:textColor="@color/success_green"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:background="@drawable/ic_launcher_background"
+            android:padding="4dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Date and Time Row -->
+        <LinearLayout
+            android:id="@+id/layoutDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@id/ivTimeIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvMovieTitle"
+            app:layout_constraintEnd_toStartOf="@id/tvPrice">
+
+            <TextView
+                android:id="@+id/tvShowDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jan 15"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:drawableStart="@drawable/ic_calendar_small"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                tools:text="Jan 15" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="12dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@color/text_secondary" />
+
+            <TextView
+                android:id="@+id/tvShowTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20:00"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/ic_time_small"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                tools:text="20:00" />
+
+        </LinearLayout>
+
+        <!-- Price -->
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="42₪"
+            android:textColor="@color/warning_orange"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:background="@drawable/price_background"
+            android:padding="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tvAvailability"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="42₪" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

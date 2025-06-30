@@ -1,4 +1,3 @@
-// SearchOnlineFragment.kt - שיפור הזרימה
 package com.example.mycinema.fragments
 
 import android.os.Bundle
@@ -11,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mycinema.R
 import com.example.mycinema.adapter.OnlineMovieAdapter
 import com.example.mycinema.databinding.FragmentSearchOnlineBinding
@@ -54,12 +52,14 @@ class SearchOnlineFragment : Fragment() {
     private fun setupRecyclerView() {
         adapter = OnlineMovieAdapter(
             onMovieClick = { apiMovie ->
-                // הצגת דיאלוג עם אפשרויות
+                // *** מטפל בלחיצה על סרט - לא יוצר דף לבן! ***
+                Log.d("SearchOnlineFragment", "Movie clicked: ${apiMovie.title}")
                 showMovieOptionsDialog(apiMovie)
             },
             onAddToLocalClick = { apiMovie ->
-                // במקום להוסיף ישירות, נעבור למסך עריכה
-                navigateToAddEditWithApiMovie(apiMovie)
+                // הוספה לאוסף מקומי
+                Log.d("SearchOnlineFragment", "Adding movie to local collection: ${apiMovie.title}")
+                addMovieToCollection(apiMovie)
             }
         )
 
@@ -69,58 +69,98 @@ class SearchOnlineFragment : Fragment() {
         }
     }
 
+    /**
+     * מציג דיאלוג אפשרויות במקום ניווט לדף לבן
+     */
     private fun showMovieOptionsDialog(apiMovie: ApiMovie) {
         val options = arrayOf(
-            getString(R.string.view_details),
-            getString(R.string.add_to_collection),
-            getString(R.string.add_and_edit)
+            "👁️ הצג פרטים",
+            "➕ הוסף לאוסף",
+            "📝 הוסף וערוך"
         )
 
         androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setTitle(apiMovie.title)
+            .setTitle("🎬 ${apiMovie.title}")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> showMovieDetails(apiMovie)
-                    1 -> quickAddToCollection(apiMovie)
+                    0 -> showMovieDetailsDialog(apiMovie)
+                    1 -> addMovieToCollection(apiMovie)
                     2 -> navigateToAddEditWithApiMovie(apiMovie)
+                }
+            }
+            .setNegativeButton("ביטול", null)
+            .show()
+    }
+
+    /**
+     * מציג פרטי הסרט בדיאלוג יפה
+     */
+    private fun showMovieDetailsDialog(apiMovie: ApiMovie) {
+        val message = buildString {
+            append("🎭 כותרת: ${apiMovie.title}\n\n")
+
+            if (apiMovie.overview.isNotBlank()) {
+                append("📖 תיאור:\n${apiMovie.overview}\n\n")
+            }
+
+            // שנה
+            val year = if (apiMovie.releaseDate.isNullOrBlank()) "לא ידוע"
+            else apiMovie.releaseDate.substring(0, 4)
+            append("📅 שנת יציאה: $year\n")
+
+            // דירוג
+            append("⭐ דירוג: ${String.format("%.1f", apiMovie.voteAverage)}/10\n")
+
+            // ז'אנרים
+            val genres = com.example.mycinema.models.GenreMapper.getGenreNames(apiMovie.genreIds)
+            if (genres.isNotBlank()) {
+                append("🎬 ז'אנרים: $genres\n")
+            }
+
+            append("\n💡 רוצה לשמור את הסרט? הוסף אותו לאוסף שלך!")
+        }
+
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("פרטי הסרט")
+            .setMessage(message)
+            .setPositiveButton("הוסף לאוסף") { _, _ ->
+                addMovieToCollection(apiMovie)
+            }
+            .setNeutralButton("הוסף וערוך") { _, _ ->
+                navigateToAddEditWithApiMovie(apiMovie)
+            }
+            .setNegativeButton("סגור", null)
+            .create()
+            .apply {
+                setOnShowListener {
+                    getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(
+                        requireContext().getColor(R.color.success_green)
+                    )
+                    getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL)?.setTextColor(
+                        requireContext().getColor(R.color.info_blue)
+                    )
                 }
             }
             .show()
     }
 
-    private fun showMovieDetails(apiMovie: ApiMovie) {
-        // הצגת פרטים בדיאלוג
-        val message = buildString {
-            append(apiMovie.overview ?: getString(R.string.no_description_available))
-            append("\n\n")
-            append(getString(R.string.year_format, apiMovie.releaseDate?.substring(0, 4) ?: getString(R.string.unknown)))
-            append("\n")
-            append(getString(R.string.rating_format, String.format("%.1f", apiMovie.voteAverage)))
-        }
-
-        androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setTitle(apiMovie.title)
-            .setMessage(message)
-            .setPositiveButton(getString(R.string.add_to_collection)) { _, _ ->
-                navigateToAddEditWithApiMovie(apiMovie)
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
-    }
-
-    private fun quickAddToCollection(apiMovie: ApiMovie) {
-        // הוספה מהירה עם האפשרות לערוך אחר כך
+    /**
+     * הוספה מהירה לאוסף
+     */
+    private fun addMovieToCollection(apiMovie: ApiMovie) {
         viewModel.addApiMovieToLocal(apiMovie)
 
         Toast.makeText(
             requireContext(),
-            getString(R.string.movie_added_tap_to_edit),
+            "הסרט '${apiMovie.title}' נוסף לאוסף! 🎉",
             Toast.LENGTH_LONG
         ).show()
     }
 
+    /**
+     * ניווט למסך עריכה עם נתוני API
+     */
     private fun navigateToAddEditWithApiMovie(apiMovie: ApiMovie) {
-        // העברת המידע מה-API למסך העריכה
         val bundle = Bundle().apply {
             putInt("movieId", 0) // סרט חדש
             putString("apiTitle", apiMovie.title)
@@ -150,7 +190,6 @@ class SearchOnlineFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // חיפוש בזמן אמת רק אם יש יותר מ-2 תווים
                 if (newText.isNullOrBlank()) {
                     viewModel.clearOnlineSearch()
                 } else if (newText.length >= 3) {
@@ -160,7 +199,6 @@ class SearchOnlineFragment : Fragment() {
             }
         })
 
-        // כפתור ניקוי חיפוש
         binding.btnClearSearch.setOnClickListener {
             binding.searchViewOnline.setQuery("", false)
             viewModel.clearOnlineSearch()
@@ -178,14 +216,12 @@ class SearchOnlineFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        // תוצאות חיפוש/סרטים פופולריים
         viewModel.onlineMovies.observe(viewLifecycleOwner) { movies ->
             Log.d("SearchOnlineFragment", "Received ${movies.size} movies")
             adapter.submitList(movies)
             updateEmptyState(movies.isEmpty() && !viewModel.loading.value!!)
         }
 
-        // מצב טעינה
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
             Log.d("SearchOnlineFragment", "Loading state: $isLoading")
             binding.progressBar.isVisible = isLoading
@@ -196,7 +232,6 @@ class SearchOnlineFragment : Fragment() {
             }
         }
 
-        // שגיאות
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (!errorMessage.isNullOrBlank()) {
                 Log.e("SearchOnlineFragment", "Error: $errorMessage")
@@ -205,7 +240,6 @@ class SearchOnlineFragment : Fragment() {
             }
         }
 
-        // מצב חיפוש פעיל
         viewModel.isOnlineSearchActive.observe(viewLifecycleOwner) { isActive ->
             binding.tvSearchStatus.text = if (isActive) {
                 getString(R.string.search_results)
@@ -219,7 +253,6 @@ class SearchOnlineFragment : Fragment() {
         binding.recyclerViewOnline.isVisible = !isEmpty
         binding.layoutEmptyState.isVisible = isEmpty
 
-        // עדכון הודעת empty state
         if (isEmpty) {
             val isSearchActive = viewModel.isOnlineSearchActive.value ?: false
             if (isSearchActive) {
@@ -233,8 +266,7 @@ class SearchOnlineFragment : Fragment() {
     }
 
     private fun showError(message: String) {
-        Toast.makeText(requireContext(), "Error: $message", Toast.LENGTH_LONG).show()
-        // ניקוי השגיאה אחרי הצגה
+        Toast.makeText(requireContext(), "⚠️ שגיאה: $message", Toast.LENGTH_LONG).show()
         viewModel.clearError()
     }
 

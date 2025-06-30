@@ -1,3 +1,4 @@
+// MovieDatabase.kt - תיקון השגיאות
 package com.example.mycinema.data
 
 import android.content.Context
@@ -6,39 +7,88 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.mycinema.models.Cinema
 import com.example.mycinema.models.Movie
+import com.example.mycinema.models.Showtime
 
-@Database(entities = [Movie::class], version = 3, exportSchema = false)
+@Database(
+    entities = [Movie::class, Cinema::class, Showtime::class],
+    version = 5, // עליתי בגרסה כדי לטפל בבעיית ה-Foreign Key
+    exportSchema = false
+)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
+    abstract fun cinemaDao(): CinemaDao
 
     companion object {
-        @Volatile private var INSTANCE: MovieDatabase? = null
+        @Volatile
+        private var INSTANCE: MovieDatabase? = null
 
-        private val MIGRATION_1_2 = object : Migration(1, 2) {
+        val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // 1. הוספת עמודת director לשם הבמאי
+                // הוספת עמודות לטבלת movies
                 database.execSQL("ALTER TABLE movies ADD COLUMN director TEXT")
-
-                // 2. הוספת עמודת year לשנת יציאה
                 database.execSQL("ALTER TABLE movies ADD COLUMN year INTEGER")
-
-                // 3. הוספת עמודת rating לציון הסרט (בפורמט REAL)
                 database.execSQL("ALTER TABLE movies ADD COLUMN rating REAL")
-
-                // 4. הוספת עמודת releaseDate לתאריך שחרור (טקסט)
                 database.execSQL("ALTER TABLE movies ADD COLUMN releaseDate TEXT")
-
-                // 5. הוספת עמודת duration לאורך הסרט בדקות
                 database.execSQL("ALTER TABLE movies ADD COLUMN duration INTEGER")
             }
         }
 
-        private val MIGRATION_2_3 = object : Migration(2, 3) {
+        val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // הוספת עמודות חדשות לתמיכה ב-API
+                // הוספת עמודות API לטבלת movies
                 database.execSQL("ALTER TABLE movies ADD COLUMN apiId INTEGER")
                 database.execSQL("ALTER TABLE movies ADD COLUMN isFromApi INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // יצירת טבלת בתי קולנוע
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS cinemas (
+                        id INTEGER PRIMARY KEY NOT NULL,
+                        name TEXT NOT NULL,
+                        address TEXT NOT NULL,
+                        latitude REAL NOT NULL,
+                        longitude REAL NOT NULL,
+                        phone TEXT,
+                        website TEXT,
+                        imageUrl TEXT,
+                        rating REAL NOT NULL DEFAULT 0,
+                        isOpen INTEGER NOT NULL DEFAULT 1
+                    )
+                """)
+
+                // יצירת טבלת הקרנות
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS showtimes (
+                        id INTEGER PRIMARY KEY NOT NULL,
+                        cinemaId INTEGER NOT NULL,
+                        movieTitle TEXT NOT NULL,
+                        showDate TEXT NOT NULL,
+                        showTime TEXT NOT NULL,
+                        price REAL,
+                        isAvailable INTEGER NOT NULL DEFAULT 1,
+                        movieId INTEGER,
+                        FOREIGN KEY(cinemaId) REFERENCES cinemas(id) ON DELETE CASCADE
+                    )
+                """)
+
+                // יצירת אינדקסים לביצועים טובים יותר
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_showtimes_cinemaId ON showtimes(cinemaId)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_showtimes_showDate ON showtimes(showDate)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_showtimes_movieTitle ON showtimes(movieTitle)")
+            }
+        }
+
+        // Migration חדש מגרסה 4 ל-5 - תיקון בעיית ה-Schema
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // אין צורך בשינויים כי הטבלאות כבר קיימות עם המבנה הנכון
+                // Migration זה נועד רק לעדכן את ה-schema version
+                // בגלל שהוספנו Foreign Keys ו-Indices למודל
             }
         }
 
@@ -49,8 +99,8 @@ abstract class MovieDatabase : RoomDatabase() {
                     MovieDatabase::class.java,
                     "movie_database"
                 )
-                    .fallbackToDestructiveMigration()
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                    .fallbackToDestructiveMigration() // רק לפיתוח - זה ימחק נתונים אם יש בעיה
                     .build()
                     .also { INSTANCE = it }
             }

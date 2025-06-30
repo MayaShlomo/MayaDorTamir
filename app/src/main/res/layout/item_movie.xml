@@ -1,119 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="12dp"
-        app:cardBackgroundColor="#1E1E1E"
-        app:cardElevation="4dp">
+        android:layout_margin="12dp"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/dark_surface"
+        app:cardElevation="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="100dp"
-                android:layout_height="150dp"
-                android:scaleType="centerCrop"
-                android:src="@android:drawable/ic_menu_gallery"
+            <!-- תמונת הסרט עם פינות מעוגלות -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/posterCard"
+                android:layout_width="130dp"
+                android:layout_height="195dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_movie"
+                    tools:src="@drawable/inception" />
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- כפתור מחיקה משופר -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:contentDescription="מחק סרט"
+                app:srcCompat="@android:drawable/ic_menu_delete"
+                app:backgroundTint="@color/error_red"
+                app:tint="@color/white"
+                app:fabSize="mini"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- כותרת הסרט - טקסט גדול יותר וברור יותר -->
             <TextView
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="Movie Title"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="16dp"
+                android:text="כותרת הסרט"
+                android:textColor="@color/white"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/imageView"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
+                app:layout_constraintStart_toEndOf="@id/posterCard"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnDelete" />
+                app:layout_constraintEnd_toStartOf="@id/btnDelete"
+                tools:text="Inception: The Amazing Dream World" />
 
-            <ImageButton
-                android:id="@+id/btnDelete"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@android:color/transparent"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                android:padding="12dp"
-                android:contentDescription="Delete movie"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/genre"
+            <!-- ז'אנר עם אייקון -->
+            <LinearLayout
+                android:id="@+id/genreLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="Genre: "
-                android:textColor="#AAAAAA"
-                app:layout_constraintStart_toEndOf="@id/imageView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toEndOf="@id/posterCard"
                 app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
-                android:id="@+id/releaseDate"
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_mycinema"
+                    app:tint="@color/teal_200"
+                    android:layout_marginEnd="6dp" />
+
+                <TextView
+                    android:id="@+id/genre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ז'אנר: פעולה"
+                    android:textColor="@color/teal_200"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="ז'אנר: מד״ב, פעולה" />
+
+            </LinearLayout>
+
+            <!-- שנת יציאה עם אייקון -->
+            <LinearLayout
+                android:id="@+id/yearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:text="Year: "
-                android:textColor="#AAAAAA"
-                app:layout_constraintStart_toEndOf="@id/imageView"
-                app:layout_constraintTop_toBottomOf="@id/genre"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toEndOf="@id/posterCard"
+                app:layout_constraintTop_toBottomOf="@id/genreLayout"
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
-                android:id="@+id/rating"
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_calendar"
+                    app:tint="@color/warning_orange"
+                    android:layout_marginEnd="6dp" />
+
+                <TextView
+                    android:id="@+id/releaseDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="שנה: 2010"
+                    android:textColor="@color/warning_orange"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="שנה: 2010" />
+
+            </LinearLayout>
+
+            <!-- דירוג עם כוכבים -->
+            <LinearLayout
+                android:id="@+id/ratingLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:text="Rating: "
-                android:textColor="#FFD700"
-                app:layout_constraintStart_toEndOf="@id/imageView"
-                app:layout_constraintTop_toBottomOf="@id/releaseDate"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toEndOf="@id/posterCard"
+                app:layout_constraintTop_toBottomOf="@id/yearLayout"
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <Button
-                android:id="@+id/btnDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginStart="16dp"
-                android:minHeight="48dp"
-                android:layout_marginTop="12dp"
-                android:background="#3366FF"
-                android:paddingHorizontal="16dp"
-                android:text="Details"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/imageView"
-                app:layout_constraintTop_toBottomOf="@id/rating" />
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@android:drawable/btn_star"
+                    app:tint="@color/gold"
+                    android:layout_marginEnd="6dp" />
 
-            <ImageButton
-                android:id="@+id/btnFavorites"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/rounded_button"
-                android:padding="8dp"
-                android:contentDescription="Add to favorites"
-                app:layout_constraintStart_toEndOf="@id/btnDetails"
-                app:layout_constraintTop_toBottomOf="@id/rating" />
+                <TextView
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="דירוג: 8.8"
+                    android:textColor="@color/gold"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="דירוג: 8.8 ⭐" />
+
+            </LinearLayout>
+
+            <!-- כפתורי פעולה משופרים -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toEndOf="@id/posterCard"
+                app:layout_constraintTop_toBottomOf="@id/ratingLayout"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- כפתור פרטים - זה הכפתור שתיקנו! -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDetails"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="פרטים"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/info_blue"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_info"
+                    app:iconTint="@color/white"
+                    app:iconSize="18dp"
+                    app:iconGravity="textStart" />
+
+                <!-- כפתור מועדפים -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFavorites"
+                    android:layout_width="56dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="הוסף למועדפים"
+                    app:backgroundTint="@color/warning_orange"
+                    app:cornerRadius="12dp"
+                    app:icon="@android:drawable/btn_star_big_off"
+                    app:iconTint="@color/white"
+                    app:iconSize="24dp"
+                    app:iconGravity="textStart" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

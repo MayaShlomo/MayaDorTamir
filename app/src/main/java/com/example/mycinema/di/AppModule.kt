@@ -1,11 +1,14 @@
+// AppModule.kt - תיקון השגיאות
 package com.example.mycinema.di
 
 import android.content.Context
-import androidx.room.Room
+import com.example.mycinema.data.CinemaDao
 import com.example.mycinema.data.MovieDao
 import com.example.mycinema.data.MovieDatabase
 import com.example.mycinema.network.MovieApiService
+import com.example.mycinema.repository.CinemaRepository
 import com.example.mycinema.repository.MovieRepository
+import com.example.mycinema.services.LocationService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,18 +26,17 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMovieDatabase(@ApplicationContext context: Context): MovieDatabase {
-        return Room.databaseBuilder(
-            context.applicationContext,
-            MovieDatabase::class.java,
-            "movie_database"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
+        return MovieDatabase.getDatabase(context)
     }
 
     @Provides
     fun provideMovieDao(database: MovieDatabase): MovieDao {
         return database.movieDao()
+    }
+
+    @Provides
+    fun provideCinemaDao(database: MovieDatabase): CinemaDao {
+        return database.cinemaDao()
     }
 
     // Network provisions
@@ -53,7 +55,14 @@ object AppModule {
         return retrofit.create(MovieApiService::class.java)
     }
 
-    // Repository provision
+    // Services
+    @Provides
+    @Singleton
+    fun provideLocationService(@ApplicationContext context: Context): LocationService {
+        return LocationService(context)
+    }
+
+    // Repository provisions
     @Provides
     @Singleton
     fun provideMovieRepository(
@@ -62,5 +71,15 @@ object AppModule {
         @ApplicationContext context: Context
     ): MovieRepository {
         return MovieRepository(movieDao, apiService, context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCinemaRepository(
+        cinemaDao: CinemaDao,
+        locationService: LocationService,
+        @ApplicationContext context: Context
+    ): CinemaRepository {
+        return CinemaRepository(cinemaDao, locationService, context)
     }
 }

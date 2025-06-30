@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme -->
+    <!-- ==================== THEMES ==================== -->
+
+    <!-- Base application theme - השארתי את הסגנון הקיים שלך -->
     <style name="Theme.MyCinema" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <!-- Primary brand colours -->
@@ -21,5 +23,277 @@
         <!-- Text colours -->
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
+
+        <!-- Surface colors for cards and dialogs -->
+        <item name="colorSurface">@color/gray_800</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
+
+    <!-- Light theme variant (אופציונלי) -->
+    <style name="Theme.MyCinema.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="android:windowBackground">@color/background_light</item>
+        <item name="colorSurface">@color/surface_light</item>
+        <item name="colorOnSurface">@color/primary_text</item>
+
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+    </style>
+
+    <!-- ==================== CINEMA SPECIFIC STYLES ==================== -->
+
+    <!-- Cinema Card Style -->
+    <style name="CinemaCardStyle">
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:background">@drawable/rounded_image_background</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <!-- Status Text Style -->
+    <style name="StatusTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:background">@drawable/status_background</item>
+    </style>
+
+    <!-- Info Chip Style -->
+    <style name="InfoChipStyle">
+        <item name="android:textSize">11sp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/info_chip_background</item>
+        <item name="android:drawablePadding">4dp</item>
+    </style>
+
+    <!-- Price Text Style -->
+    <style name="PriceTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/price_text</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:background">@drawable/price_background</item>
+    </style>
+
+    <!-- ==================== BUTTON STYLES ==================== -->
+
+    <!-- Primary Button -->
+    <style name="PrimaryButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="backgroundTint">@color/purple_500</item>
+        <item name="android:minWidth">88dp</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <!-- Secondary Button -->
+    <style name="SecondaryButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="strokeColor">@color/purple_500</item>
+        <item name="android:textColor">@color/purple_500</item>
+        <item name="android:minWidth">88dp</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <!-- Small Button -->
+    <style name="SmallButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_height">36dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:minWidth">64dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+    <!-- ==================== TEXT STYLES ==================== -->
+
+    <!-- Headline Text -->
+    <style name="HeadlineTextStyle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Subhead Text -->
+    <style name="SubheadTextStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Body Text -->
+    <style name="BodyTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Caption Text -->
+    <style name="CaptionTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <!-- Movie Title Text -->
+    <style name="MovieTitleTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- Cinema Name Text -->
+    <style name="CinemaNameTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- ==================== COMPONENT STYLES ==================== -->
+
+    <!-- FAB Style -->
+    <style name="FabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/accent</item>
+        <item name="tint">@color/white</item>
+        <item name="android:layout_margin">16dp</item>
+    </style>
+
+    <!-- Card Style -->
+    <style name="CardStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+    </style>
+
+    <!-- Movie Card Style -->
+    <style name="MovieCardStyle" parent="CardStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <!-- Toolbar Style -->
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
+    </style>
+
+    <!-- ==================== INPUT STYLES ==================== -->
+
+    <!-- Text Input Style -->
+    <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="boxStrokeColor">@color/purple_500</item>
+        <item name="hintTextColor">@color/purple_500</item>
+    </style>
+
+    <!-- Search View Style -->
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="submitBackground">@android:color/transparent</item>
+    </style>
+
+    <!-- ==================== DIMENSIONS (במקום קובץ נפרד) ==================== -->
+
+    <!-- Screen margins -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Card dimensions -->
+    <dimen name="card_margin">8dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
+
+    <!-- Cinema item dimensions -->
+    <dimen name="cinema_image_size">80dp</dimen>
+    <dimen name="cinema_image_corner_radius">8dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="text_size_headline">24sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_tiny">12sp</dimen>
+    <dimen name="text_size_caption">10sp</dimen>
+
+    <!-- Spacing -->
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_xlarge">32dp</dimen>
+
+    <!-- Button dimensions -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_height_small">36dp</dimen>
+    <dimen name="button_corner_radius">8dp</dimen>
+    <dimen name="button_min_width">88dp</dimen>
+    <dimen name="button_min_width_small">64dp</dimen>
+
+    <!-- FAB dimensions -->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_mini_size">40dp</dimen>
+
+    <!-- Icon sizes -->
+    <dimen name="icon_size_tiny">12dp</dimen>
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_medium">24dp</dimen>
+    <dimen name="icon_size_large">32dp</dimen>
+    <dimen name="icon_size_xlarge">48dp</dimen>
+
+    <!-- Image sizes -->
+    <dimen name="movie_poster_width">120dp</dimen>
+    <dimen name="movie_poster_height">180dp</dimen>
+    <dimen name="movie_poster_width_large">160dp</dimen>
+    <dimen name="movie_poster_height_large">240dp</dimen>
+
+    <!-- List item dimensions -->
+    <dimen name="list_item_height">72dp</dimen>
+    <dimen name="list_item_height_small">56dp</dimen>
+    <dimen name="list_item_padding">16dp</dimen>
+    <dimen name="list_item_padding_small">12dp</dimen>
+
+    <!-- Rating bar -->
+    <dimen name="rating_bar_height">16dp</dimen>
+    <dimen name="rating_bar_height_small">12dp</dimen>
+
+    <!-- Divider -->
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="divider_margin">8dp</dimen>
+
+    <!-- Toolbar -->
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+
+    <!-- Bottom navigation -->
+    <dimen name="bottom_nav_height">56dp</dimen>
+
+    <!-- Tab layout -->
+    <dimen name="tab_height">48dp</dimen>
+
+    <!-- Progress indicators -->
+    <dimen name="progress_size_small">24dp</dimen>
+    <dimen name="progress_size_medium">40dp</dimen>
+    <dimen name="progress_size_large">56dp</dimen>
+
 </resources>
