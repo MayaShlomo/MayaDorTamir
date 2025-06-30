@@ -2,6 +2,7 @@ package com.example.mycinema.fragments
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
@@ -13,7 +14,9 @@ import androidx.fragment.app.activityViewModels
 import com.example.mycinema.R
 import com.example.mycinema.databinding.FragmentSettingsBinding
 import com.example.mycinema.viewmodel.MovieViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
@@ -23,6 +26,8 @@ class SettingsFragment : Fragment() {
 
     private val viewModel: MovieViewModel by activityViewModels()
     private lateinit var sharedPreferences: SharedPreferences
+
+    private var isLoadingSettings = false
 
     companion object {
         private const val PREFS_NAME = "MyCinema_Settings"
@@ -53,70 +58,69 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupUI() {
-        // Theme mode spinner
+        // Theme options
         val themeOptions = arrayOf(
             getString(R.string.theme_system),
             getString(R.string.theme_light),
             getString(R.string.theme_dark)
         )
-
         val themeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, themeOptions)
         themeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerTheme.adapter = themeAdapter
 
-        // Sort options spinner
+        // Sort options
         val sortOptions = arrayOf(
             getString(R.string.sort_by_title),
             getString(R.string.sort_by_rating),
             getString(R.string.sort_by_year),
             getString(R.string.sort_by_date_added)
         )
-
         val sortAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortOptions)
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerSort.adapter = sortAdapter
 
-        // Language spinner
+        // Language options
         val languageOptions = arrayOf(
             getString(R.string.language_system),
             getString(R.string.language_english),
             getString(R.string.language_hebrew)
         )
-
         val languageAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, languageOptions)
         languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerLanguage.adapter = languageAdapter
     }
 
     private fun loadSettings() {
-        // Load theme setting
+        isLoadingSettings = true
+
         val themeMode = sharedPreferences.getInt(KEY_THEME_MODE, 0)
         binding.spinnerTheme.setSelection(themeMode)
 
-        // Load sort setting
         val sortMode = sharedPreferences.getInt(KEY_DEFAULT_SORT, 0)
         binding.spinnerSort.setSelection(sortMode)
 
-        // Load auto refresh setting
         val autoRefresh = sharedPreferences.getBoolean(KEY_AUTO_REFRESH, true)
         binding.switchAutoRefresh.isChecked = autoRefresh
 
-        // Load language setting
         val languageCode = sharedPreferences.getString(KEY_LANGUAGE_CODE, "system") ?: "system"
         val languagePosition = when (languageCode) {
             "en" -> 1
             "he" -> 2
-            else -> 0 // system
+            else -> 0
         }
         binding.spinnerLanguage.setSelection(languagePosition)
+
+        isLoadingSettings = false
     }
 
     private fun setupClickListeners() {
-        // Theme mode spinner
+        // Theme spinner
         binding.spinnerTheme.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                saveThemeSetting(position)
-                applyTheme(position)
+                if (!isLoadingSettings) {
+                    saveThemeSetting(position)
+                    applyTheme(position)
+                }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -124,23 +128,28 @@ class SettingsFragment : Fragment() {
         // Sort spinner
         binding.spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                saveSortSetting(position)
+                if (!isLoadingSettings) {
+                    saveSortSetting(position)
+                }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // Language spinner - הוסרתי את הקריאה לפונקציה שלא קיימת
+        // Language spinner
         binding.spinnerLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val languageCode = when (position) {
-                    1 -> "en"
-                    2 -> "he"
-                    else -> "system"
-                }
-                saveLanguageSetting(languageCode)
+                if (!isLoadingSettings) {
+                    val currentLanguageCode = sharedPreferences.getString(KEY_LANGUAGE_CODE, "system") ?: "system"
+                    val newLanguageCode = when (position) {
+                        1 -> "en"
+                        2 -> "he"
+                        else -> "system"
+                    }
 
-                if (position != 0) { // Not system default
-                    showLanguageChangeDialog()
+                    if (currentLanguageCode != newLanguageCode) {
+                        saveLanguageSetting(newLanguageCode)
+                        showLanguageChangeDialog()
+                    }
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -148,28 +157,16 @@ class SettingsFragment : Fragment() {
 
         // Auto refresh switch
         binding.switchAutoRefresh.setOnCheckedChangeListener { _, isChecked ->
-            saveAutoRefreshSetting(isChecked)
+            if (!isLoadingSettings) {
+                saveAutoRefreshSetting(isChecked)
+            }
         }
 
-        // Clear database button
-        binding.btnClearDatabase.setOnClickListener {
-            showClearDatabaseDialog()
-        }
-
-        // Export data button
-        binding.btnExportData.setOnClickListener {
-            showNotImplementedDialog(getString(R.string.export_feature))
-        }
-
-        // Import data button
-        binding.btnImportData.setOnClickListener {
-            showNotImplementedDialog(getString(R.string.import_feature))
-        }
-
-        // About button
-        binding.btnAbout.setOnClickListener {
-            showAboutDialog()
-        }
+        // Buttons
+        binding.btnClearDatabase.setOnClickListener { showClearDatabaseDialog() }
+        binding.btnExportData.setOnClickListener { showNotImplementedDialog("Export Data") }
+        binding.btnImportData.setOnClickListener { showNotImplementedDialog("Import Data") }
+        binding.btnAbout.setOnClickListener { showAboutDialog() }
     }
 
     private fun observeViewModel() {
@@ -196,7 +193,24 @@ class SettingsFragment : Fragment() {
 
     private fun saveLanguageSetting(languageCode: String) {
         sharedPreferences.edit().putString(KEY_LANGUAGE_CODE, languageCode).apply()
-        // הוסרתי את הקריאה ל-MyCinemaApplication.updateAppLanguage
+        // עדכון השפה מיד
+        updateAppLanguage(languageCode)
+    }
+
+    private fun updateAppLanguage(languageCode: String) {
+        val locale = when (languageCode) {
+            "en" -> Locale("en", "US")
+            "he" -> Locale("he", "IL")
+            else -> Locale.getDefault()
+        }
+
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.setLocale(locale)
+
+        // עדכון הקונטקסט
+        requireContext().resources.updateConfiguration(config, requireContext().resources.displayMetrics)
+        requireActivity().baseContext.resources.updateConfiguration(config, requireActivity().baseContext.resources.displayMetrics)
     }
 
     private fun applyTheme(themeMode: Int) {
@@ -211,32 +225,35 @@ class SettingsFragment : Fragment() {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.language_change_title))
             .setMessage(getString(R.string.language_change_message))
-            .setPositiveButton(getString(R.string.restart_now)) { _, _ ->
-                // Restart app to apply language change
-                requireActivity().recreate()
+            .setPositiveButton(getString(R.string.restart_now)) { dialog, _ ->
+                dialog.dismiss()
+                restartApp()
             }
-            .setNegativeButton(getString(R.string.restart_later), null)
+            .setNegativeButton(getString(R.string.restart_later)) { dialog, _ ->
+                dialog.dismiss()
+                Snackbar.make(binding.root, "השפה תשתנה בפתיחה הבאה", Snackbar.LENGTH_LONG).show()
+            }
+            .setCancelable(false)
             .show()
+    }
+
+    private fun restartApp() {
+        // פשוט ריקריאט של האקטיביטי
+        requireActivity().recreate()
     }
 
     private fun showClearDatabaseDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.clear_database_title))
             .setMessage(getString(R.string.clear_database_message))
-            .setPositiveButton(getString(R.string.clear)) { _, _ ->
-                clearDatabase()
+            .setPositiveButton(getString(R.string.clear)) { dialog, _ ->
+                dialog.dismiss()
+                viewModel.clearAllMovies()
+                Snackbar.make(binding.root, "כל הנתונים נמחקו", Snackbar.LENGTH_LONG).show()
             }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
-    }
-
-    private fun clearDatabase() {
-        viewModel.clearAllMovies()
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.database_cleared_title))
-            .setMessage(getString(R.string.database_cleared_message))
-            .setPositiveButton(android.R.string.ok, null)
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
             .show()
     }
 
@@ -244,15 +261,19 @@ class SettingsFragment : Fragment() {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.about_app))
             .setMessage(getString(R.string.about_message))
-            .setPositiveButton(android.R.string.ok, null)
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                dialog.dismiss()
+            }
             .show()
     }
 
     private fun showNotImplementedDialog(feature: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.feature_not_implemented))
-            .setMessage(getString(R.string.feature_coming_soon, feature))
-            .setPositiveButton(android.R.string.ok, null)
+            .setTitle("לא זמין")
+            .setMessage("$feature יתווסף בגרסה הבאה")
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                dialog.dismiss()
+            }
             .show()
     }
 

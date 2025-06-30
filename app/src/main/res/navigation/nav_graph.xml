@@ -10,25 +10,60 @@
         android:label="@string/app_name">
         <action
             android:id="@+id/action_home_to_moviesList"
-            app:destination="@id/moviesListFragment" />
+            app:destination="@id/moviesListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
         <action
             android:id="@+id/action_home_to_favorites"
-            app:destination="@id/favoritesFragment" />
+            app:destination="@id/favoritesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
         <action
             android:id="@+id/action_home_to_searchOnline"
-            app:destination="@id/searchOnlineFragment" />
+            app:destination="@id/searchOnlineFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
         <action
             android:id="@+id/action_home_to_settings"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
         <action
             android:id="@+id/action_home_to_statistics"
-            app:destination="@id/statisticsFragment" />
+            app:destination="@id/statisticsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
         <action
             android:id="@+id/action_home_to_addEditMovie"
-            app:destination="@id/addEditMovieFragment" />
+            app:destination="@id/addEditMovieFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
         <action
             android:id="@+id/action_home_to_cinemaLocations"
-            app:destination="@id/cinemaLocationsFragment" />
+            app:destination="@id/cinemaLocationsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
 
     <fragment
@@ -37,14 +72,24 @@
         android:label="@string/my_collection">
         <action
             android:id="@+id/action_moviesListToMovieDetails"
-            app:destination="@id/movieDetailsFragment">
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+
             <argument
                 android:name="movieId"
                 app:argType="integer" />
         </action>
         <action
             android:id="@+id/action_moviesList_to_addEditMovie"
-            app:destination="@id/addEditMovieFragment" />
+            app:destination="@id/addEditMovieFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
 
     <fragment
@@ -53,7 +98,12 @@
         android:label="@string/favorites">
         <action
             android:id="@+id/action_favoritesToMovieDetails"
-            app:destination="@id/movieDetailsFragment">
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            >
             <argument
                 android:name="movieId"
                 app:argType="integer" />
@@ -66,7 +116,12 @@
         android:label="@string/search_online_title">
         <action
             android:id="@+id/action_searchOnline_to_addEditMovie"
-            app:destination="@id/addEditMovieFragment" />
+            app:destination="@id/addEditMovieFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
 
     <fragment
@@ -90,7 +145,12 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_movieDetails_to_addEditMovie"
-            app:destination="@id/addEditMovieFragment" />
+            app:destination="@id/addEditMovieFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
 
     <fragment
@@ -109,10 +169,20 @@
         android:label="@string/cinema_locations">
         <action
             android:id="@+id/action_cinemaLocations_to_list"
-            app:destination="@id/cinemaListFragment" />
+            app:destination="@id/cinemaListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
         <action
             android:id="@+id/action_cinemaLocations_to_details"
-            app:destination="@id/cinemaDetailsFragment" />
+            app:destination="@id/cinemaDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
 
     <fragment
@@ -121,7 +191,12 @@
         android:label="@string/nearby_cinemas">
         <action
             android:id="@+id/action_cinemaList_to_details"
-            app:destination="@id/cinemaDetailsFragment" />
+            app:destination="@id/cinemaDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
 
     <fragment
@@ -136,7 +211,12 @@
     <!-- ACTION גלובלי לפתרון בעיות ניווט -->
     <action
         android:id="@+id/action_global_movieDetails"
-        app:destination="@id/movieDetailsFragment">
+        app:destination="@id/movieDetailsFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        >
         <argument
             android:name="movieId"
             app:argType="integer" />

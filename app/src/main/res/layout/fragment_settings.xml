@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- App Statistics Section -->
+        <!-- App Statistics -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Display Settings Section -->
+        <!-- Display Settings -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>
 
-                <!-- Theme Setting -->
+                <!-- Theme -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -84,10 +84,10 @@
                 <Spinner
                     android:id="@+id/spinnerTheme"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="56dp"
                     android:layout_marginBottom="16dp"/>
 
-                <!-- Language Setting -->
+                <!-- Language -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -98,14 +98,13 @@
                 <Spinner
                     android:id="@+id/spinnerLanguage"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_height="56dp"/>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- App Behavior Section -->
+        <!-- App Behavior -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -127,7 +126,7 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>
 
-                <!-- Default Sort Setting -->
+                <!-- Sort -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -138,10 +137,10 @@
                 <Spinner
                     android:id="@+id/spinnerSort"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="56dp"
                     android:layout_marginBottom="16dp"/>
 
-                <!-- Auto Refresh Setting -->
+                <!-- Auto Refresh -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -166,7 +165,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Data Management Section -->
+        <!-- Data Management -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -188,35 +187,36 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btnExportData"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
                     android:text="@string/export_data"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.Material3.Button.OutlinedButton"/>
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"/>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btnImportData"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
                     android:text="@string/import_data"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.Material3.Button.OutlinedButton"/>
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"/>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btnClearDatabase"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
                     android:text="@string/clear_all_data"
-                    android:backgroundTint="@color/design_default_color_error"
-                    style="@style/Widget.Material3.Button"/>
+                    android:textSize="16sp"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:textColor="@android:color/white"/>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- About Section -->
+        <!-- About -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -237,12 +237,12 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btnAbout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
                     android:text="@string/about_app"
-                    style="@style/Widget.Material3.Button.OutlinedButton"/>
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 

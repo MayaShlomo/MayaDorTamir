@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="he">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="iw">
 
     <!-- ============== BASIC APP ============== -->
     <string name="app_name">הקולנוע שלי</string>
@@ -352,7 +352,13 @@
     <string name="pull_to_refresh">משוך לרענון</string>
     <string name="double_tap_to_zoom">הקש פעמיים להתקרבות</string>
     <string name="pinch_to_zoom">צביטה להתקרבות</string>
+    <!-- ============== LANGUAGE CHANGE ============== -->
+    <string name="language_will_change_next_time">השפה תשתנה בפעם הבאה שתפתח את האפליקציה</string>
 
+    <!-- ============== SETTINGS ADDITIONAL ============== -->
+    <string name="total_movies_label">סה״כ סרטים:</string>
+    <string name="favorite_movies_label">סרטים מועדפים:</string>
+    <string name="auto_refresh_description">רענן נתונים אוטומטית כשמחוברים לאינטרנט</string>
     <!-- ============== GENRE ARRAY ============== -->
     <string-array name="movie_genres" tools:ignore="InconsistentArrays">
         <item>@string/genre_action</item>

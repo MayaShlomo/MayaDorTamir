@@ -354,7 +354,15 @@
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="double_tap_to_zoom">Double tap to zoom</string>
     <string name="pinch_to_zoom">Pinch to zoom</string>
+    <!-- ============== LANGUAGE CHANGE ============== -->
+    <string name="language_will_change_next_time">Language will change next time you open the app</string>
 
+    <!-- ============== SETTINGS ADDITIONAL ============== -->
+    <string name="total_movies_label">Total Movies:</string>
+    <string name="favorite_movies_label">Favorite Movies:</string>
+    <string name="auto_refresh_description">Automatically refresh data when connected to the internet</string>
+
+    <!-- ================================== -->
     <!-- ============== GENRE ARRAY ============== -->
     <string-array name="movie_genres" tools:ignore="InconsistentArrays">
         <item>@string/genre_action</item>

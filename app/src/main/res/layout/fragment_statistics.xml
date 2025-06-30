@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/refresh_statistics"
-            android:layout_marginBottom="16dp"
+            android:textSize="20dp"
+            android:layout_marginBottom="50dp"
             style="@style/Widget.Material3.Button.OutlinedButton" />
 
         <!-- Collection Overview -->
