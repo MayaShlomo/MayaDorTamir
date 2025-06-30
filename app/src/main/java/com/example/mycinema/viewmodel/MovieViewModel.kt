@@ -96,7 +96,9 @@ class MovieViewModel @Inject constructor(
     fun clearMovieFormData() {
         _movieFormData.value = MovieFormData()
     }
-
+    fun getMovieById(movieId: Int): LiveData<Movie?> {
+        return repository.getMovieById(movieId)
+    }
     // *** פונקציות API קיימות ***
 
     fun searchMoviesOnline(query: String) {

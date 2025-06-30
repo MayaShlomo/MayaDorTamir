@@ -37,20 +37,23 @@
             </androidx.cardview.widget.CardView>
 
             <!-- כפתור מחיקה משופר -->
+
+            <!-- כותרת הסרט - טקסט גדול יותר וברור יותר -->
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:layout_marginTop="4dp"
                 android:contentDescription="מחק סרט"
-                app:srcCompat="@android:drawable/ic_menu_delete"
                 app:backgroundTint="@color/error_red"
-                app:tint="@color/white"
                 app:fabSize="mini"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_delete"
+                app:tint="@color/white" />
 
-            <!-- כותרת הסרט - טקסט גדול יותר וברור יותר -->
             <TextView
                 android:id="@+id/title"
                 android:layout_width="0dp"
@@ -149,13 +152,6 @@
                 app:layout_constraintTop_toBottomOf="@id/yearLayout"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@android:drawable/btn_star"
-                    app:tint="@color/gold"
-                    android:layout_marginEnd="6dp" />
-
                 <TextView
                     android:id="@+id/rating"
                     android:layout_width="wrap_content"
@@ -168,49 +164,55 @@
 
             </LinearLayout>
 
-            <!-- כפתורי פעולה משופרים -->
+            <!-- כפתורי פעולה כריבועים קטנים צמודים במרכז -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 app:layout_constraintStart_toEndOf="@id/posterCard"
-                app:layout_constraintTop_toBottomOf="@id/ratingLayout"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingLayout">
 
-                <!-- כפתור פרטים - זה הכפתור שתיקנו! -->
+                <!-- כפתור פרטים - ריבוע קטן עם סימן קריאה -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnDetails"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginEnd="8dp"
-                    android:text="פרטים"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
+                    android:contentDescription="פרטים"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
                     app:backgroundTint="@color/info_blue"
-                    app:cornerRadius="12dp"
+                    app:cornerRadius="8dp"
                     app:icon="@drawable/ic_info"
-                    app:iconTint="@color/white"
-                    app:iconSize="18dp"
-                    app:iconGravity="textStart" />
+                    app:iconGravity="textStart"
+                    app:iconSize="20dp"
+                    app:iconTint="@color/white" />
 
-                <!-- כפתור מועדפים -->
+                <!-- כפתור מועדפים - ריבוע קטן עם כוכב -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFavorites"
-                    android:layout_width="56dp"
-                    android:layout_height="48dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:contentDescription="הוסף למועדפים"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
                     app:backgroundTint="@color/warning_orange"
-                    app:cornerRadius="12dp"
+                    app:cornerRadius="8dp"
                     app:icon="@android:drawable/btn_star_big_off"
-                    app:iconTint="@color/white"
-                    app:iconSize="24dp"
-                    app:iconGravity="textStart" />
+                    app:iconGravity="textStart"
+                    app:iconSize="20dp"
+                    app:iconTint="@color/white" />
 
             </LinearLayout>
 

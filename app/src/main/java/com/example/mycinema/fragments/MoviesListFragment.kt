@@ -1,3 +1,5 @@
+// החלף את כל ה-MoviesListFragment שלך בזה:
+
 package com.example.mycinema.fragments
 
 import android.os.Bundle
@@ -16,6 +18,7 @@ import com.example.mycinema.databinding.FragmentMoviesListBinding
 import com.example.mycinema.viewmodel.MovieViewModel
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
+import android.util.Log
 
 @AndroidEntryPoint
 class MoviesListFragment : Fragment() {
@@ -29,31 +32,87 @@ class MoviesListFragment : Fragment() {
         FragmentMoviesListBinding.inflate(i, c, false).also { _b = it }.root
 
     override fun onViewCreated(v: View, s: Bundle?) {
+        super.onViewCreated(v, s)
+
+        Log.d("MoviesListFragment", "=== FRAGMENT CREATED ===")
+
         setupRecycler()
         setupSearch()
         setupGenreChips()
         observeData()
 
         b.fabAdd.setOnClickListener {
-            val act = MoviesListFragmentDirections.actionMoviesListToAddEditMovie(0)
-            findNavController().navigate(act)
+            try {
+                val action = MoviesListFragmentDirections.actionMoviesListToAddEditMovie(0)
+                findNavController().navigate(action)
+            } catch (e: Exception) {
+                Log.e("MoviesListFragment", "FAB navigation failed: ${e.message}")
+            }
         }
     }
 
     private fun setupRecycler() {
+        Log.d("MoviesListFragment", "Setting up recycler...")
+
         b.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // יצירת האדפטר עם listeners במקום העברת ViewModel
         adapter = MovieAdapter(
+            onMovieClick = { movie ->
+                Log.d("MoviesListFragment", "🎬 MOVIE CLICKED: ${movie.title} (ID: ${movie.id})")
+
+                // פתרון 1: ניווט עם Safe Args
+                try {
+                    Log.d("MoviesListFragment", "Trying Safe Args navigation...")
+                    val action = MoviesListFragmentDirections.actionMoviesListToMovieDetails(movie.id)
+                    findNavController().navigate(action)
+                    Log.d("MoviesListFragment", "✅ Safe Args navigation SUCCESS!")
+                    return@MovieAdapter
+                } catch (e: Exception) {
+                    Log.e("MoviesListFragment", "❌ Safe Args failed: ${e.message}")
+                }
+
+                // פתרון 2: ניווט עם Bundle
+                try {
+                    Log.d("MoviesListFragment", "Trying Bundle navigation...")
+                    val bundle = Bundle().apply {
+                        putInt("movieId", movie.id)
+                    }
+                    findNavController().navigate(R.id.movieDetailsFragment, bundle)
+                    Log.d("MoviesListFragment", "✅ Bundle navigation SUCCESS!")
+                    return@MovieAdapter
+                } catch (e: Exception) {
+                    Log.e("MoviesListFragment", "❌ Bundle navigation failed: ${e.message}")
+                }
+
+                // פתרון 3: ניווט גלובלי
+                try {
+                    Log.d("MoviesListFragment", "Trying Global navigation...")
+                    val bundle = Bundle().apply {
+                        putInt("movieId", movie.id)
+                    }
+                    findNavController().navigate(R.id.action_global_movieDetails, bundle)
+                    Log.d("MoviesListFragment", "✅ Global navigation SUCCESS!")
+                    return@MovieAdapter
+                } catch (e: Exception) {
+                    Log.e("MoviesListFragment", "❌ Global navigation failed: ${e.message}")
+                }
+
+                // פתרון 4: הודעת שגיאה
+                Log.e("MoviesListFragment", "🔥 ALL NAVIGATION METHODS FAILED!")
+                Toast.makeText(requireContext(), "לא ניתן לפתוח פרטי סרט כרגע", Toast.LENGTH_SHORT).show()
+            },
             onFavoriteClick = { movie ->
+                Log.d("MoviesListFragment", "⭐ Favorite clicked for: ${movie.title}")
                 vm.toggleFavorite(movie)
             },
             onDeleteClick = { movie ->
+                Log.d("MoviesListFragment", "🗑️ Delete clicked for: ${movie.title}")
                 vm.delete(movie)
             }
         )
 
         b.recyclerView.adapter = adapter
+        Log.d("MoviesListFragment", "✅ RecyclerView setup completed")
     }
 
     private fun setupSearch() {
@@ -90,7 +149,6 @@ class MoviesListFragment : Fragment() {
             setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
             setOnClickListener {
                 b.searchView.setQuery("", false)
-
                 vm.clearFilters()
 
                 for (i in 0 until b.genreChipGroup.childCount) {
@@ -101,10 +159,7 @@ class MoviesListFragment : Fragment() {
                 }
 
                 isChecked = true
-
                 adapter.submitList(vm.allMovies.value)
-
-                // תיקון השורה הקודדת - שימוש ב-string resource
                 Toast.makeText(requireContext(), getString(R.string.filters_cleared), Toast.LENGTH_SHORT).show()
             }
         }
@@ -122,16 +177,10 @@ class MoviesListFragment : Fragment() {
                     setChipBackgroundColorResource(android.R.color.holo_orange_light)
                     setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
                     setOnClickListener {
-                        // Clear search text when genre filter is applied
                         b.searchView.setQuery("", false)
-
-                        // Apply the genre filter
                         vm.filterByGenre(g)
-
-                        // Update chip states
                         clearChip.isChecked = false
 
-                        // Uncheck all other genre chips
                         for (i in 0 until b.genreChipGroup.childCount) {
                             val otherChip = b.genreChipGroup.getChildAt(i) as? Chip
                             if (otherChip != null && otherChip != this) {
@@ -147,6 +196,7 @@ class MoviesListFragment : Fragment() {
 
     private fun observeData() {
         vm.allMovies.observe(viewLifecycleOwner) { list ->
+            Log.d("MoviesListFragment", "📋 Movies updated: ${list.size} items")
             if (vm.currentFilter.value.isNullOrEmpty()) {
                 adapter.submitList(list)
                 updateEmpty(list.isEmpty())

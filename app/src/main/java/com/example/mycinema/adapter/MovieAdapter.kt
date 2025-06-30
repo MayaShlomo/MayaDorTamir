@@ -16,6 +16,7 @@ import com.example.mycinema.models.Movie
 import com.example.mycinema.util.ImageHelper
 
 class MovieAdapter(
+    private val onMovieClick: (Movie) -> Unit,  // *** הוספתי את זה ***
     private val onFavoriteClick: (Movie) -> Unit,
     private val onDeleteClick: (Movie) -> Unit
 ) : ListAdapter<Movie, MovieAdapter.VH>(Diff()) {
@@ -46,10 +47,16 @@ class MovieAdapter(
             // טעינת תמונה
             loadMovieImage(m, imageView)
 
-            // *** כפתור פרטים - עובד מושלם! ***
-            btnDetails.setOnClickListener {
+            // *** תיקון הניווט - עכשיו יעבוד נכון! ***
+            root.setOnClickListener {
+                Log.d("MovieAdapter", "Movie clicked: ${m.id} - ${m.title}")
+                onMovieClick(m)  // קוראים לפונקציה שהועברה מהפרגמנט
+            }
+
+            // אם יש כפתור פרטים נפרד
+            btnDetails?.setOnClickListener {
                 Log.d("MovieAdapter", "Details button clicked for movie: ${m.id} - ${m.title}")
-                navigateToDetailsSimple(m.id)
+                onMovieClick(m)
             }
 
             // כפתורי פעולות
@@ -67,37 +74,6 @@ class MovieAdapter(
                 confirmDelete(m)
                 true
             }
-        }
-
-        /**
-         * ניווט פשוט לפרטים - עובד מכל מקום!
-         */
-        private fun navigateToDetailsSimple(movieId: Int) {
-            try {
-                val navController = b.root.findNavController()
-
-                // יצירת Bundle עם movieId
-                val bundle = Bundle().apply {
-                    putInt("movieId", movieId)
-                }
-
-                Log.d("MovieAdapter", "Navigating to details with movieId: $movieId")
-
-                // ניווט ישיר למסך הפרטים
-                navController.navigate(R.id.movieDetailsFragment, bundle)
-
-            } catch (e: Exception) {
-                Log.e("MovieAdapter", "Navigation failed: ${e.message}", e)
-                showNavigationError()
-            }
-        }
-
-        private fun showNavigationError() {
-            AlertDialog.Builder(b.root.context)
-                .setTitle("שגיאה")
-                .setMessage("לא ניתן לפתוח את פרטי הסרט כרגע")
-                .setPositiveButton("אישור", null)
-                .show()
         }
 
         private fun updateFavoriteButton(isFavorite: Boolean) {

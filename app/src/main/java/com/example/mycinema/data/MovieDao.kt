@@ -28,6 +28,10 @@ interface MovieDao {
     @Query("SELECT * FROM movies WHERE id = :id LIMIT 1")
     fun getById(id: Int): LiveData<Movie>
 
+    // *** הוספת הפונקציה החסרה שהיית צריך ***
+    @Query("SELECT * FROM movies WHERE id = :movieId LIMIT 1")
+    fun getMovieById(movieId: Int): LiveData<Movie?>
+
     @Query("SELECT * FROM movies WHERE id = :id LIMIT 1")
     suspend fun getByIdSync(id: Int): Movie?
 

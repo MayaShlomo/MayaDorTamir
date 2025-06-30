@@ -8,7 +8,6 @@ import com.example.mycinema.BuildConfig
 import com.example.mycinema.R
 import com.example.mycinema.data.MovieDao
 import com.example.mycinema.models.ApiMovie
-import com.example.mycinema.models.GenreMapper
 import com.example.mycinema.models.Movie
 import com.example.mycinema.models.MovieDetails
 import com.example.mycinema.network.MovieApiService
@@ -34,7 +33,9 @@ class MovieRepository @Inject constructor(
     val favoriteMovies: LiveData<List<Movie>> = dao.getFavoriteMovies()
     val topRatedMovies: LiveData<List<Movie>> = dao.getTopRatedMovies()
     val allGenres: LiveData<List<String>> = dao.getAllGenres()
-
+    fun getMovieById(movieId: Int): LiveData<Movie?> {
+        return dao.getMovieById(movieId)
+    }
     fun getAllMoviesFlow(): Flow<List<Movie>> = dao.getAllMoviesFlow()
     fun get(id: Int): LiveData<Movie> = dao.getById(id)
     suspend fun getByIdSync(id: Int): Movie? = dao.getByIdSync(id)
@@ -188,7 +189,7 @@ class MovieRepository @Inject constructor(
             apiId = apiMovie.id,
             title = apiMovie.title,
             description = apiMovie.overview,
-            genre = GenreMapper.getGenreNames(apiMovie.genreIds),
+            genre = "", // ריק כי הסרנו את GenreMapper
             actors = null, // לא זמין ב-API הבסיסי
             director = null, // לא זמין ב-API הבסיסי
             year = apiMovie.releaseDate?.substring(0, 4)?.toIntOrNull(),

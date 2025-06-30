@@ -52,9 +52,9 @@ class SearchOnlineFragment : Fragment() {
     private fun setupRecyclerView() {
         adapter = OnlineMovieAdapter(
             onMovieClick = { apiMovie ->
-                // *** מטפל בלחיצה על סרט - לא יוצר דף לבן! ***
-                Log.d("SearchOnlineFragment", "Movie clicked: ${apiMovie.title}")
-                showMovieOptionsDialog(apiMovie)
+                // *** תיקון עיקרי - ניווט למסך פרטים מלא! ***
+                Log.d("SearchOnlineFragment", "Movie clicked: ${apiMovie.title} - navigating to details")
+                navigateToMovieDetails(apiMovie)
             },
             onAddToLocalClick = { apiMovie ->
                 // הוספה לאוסף מקומי
@@ -70,30 +70,56 @@ class SearchOnlineFragment : Fragment() {
     }
 
     /**
-     * מציג דיאלוג אפשרויות במקום ניווט לדף לבן
+     * ניווט למסך פרטים מלא עם נתוני API
      */
-    private fun showMovieOptionsDialog(apiMovie: ApiMovie) {
-        val options = arrayOf(
-            "👁️ הצג פרטים",
-            "➕ הוסף לאוסף",
-            "📝 הוסף וערוך"
-        )
+    private fun navigateToMovieDetails(apiMovie: ApiMovie) {
+        try {
+            Log.d("SearchOnlineFragment", "Creating details bundle for: ${apiMovie.title}")
 
-        androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setTitle("🎬 ${apiMovie.title}")
-            .setItems(options) { _, which ->
-                when (which) {
-                    0 -> showMovieDetailsDialog(apiMovie)
-                    1 -> addMovieToCollection(apiMovie)
-                    2 -> navigateToAddEditWithApiMovie(apiMovie)
-                }
+            // יצירת סרט זמני ושמירתו למסד נתונים
+            viewModel.addApiMovieToLocal(apiMovie)
+
+            // המתנה קצרה ואז ניווט (הסרט ישמר עם ID חדש)
+            // נשתמש בפתרון זמני - ניווט למסך הוספה עם נתוני API
+            val bundle = Bundle().apply {
+                putInt("movieId", 0) // סרט חדש
+                putString("apiTitle", apiMovie.title)
+                putString("apiDescription", apiMovie.overview)
+                putString("apiImageUrl", com.example.mycinema.network.MovieApiService.getPosterUrl(apiMovie.posterPath))
+                putString("apiReleaseDate", apiMovie.releaseDate)
+                putFloat("apiRating", apiMovie.voteAverage)
+                putInt("apiId", apiMovie.id)
+                putString("apiGenres", com.example.mycinema.models.GenreMapper.getGenreNames(apiMovie.genreIds))
+                putBoolean("viewOnly", true) // מצב צפייה בלבד
             }
-            .setNegativeButton("ביטול", null)
-            .show()
+
+            findNavController().navigate(
+                R.id.action_searchOnline_to_addEditMovie,
+                bundle
+            )
+
+        } catch (e: Exception) {
+            Log.e("SearchOnlineFragment", "Error navigating to movie details", e)
+            // גיבוי - הצגת פרטים בדיאלוג
+            showMovieDetailsDialog(apiMovie)
+        }
     }
 
     /**
-     * מציג פרטי הסרט בדיאלוג יפה
+     * הוספה מהירה לאוסף
+     */
+    private fun addMovieToCollection(apiMovie: ApiMovie) {
+        viewModel.addApiMovieToLocal(apiMovie)
+
+        Toast.makeText(
+            requireContext(),
+            "הסרט '${apiMovie.title}' נוסף לאוסף! 🎉",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    /**
+     * דיאלוג גיבוי במקרה של כשל בניווט
      */
     private fun showMovieDetailsDialog(apiMovie: ApiMovie) {
         val message = buildString {
@@ -130,31 +156,7 @@ class SearchOnlineFragment : Fragment() {
                 navigateToAddEditWithApiMovie(apiMovie)
             }
             .setNegativeButton("סגור", null)
-            .create()
-            .apply {
-                setOnShowListener {
-                    getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(
-                        requireContext().getColor(R.color.success_green)
-                    )
-                    getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL)?.setTextColor(
-                        requireContext().getColor(R.color.info_blue)
-                    )
-                }
-            }
             .show()
-    }
-
-    /**
-     * הוספה מהירה לאוסף
-     */
-    private fun addMovieToCollection(apiMovie: ApiMovie) {
-        viewModel.addApiMovieToLocal(apiMovie)
-
-        Toast.makeText(
-            requireContext(),
-            "הסרט '${apiMovie.title}' נוסף לאוסף! 🎉",
-            Toast.LENGTH_LONG
-        ).show()
     }
 
     /**

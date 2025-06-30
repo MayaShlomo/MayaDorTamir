@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -30,12 +31,15 @@ class AddEditMovieFragment : Fragment() {
     // נתונים שהגיעו מ-API (אם יש)
     private var apiImageUrl: String? = null
     private var apiId: Int? = null
+    private var isViewOnlyMode = false
 
     private val pickImg = registerForActivityResult(ActivityResultContracts.GetContent()) {
         it?.let { uri ->
-            b.ivPoster.setImageURI(uri)
-            vm.setImageUri(uri.toString())
-            apiImageUrl = null // משתמש העלה תמונה משלו
+            if (!isViewOnlyMode) {
+                b.ivPoster.setImageURI(uri)
+                vm.setImageUri(uri.toString())
+                apiImageUrl = null // משתמש העלה תמונה משלו
+            }
         }
     }
 
@@ -50,9 +54,17 @@ class AddEditMovieFragment : Fragment() {
 
         // בדיקה אם הגענו מחיפוש API
         arguments?.let { bundle ->
+            isViewOnlyMode = bundle.getBoolean("viewOnly", false)
+
             if (bundle.containsKey("apiTitle")) {
                 loadApiData(bundle)
-                b.tvAddEditTitle.text = getString(R.string.add_movie_from_tmdb)
+
+                if (isViewOnlyMode) {
+                    b.tvAddEditTitle.text = "פרטי הסרט מ-TMDb"
+                    setupViewOnlyMode()
+                } else {
+                    b.tvAddEditTitle.text = getString(R.string.add_movie_from_tmdb)
+                }
             }
         }
 
@@ -64,8 +76,84 @@ class AddEditMovieFragment : Fragment() {
             vm.clearMovieFormData()
         }
 
-        b.btnChooseImage.setOnClickListener { pickImg.launch("image/*") }
-        b.btnSave.setOnClickListener { save() }
+        b.btnChooseImage.setOnClickListener {
+            if (!isViewOnlyMode) pickImg.launch("image/*")
+        }
+
+        b.btnSave.setOnClickListener {
+            if (isViewOnlyMode) {
+                // במצב צפייה - הוסף לאוסף
+                addToCollection()
+            } else {
+                save()
+            }
+        }
+    }
+
+    private fun setupViewOnlyMode() {
+        // הפוך את כל השדות ללא-ניתנים לעריכה
+        b.etTitle.isEnabled = false
+        b.etDesc.isEnabled = false
+        b.etActors.isEnabled = false
+        b.etDirector.isEnabled = false
+        b.etShowtime.isEnabled = false
+        b.etDuration.isEnabled = false
+        b.spinnerGenre.isEnabled = false
+        b.btnSelectYear.isEnabled = false
+        b.btnSelectDate.isEnabled = false
+        b.ratingBar.isEnabled = false
+        b.btnChooseImage.isVisible = false
+
+        // שנה את טקסט הכפתור
+        b.btnSave.text = "הוסף לאוסף"
+        b.btnSave.setBackgroundColor(resources.getColor(R.color.success_green, null))
+
+        // הוסף כפתור "עריכה וגמירה"
+        b.btnSave.layoutParams.width = 0
+        // ניתן להוסיף כפתור נוסף או לשנות את הפונקציונליות
+    }
+
+    private fun addToCollection() {
+        arguments?.let { bundle ->
+            val apiTitle = bundle.getString("apiTitle") ?: return
+            val apiDescription = bundle.getString("apiDescription") ?: ""
+            val apiImageUrl = bundle.getString("apiImageUrl")
+            val apiReleaseDate = bundle.getString("apiReleaseDate")
+            val apiRating = bundle.getFloat("apiRating", 0f)
+            val apiId = bundle.getInt("apiId", 0)
+            val apiGenres = bundle.getString("apiGenres")
+
+            val formData = vm.getMovieFormData()
+
+            vm.insert(
+                Movie(
+                    id = 0,
+                    apiId = if (apiId > 0) apiId else null,
+                    title = apiTitle,
+                    description = apiDescription,
+                    genre = apiGenres?.split(",")?.firstOrNull()?.trim(),
+                    actors = null,
+                    director = null,
+                    year = apiReleaseDate?.substring(0, 4)?.toIntOrNull(),
+                    rating = apiRating,
+                    imageUri = apiImageUrl,
+                    showtime = "20:00",
+                    isFavorite = false,
+                    releaseDate = apiReleaseDate,
+                    duration = null,
+                    isFromApi = true
+                )
+            )
+
+            // הצגת הודעה והחזרה
+            AlertDialog.Builder(requireContext())
+                .setTitle("הסרט נוסף!")
+                .setMessage("הסרט '$apiTitle' נוסף בהצלחה לאוסף שלך")
+                .setPositiveButton("אישור") { _, _ ->
+                    findNavController().navigateUp()
+                }
+                .show()
+        }
     }
 
     private fun loadApiData(bundle: Bundle) {
@@ -119,7 +207,7 @@ class AddEditMovieFragment : Fragment() {
     private fun observeViewModel() {
         vm.movieFormData.observe(viewLifecycleOwner) { formData ->
             formData.imageUri?.let { uri ->
-                if (apiImageUrl == null) { // רק אם לא טענו כבר מ-API
+                if (apiImageUrl == null && !isViewOnlyMode) { // רק אם לא טענו כבר מ-API ולא במצב צפייה
                     try {
                         b.ivPoster.setImageURI(uri.toUri())
                     } catch (e: Exception) {
@@ -160,7 +248,7 @@ class AddEditMovieFragment : Fragment() {
 
         b.spinnerGenre.setOnItemSelectedListener(object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                vm.setSelectedGenre(genres[position])
+                if (!isViewOnlyMode) vm.setSelectedGenre(genres[position])
             }
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
         })
@@ -168,6 +256,8 @@ class AddEditMovieFragment : Fragment() {
 
     private fun setupDatePicker() {
         b.btnSelectDate.setOnClickListener {
+            if (isViewOnlyMode) return@setOnClickListener
+
             val calendar = Calendar.getInstance()
 
             // אם יש תאריך מה-API, נתחיל ממנו
@@ -198,14 +288,18 @@ class AddEditMovieFragment : Fragment() {
 
     private fun setupRatingBar() {
         b.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-            val ratingValue = rating * 2
-            b.tvRatingValue.text = String.format("%.1f", ratingValue)
-            vm.setSelectedRating(ratingValue)
+            if (!isViewOnlyMode) {
+                val ratingValue = rating * 2
+                b.tvRatingValue.text = String.format("%.1f", ratingValue)
+                vm.setSelectedRating(ratingValue)
+            }
         }
     }
 
     private fun setupYearPicker() {
         b.btnSelectYear.setOnClickListener {
+            if (isViewOnlyMode) return@setOnClickListener
+
             val currentYear = Calendar.getInstance().get(Calendar.YEAR)
             val years = (1900..currentYear + 5).map { it.toString() }.toTypedArray()
 

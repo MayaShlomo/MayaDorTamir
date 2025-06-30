@@ -36,19 +36,23 @@ class CinemaAdapter(
             // מרחק - תיקון הבעיה כאן
             if (distance > 0) {
                 // שימוש ב-String.format במקום getString עם פורמט מסובך
-                tvDistance.text = String.format("%.1f km away", distance)
+                tvDistance.text = String.format("%.1f km", distance)
                 tvDistance.isVisible = true
             } else {
                 tvDistance.isVisible = false
             }
 
-            // דירוג
+            // דירוג - תיקון השם של הרכיב
             if (cinema.rating > 0) {
                 ratingBar.rating = cinema.rating
                 tvRatingValue.text = String.format("%.1f", cinema.rating)
-                layoutRating.isVisible = true
+                // הצגת הרכיבים של הדירוג
+                ratingBar.isVisible = true
+                tvRatingValue.isVisible = true
             } else {
-                layoutRating.isVisible = false
+                // הסתרת הרכיבים של הדירוג
+                ratingBar.isVisible = false
+                tvRatingValue.isVisible = false
             }
 
             // סטטוס פתוח/סגור
@@ -87,6 +91,7 @@ class CinemaAdapter(
                     root.context.startActivity(intent)
                 }
             }
+            btnViewDetails.setOnClickListener { onCinemaClick(cinema) }
         }
     }
 

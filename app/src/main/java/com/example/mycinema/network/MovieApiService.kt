@@ -15,16 +15,20 @@ interface MovieApiService {
         const val POSTER_SIZE_W500 = "w500"
         const val BACKDROP_SIZE_W780 = "w780"
 
-        fun getPosterUrl(posterPath: String?): String? {
-            return if (posterPath != null) {
+        fun getPosterUrl(posterPath: String?): String {
+            return if (!posterPath.isNullOrBlank()) {
                 "$IMAGE_BASE_URL$POSTER_SIZE_W500$posterPath"
-            } else null
+            } else {
+                ""
+            }
         }
 
-        fun getBackdropUrl(backdropPath: String?): String? {
-            return if (backdropPath != null) {
+        fun getBackdropUrl(backdropPath: String?): String {
+            return if (!backdropPath.isNullOrBlank()) {
                 "$IMAGE_BASE_URL$BACKDROP_SIZE_W780$backdropPath"
-            } else null
+            } else {
+                ""
+            }
         }
     }
 
@@ -45,12 +49,13 @@ interface MovieApiService {
         @Query("language") language: String = "en-US"
     ): Response<MovieSearchResponse>
 
-    // בקשה 3: פרטי סרט ספציפי
+    // בקשה 3: פרטי סרט ספציפי (חדש - נוסיף את זה כדי לקבל פרטים מלאים)
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String,
-        @Query("language") language: String = "en-US"
+        @Query("language") language: String = "en-US",
+        @Query("append_to_response") appendToResponse: String = "credits"
     ): Response<MovieDetails>
 
     // בונוס: סרטים מומלצים

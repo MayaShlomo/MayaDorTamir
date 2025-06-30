@@ -61,66 +61,16 @@ class OnlineMovieAdapter(
             // טעינת תמונה עם Glide
             loadMoviePoster(apiMovie.posterPath)
 
-            // *** תיקון הלחיצות - פותר את בעיית הדף הלבן! ***
+            // *** תיקון עיקרי - ניווט ישיר למסך פרטים! ***
             root.setOnClickListener {
-                showMovieDetailsDialog(apiMovie)
+                Log.d("OnlineMovieAdapter", "Movie clicked: ${apiMovie.title} - navigating to details")
+                onMovieClick(apiMovie) // זה יביא למסך פרטים מלא
             }
 
             btnAddToCollection.setOnClickListener {
                 Log.d("OnlineMovieAdapter", "Add to collection clicked for: ${apiMovie.title}")
                 onAddToLocalClick(apiMovie)
             }
-        }
-
-        /**
-         * פתרון לבעיית הדף הלבן - הצגת דיאלוג במקום ניווט
-         */
-        private fun showMovieDetailsDialog(apiMovie: ApiMovie) {
-            val message = buildString {
-                append("📽️ ${apiMovie.title}\n\n")
-
-                // תיאור
-                if (apiMovie.overview.isNotBlank()) {
-                    append("📝 תיאור:\n${apiMovie.overview}\n\n")
-                }
-
-                // שנה
-                val year = if (apiMovie.releaseDate.isNullOrBlank()) "לא ידוע"
-                else apiMovie.releaseDate.substring(0, 4)
-                append("📅 שנה: $year\n")
-
-                // דירוג
-                append("⭐ דירוג: ${String.format("%.1f", apiMovie.voteAverage)}/10\n")
-
-                // ז'אנרים
-                val genres = GenreMapper.getGenreNames(apiMovie.genreIds)
-                if (genres.isNotBlank()) {
-                    append("🎬 ז'אנרים: $genres\n")
-                }
-
-                append("\n💡 כדי לצפות בפרטים מלאים, הוסף את הסרט לאוסף שלך")
-            }
-
-            AlertDialog.Builder(binding.root.context)
-                .setTitle("פרטי הסרט")
-                .setMessage(message)
-                .setPositiveButton("הוסף לאוסף") { _, _ ->
-                    onAddToLocalClick(apiMovie)
-                }
-                .setNeutralButton("סגור", null)
-                .create()
-                .apply {
-                    // עיצוב משופר לדיאלוג
-                    setOnShowListener {
-                        getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(
-                            context.getColor(R.color.success_green)
-                        )
-                        getButton(AlertDialog.BUTTON_NEUTRAL)?.setTextColor(
-                            context.getColor(R.color.gray_600)
-                        )
-                    }
-                }
-                .show()
         }
 
         private fun loadMoviePoster(posterPath: String?) {

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_background"
     android:padding="16dp">
 
     <LinearLayout
@@ -11,67 +12,111 @@
         android:orientation="vertical">
 
         <!-- App Statistics -->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardBackgroundColor="@color/dark_surface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/app_statistics"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="12dp"/>
+                    android:textColor="@color/purple_500"
+                    android:layout_marginBottom="16dp"
+                    android:drawableStart="@drawable/ic_analytics"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    app:drawableTint="@color/purple_500" />
 
-                <TextView
-                    android:id="@+id/tvTotalMovies"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/total_movies_count"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
 
-                <TextView
-                    android:id="@+id/tvFavoriteMovies"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/total_movies_label"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvTotalMovies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_movies_count"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/favorite_movies_count"
-                    android:textSize="16sp"/>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/favorite_movies_label"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvFavoriteMovies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/favorite_movies_count"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gold" />
+                </LinearLayout>
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <!-- Display Settings -->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardBackgroundColor="@color/dark_surface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/display_settings"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="12dp"/>
+                    android:textColor="@color/teal_200"
+                    android:layout_marginBottom="16dp"
+                    android:drawableStart="@drawable/ic_settings"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    app:drawableTint="@color/teal_200" />
 
                 <!-- Theme -->
                 <TextView
@@ -79,13 +124,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/theme_mode"
                     android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="8dp" />
 
                 <Spinner
                     android:id="@+id/spinnerTheme"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/spinner_background_dark"
+                    android:padding="12dp" />
 
                 <!-- Language -->
                 <TextView
@@ -93,38 +142,48 @@
                     android:layout_height="wrap_content"
                     android:text="@string/language_setting"
                     android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="8dp" />
 
                 <Spinner
                     android:id="@+id/spinnerLanguage"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"/>
+                    android:layout_height="56dp"
+                    android:background="@drawable/spinner_background_dark"
+                    android:padding="12dp" />
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <!-- App Behavior -->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardBackgroundColor="@color/dark_surface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/app_behavior"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="12dp"/>
+                    android:textColor="@color/info_blue"
+                    android:layout_marginBottom="16dp"
+                    android:drawableStart="@drawable/ic_library_books"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    app:drawableTint="@color/info_blue" />
 
                 <!-- Sort -->
                 <TextView
@@ -132,121 +191,176 @@
                     android:layout_height="wrap_content"
                     android:text="@string/default_sort_order"
                     android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="8dp" />
 
                 <Spinner
                     android:id="@+id/spinnerSort"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/spinner_background_dark"
+                    android:padding="12dp" />
 
                 <!-- Auto Refresh -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/setting_item_background"
+                    android:padding="16dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/auto_refresh_online"
-                        android:textSize="16sp"/>
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/auto_refresh_online"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/auto_refresh_description"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_secondary"
+                            android:layout_marginTop="4dp" />
+
+                    </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switchAutoRefresh"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        app:thumbTint="@color/white"
+                        app:trackTint="@color/purple_500" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <!-- Data Management -->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardBackgroundColor="@color/dark_surface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/data_management"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="12dp"/>
+                    android:textColor="@color/success_green"
+                    android:layout_marginBottom="16dp"
+                    android:drawableStart="@drawable/ic_library_books"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    app:drawableTint="@color/success_green" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnExportData"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="@string/export_data"
                     android:textSize="16sp"
-                    android:layout_marginBottom="12dp"/>
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/success_green"
+                    android:layout_marginBottom="12dp"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_library_books"
+                    app:iconTint="@color/white" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnImportData"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="@string/import_data"
                     android:textSize="16sp"
-                    android:layout_marginBottom="12dp"/>
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/info_blue"
+                    android:layout_marginBottom="12dp"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_add"
+                    app:iconTint="@color/white" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnClearDatabase"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="@string/clear_all_data"
                     android:textSize="16sp"
-                    android:backgroundTint="@android:color/holo_red_dark"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@color/white"
+                    android:backgroundTint="#D32F2F"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_library_books"
+                    app:iconTint="@color/white" />
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <!-- About -->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardBackgroundColor="@color/dark_surface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/about_section"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="12dp"/>
+                    android:textColor="@color/purple_700"
+                    android:layout_marginBottom="16dp"
+                    android:drawableStart="@drawable/ic_info"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    app:drawableTint="@color/purple_700" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAbout"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="@string/about_app"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/purple_700"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_info"
+                    app:iconTint="@color/white" />
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
